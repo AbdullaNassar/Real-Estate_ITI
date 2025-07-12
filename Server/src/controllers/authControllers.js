@@ -30,22 +30,21 @@ export const signUp = async (req,res)=>{
         if(!userName || !email || !password || !gender || !phoneNumber){
             return res.status(400).json({
                 status:"Failed",
-                message:"please provide all required fileds"
+                message:"Please provide all required fields"
             })
         }
         const isUserExist = await userModel.findOne({email:email});
         if(isUserExist){
-            res.status(409).json({
+            return res.status(409).json({
                 status:"Failed",
-                message:"User Already Exsits"
+                message:"User Already Exists"
             })
         }
-        const hashedPassword = bcrypt.hashSync(password,10);
         const encryptPhoneNumber = Crypto.AES.encrypt(phoneNumber,process.env.USER_PASSWORD_KEY).toString();
         const user = await userModel.create({
             userName,
             email,
-            password:hashedPassword,
+            password,
             gender,
             role,
             dateOfBirth,
