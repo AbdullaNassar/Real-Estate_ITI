@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getRatingsForListing, guestRate } from "../controllers/ratingController.js";
-import { isUserLoggedIn } from "../controllers/authControllers.js";
+import { isUserLoggedIn, userPermission } from "../controllers/authControllers.js";
 
 const router = Router();
 
@@ -9,10 +9,10 @@ router
 
 router
     .route('/:bookingId')
-    .post(guestRate);
+    .post(userPermission('guest'),guestRate);
 
 router
     .route('/listing/:listingId')
-    .get(getRatingsForListing);
+    .get(userPermission('admin','host'),getRatingsForListing);
 
 export default router;
