@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteAllUsers, deleteUser, getAllUsers, requestPasswordReset, resendOTP, resetPassword, updateUser, verifyOTP } from '../controllers/userControllers.js';
+import { changePassword, deleteAllUsers, deleteUser, getAllUsers, requestPasswordReset, resendOTP, resetPassword, updateUser, verifyOTP } from '../controllers/userControllers.js';
 import { isUserLoggedIn, login, signUp, userPermission } from '../controllers/authControllers.js';
 
 const router = express.Router();
@@ -37,6 +37,10 @@ router
     .route('/')
     .patch(isUserLoggedIn,updateUser)
     .delete(isUserLoggedIn,deleteUser);
+
+router
+    .route('/change-password')
+    .patch(isUserLoggedIn,changePassword);
 
 
 export default router;

@@ -244,6 +244,49 @@ const swaggerDefinition = {
                 },
             },
             },
+            '/users/change-password': {
+                patch: {
+                    summary: 'Change password for authenticated user',
+                    tags: ['Users'],
+                    security: [
+                    {
+                        bearerAuth: []  // Requires JWT token
+                    }
+                    ],
+                    requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                        schema: {
+                            type: 'object',
+                            required: ['currentPassword', 'newPassword', 'confirmPassword'],
+                            properties: {
+                            currentPassword: {
+                                type: 'string',
+                                example: 'oldPassword123'
+                            },
+                            newPassword: {
+                                type: 'string',
+                                example: 'newPassword123'
+                            },
+                            confirmPassword: {
+                                type: 'string',
+                                example: 'newPassword123'
+                            }
+                            }
+                        }
+                        }
+                    }
+                    },
+                    responses: {
+                    200: { description: 'Password changed successfully' },
+                    400: { description: 'Current password is incorrect or passwords do not match' },
+                    401: { description: 'Unauthorized – missing or invalid token' },
+                    404: { description: 'User not found' },
+                    500: { description: 'Internal server error' }
+                    }
+                }
+                },
         '/lists': {
             post: {
                 summary: 'Create a new listing (host only)',
@@ -493,6 +536,83 @@ const swaggerDefinition = {
                 },
             },
         },
+        '/ratings/{bookingId}': {
+            post: {
+                summary: 'Create a rating for a booking (guest only after checkout)',
+                tags: ['Ratings'],
+                security: [{ bearerAuth: [] }],
+                parameters: [
+                {
+                    in: 'path',
+                    name: 'bookingId',
+                    required: true,
+                    schema: { type: 'string' },
+                    description: 'The ID of the booking to rate',
+                },
+                ],
+                requestBody: {
+                required: true,
+                content: {
+                    'application/json': {
+                    schema: {
+                        type: 'object',
+                        properties: {
+                        rating: { type: 'number', minimum: 1, maximum: 5 },
+                        comment: { type: 'string' },
+                        },
+                        required: ['rating'],
+                    },
+                    },
+                },
+                },
+                responses: {
+                201: { description: 'Rating created successfully' },
+                400: { description: 'You can only rate after checkout or rating already exists' },
+                403: { description: 'Unauthorized or booking not found' },
+                500: { description: 'Internal Server Error' },
+                },
+            },
+            },
+            '/ratings/listing/{listingId}': {
+            get: {
+                summary: 'Get all ratings for a listing',
+                tags: ['Ratings'],
+                parameters: [
+                {
+                    in: 'path',
+                    name: 'listingId',
+                    required: true,
+                    schema: { type: 'string' },
+                    description: 'The ID of the listing to get ratings for',
+                },
+                ],
+                responses: {
+                200: {
+                    description: 'List of ratings for the listing',
+                    content: {
+                    'application/json': {
+                        schema: {
+                        type: 'array',
+                        items: {
+                            type: 'object',
+                            properties: {
+                            _id: { type: 'string' },
+                            bookingId: { type: 'string' },
+                            guestId: { type: 'string' },
+                            rating: { type: 'number' },
+                            comment: { type: 'string' },
+                            createdAt: { type: 'string', format: 'date-time' },
+                            },
+                        },
+                        },
+                    },
+                    },
+                },
+                404: { description: 'Listing not found' },
+                500: { description: 'Internal Server Error' },
+                },
+            },
+            },
     },
 };
 

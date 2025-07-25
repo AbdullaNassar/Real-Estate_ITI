@@ -29,6 +29,4 @@ router
     .patch(userPermission("admin","guest"),updateBooking)
     .delete(userPermission("admin","guest"),deleteBooking)
 
-
-
 export default router;
