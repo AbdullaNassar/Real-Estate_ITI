@@ -23,9 +23,11 @@ export const createList = async (req,res) => {
 export const readLists = async (req,res)=> {
     try {
         const {sort,page,limit,field} = req?.query;
-        const queryBody = {}
+        const queryBody = {
+            isApproved:true
+        }
         
-        let query = listModel.find(queryBody);
+        let query = listModel.find(queryBody).populate('categoryId amenitiesId');
 
         if(sort){
             query= query.sort(sort.split(',').join(' '))
@@ -184,6 +186,25 @@ export const searchLists = async (req,res)=>{
         })
     } catch (error) {
         res.status(500).json({
+            status:"Failed",
+            message:"Internal Server Error",
+            error:error.message
+        })
+    }
+}
+
+export const approvedListing = async (req,res)=>{
+    try {
+        const {id} = req.params;
+        const listing = await listModel.findByIdAndUpdate(id,{isApproved:true},{new:true,runValidators:true});
+        return res.status(200).json({
+            status:"Success",
+            message:"Listing Approved Successfuly",
+            data:listing
+        })
+
+    } catch (error) {
+        return res.status(500).json({
             status:"Failed",
             message:"Internal Server Error",
             error:error.message
