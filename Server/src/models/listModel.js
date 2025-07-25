@@ -51,6 +51,10 @@ const listSchema = new Schema({
             },
             message:"Max 10 photos are allowed."
         }
+    },
+    averageRating:{
+        type:Number,
+        default:0
     }
 },
 {timestamps:true}

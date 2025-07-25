@@ -1,6 +1,6 @@
 import userModel from "../models/userModel.js"
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
-import Crypto from 'crypto-js';
+import bcrypt from 'bcryptjs'
 export const getAllUsers = async (req,res)=>{  
     try {
         const users = await userModel.find({},{password:0,phoneNumber:0,role:0,__v:0});
@@ -187,3 +187,54 @@ export const resetPassword = async (req, res) => {
         message: 'Password reset successful'
     });
 };
+
+export const changePassword = async (req,res)=>{
+    try {
+
+        const {currentPassword,newPassword,confirmPassword} = req.body;
+        if(!currentPassword||!newPassword||!confirmPassword){
+            return res.status(400).json({
+                status:"Failed",
+                message:"All fields are required"
+            });
+        }
+
+        if(newPassword !== confirmPassword){
+            return res.status(400).json({
+                status:"Failed",
+                message:"Password do not Match"
+            });
+        }
+
+        const user = await userModel.findById(req.user._id).select('+password')
+
+        if(!user){
+            return res.status(404).json({
+                status:"Failed",
+                message:"User Not Found"
+            })
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword,req.user.password);
+        if(!isMatch){
+            return res.status(400).json({
+                status:"Failed",
+                message:"Current Password Is incorrect"
+            })
+        }
+        user.password = newPassword;
+        
+        await user.save();
+
+        return res.status(200).json({
+            status:"Success",
+            message:"Password Changed Successfuly"
+        })
+    } catch (error) {
+        return res.status(500).json({
+            status:"Failed",
+            message:"Internal Server Error",
+            error:error.message
+        })
+    }
+}

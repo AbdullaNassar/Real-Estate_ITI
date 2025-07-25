@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import userRouter from "./src/routes/userRoutes.js";
 import listRouter from "./src/routes/listRoutes.js";
 import bookingRouter from "./src/routes/bookingRoutes.js";
+import ratingRouter from './src/routes/ratingRoutes.js';
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 
 dotenv.config({ path: "config.env" });
@@ -40,6 +41,7 @@ app.use(cors());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/lists", listRouter);
 app.use("/api/v1/bookings", bookingRouter);
+app.use("/api/v1/ratings", ratingRouter);
 
 //server
 app
