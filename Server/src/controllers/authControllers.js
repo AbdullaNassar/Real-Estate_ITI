@@ -4,9 +4,9 @@ import bcrypt from 'bcryptjs';
 import Crypto from 'crypto-js';
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 
-const generateToken = (id,userName)=>{
+const generateToken = (id,userName,role)=>{
     return jwt.sign(
-        {id,userName},
+        {id,userName,role},
         process.env.JWT_SECRET,
         {expiresIn: "1d"}
     );
@@ -124,7 +124,7 @@ export const login = async (req,res)=>{
                 message: 'Please verify your email via OTP first' 
                 });
             }
-        const token = generateToken(user._id,user.userName);
+        const token = generateToken(user._id,user.userName,user.role);
         return res.status(200).json({
             status:"Success",
             message:"User Logged In Successfully",

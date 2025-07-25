@@ -20,10 +20,10 @@ const listSchema = new Schema({
         required:[true,'Price Per Night is Required'],
         min:[0,'preice Per Night must be grater than Or equal to 0']
     },
-    category:{
-        type:String,
-        enum:['apartment', 'villa', 'studio', 'duplex'],
-        required:[true,"Category Is Required"]
+    categoryId:{
+        type:mongoose.Types.ObjectId,
+        ref:"Category",
+        required:[true,"Category Id Is Required"]
     },
     locationType:{
         type:String,
@@ -34,8 +34,9 @@ const listSchema = new Schema({
         type:String,
         required:[true,'Location is Required']
     },
-    amenities:{
-        type:[String],
+    amenitiesId:{
+        type:[mongoose.Types.ObjectId],
+        ref:'Amenity',
         default:[]
     },
     maxGustes:{
@@ -55,6 +56,10 @@ const listSchema = new Schema({
     averageRating:{
         type:Number,
         default:0
+    },
+    isApproved:{
+        type:Boolean,
+        default:false
     }
 },
 {timestamps:true}
