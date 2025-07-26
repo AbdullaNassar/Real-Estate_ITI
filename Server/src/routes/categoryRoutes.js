@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { isUserLoggedIn, userPermission } from "../controllers/authControllers.js";
 import { createCategory, deleteCategory, getAllCategories, updateCategory } from "../controllers/categoryController.js";
+import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
+import { userPermission } from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 

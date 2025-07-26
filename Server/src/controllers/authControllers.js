@@ -44,6 +44,7 @@ export const signUp = async (req,res)=>{
         }
 
         const isUserExist = await userModel.findOne({email:email});
+
         if(isUserExist){
             return res.status(409).json({
                 status:"Failed",
@@ -91,7 +92,9 @@ export const login = async (req,res)=>{
             });
         }
         const user = await userModel.findOne({email});
+        
         if(!user){
+
             return res.status(404).json({
                 status:"failed",
                 message:"User Must Register First"
@@ -101,20 +104,16 @@ export const login = async (req,res)=>{
         const ispasswordMatch =await isCorrectPassword(password,user.password);
 
         if(!ispasswordMatch){
-            return res.status(401).json({
+
+            return res.status(400).json({
                 status:"Failed",
                 message:"Invalid Eamil Or Password"
             });
         }
 
         if(user.phoneNumber){
-            const decryptPhoneNumber = Crypto.AES.decrypt(
-                user.phoneNumber,
-                process.env.USER_PASSWORD_KEY
-            ).toString(Crypto.enc.Utf8);
-            console.log(decryptPhoneNumber);
             
-            user.phoneNumber = decryptPhoneNumber;
+            user.phoneNumber = Crypto.AES.decrypt(user.phoneNumber,process.env.USER_PASSWORD_KEY).toString(Crypto.enc.Utf8);
             await user.save();
         }
 
@@ -122,14 +121,17 @@ export const login = async (req,res)=>{
             return res.status(403).json({
                 status:"Failed",
                 message: 'Please verify your email via OTP first' 
-                });
-            }
+            });
+        }
+
         const token = generateToken(user._id,user.userName,user.role);
+
         return res.status(200).json({
             status:"Success",
             message:"User Logged In Successfully",
             token:token
         })
+        
     } catch (error) {
         return res.status(500).json({
             status:"failed",
@@ -138,51 +140,3 @@ export const login = async (req,res)=>{
         })
     }
 } 
-
-export const isUserLoggedIn = async (req,res,next)=>{
-    try {
-        let token="";
-        if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
-            token = req.headers.authorization.split(' ')[1];
-        }
-        if(!token){
-            return res.status(401).json({
-                status:"Failed",
-                message:"you are not authorized to access this route,please login first"
-            })
-        }
-
-        const payLoad = jwt.verify(token,process.env.JWT_SECRET);
-        const user = await userModel.findById(payLoad.id);
-
-        if(!user){
-            return es.status(404).json({
-                status:"Failed",
-                message:"User Not Found"
-            })
-        }
-
-
-        req.user = user;
-        next();
-
-    } catch (error) {
-        return res.status(500).json({
-            status:"Failed",
-            message:"internal Server Error",
-            error: error.message
-        })
-    }
-}
-
-export const userPermission = (...roles)=>{
-    return (req,res,next)=>{
-        if(!roles.includes(req.user?.role)){
-            return res.status(403).json({
-                status:"Failed",
-                message:"You do not have permission to access this route"
-            });
-        }
-        next();
-    }
-}

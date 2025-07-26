@@ -1,5 +1,4 @@
 import express from 'express'
-import { isUserLoggedIn, userPermission } from '../controllers/authControllers.js';
 import { 
     createBooking,
     deleteBooking,
@@ -8,6 +7,8 @@ import {
     getBookingById,
     updateBooking
         } from '../controllers/bookingControllers.js';
+import { userPermission } from '../middlewares/authorization.middleware.js';
+import { isUserLoggedIn } from '../middlewares/authentication.middleware.js';
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router
     .get(userPermission("admin","host"),getAllHostListingBooked)
 
 router 
-    .route('/:id')
+    .route('/:listingId')
     .post(userPermission("admin","guest"),createBooking)
     .get(userPermission("admin","guest"),getBookingById)
     .patch(userPermission("admin","guest"),updateBooking)

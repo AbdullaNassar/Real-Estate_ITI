@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { isUserLoggedIn, userPermission } from "../controllers/authControllers.js";
-import { createAmenity, deleteAmenity, getAllAmenities, updateAmenity } from "../controllers/amenityModel.js";
+import { createAmenity, deleteAmenity, getAllAmenities, updateAmenity } from "../controllers/amenityController.js";
+import { userPermission } from "../middlewares/authorization.middleware.js";
+import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
 
 const router = Router();
 

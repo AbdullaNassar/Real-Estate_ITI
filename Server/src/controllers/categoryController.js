@@ -4,9 +4,16 @@ export const createCategory = async (req,res)=>{
     try {
         const {name} = req.body;
 
+        if(!name){
+            return res.status(400).json({
+                status:"Failed",
+                message:"Name Of Catergory Is Required....!"
+            })
+        }
+
         const category = await categoryModel.create({
             name
-        })
+        });
 
         return res.status(201).json({
             status:"Success",
@@ -17,7 +24,8 @@ export const createCategory = async (req,res)=>{
     } catch (error) {
         return res.status(400).json({
             status:"Failed",
-            message:error.message
+            message:"Internal Server Error",
+            error:error.message
         })
     }
 }
@@ -25,6 +33,14 @@ export const createCategory = async (req,res)=>{
 export const getAllCategories = async (req,res)=>{
     try {
         const categories = await categoryModel.find();
+
+        if(!categories){
+            return res.status(404).json({
+                status:"Failed",
+                message:"No Categories Found"
+            })
+        }
+
         return res.status(200).json({
             status:"Success",
             data:categories
@@ -38,16 +54,31 @@ export const getAllCategories = async (req,res)=>{
     }
 }
 
-
 export const updateCategory = async (req,res)=>{
     try {
         const {id} = req.params;
         const {name} = req.body;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Id of Category Is Required......!"
+            })
+        }
+
+        if(!name){
+            return res.status(400).json({
+                status:"Failed",
+                message:"Name Of Catergory Is Required....!"
+            })
+        }
+
         const category = await categoryModel.findByIdAndUpdate(id,{name},{new:true,runValidators:true});
-        return res.status(200).json({
+
+        return res.status(204).json({
             status:"Success",
             message:"Category Updated Successfuly",
-            data:category
         })
     } catch (error) {
         return res.status(500).json({
@@ -61,12 +92,32 @@ export const updateCategory = async (req,res)=>{
 export const deleteCategory = async (req,res)=>{
     try {
         const {id} = req.params;
-        const category = await categoryModel.deleteOne({_id:id});
-        return res.status(200).json({
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Id of Category Is Required......!"
+            })
+        }
+        const category = await categoryModel.findOne({_id:id});
+
+        if(!category){
+
+            return res.status(404).json({
+                status:"Failed",
+                message:"Category Not Found"
+            })
+        }
+
+        await categoryModel.deleteOne({_id:id});
+
+        return res.status(204).json({
+
             status:"Success",
             message:"Category Deleted Successfuly",
-            data:category
-        })
+        });
+        
     } catch (error) {
         return res.status(500).json({
             status:"Failed",
