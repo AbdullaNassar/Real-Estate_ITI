@@ -9,47 +9,61 @@ const upload = multer({ storage: multer.memoryStorage() });
 const uploadToCloudinary = (buffer, folder = 'listings') => {
     return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
+            if (error) reject(error);
+            else resolve(result);
         });
         stream.end(buffer);
     });
-    };
+};
 
 // Middleware: Resize + Upload
-export const processAndUploadImages = async (req, res, next) => {
-try {
-    if (!req.files || req.files.length === 0) {
-    return next(); // No images uploaded
-    }
-    // Dynamic parameters (can be sent as query or body)
-    const width = parseInt(req.body.width) || 800;
-    const height = parseInt(req.body.height) || 600;
-    const quality = parseInt(req.body.quality) || 80;
+export const processAndUploadImages = (options = {}) => {
+    const { singleField = 'profilePic', multiField = 'photos' } = options;
 
-    const uploadedUrls = [];
+    return async (req, res, next) => {
+        try {
+        const files = req.files || (req.file ? [req.file] : []);
+        if (!files || files.length === 0) return next();
 
-    for (const file of req.files) {
-    const resizedBuffer = await sharp(file.buffer)
-        .resize(width, height, { fit: 'cover' })
-        .toFormat('jpeg')
-        .jpeg({ quality })
-        .toBuffer();
+        const width = parseInt(req.body.width) || 800;
+        const height = parseInt(req.body.height) || 600;
+        const quality = parseInt(req.body.quality) || 80;
 
-    const uploadResult = await uploadToCloudinary(resizedBuffer);
-    uploadedUrls.push(uploadResult.secure_url);
-    }
+        const uploadedUrls = [];
 
-    req.body.photos = uploadedUrls; // Ensure it matches DB field
-    next();
-} catch (err) {
-    console.error('Upload Error:', err);
-    res.status(500).json({
-        status:"Failed",
-        message: 'Image upload failed',
-        error: err.message 
-    });
-}
+        for (const file of files) {
+            const resizedBuffer = await sharp(file.buffer)
+            .resize(width, height, { fit: 'cover' })
+            .toFormat('jpeg')
+            .jpeg({ quality })
+            .toBuffer();
+
+            // Decide folder automatically
+            const fieldName = file.fieldname;
+            const folderName = (fieldName === 'profilePic') ? 'profilePics' : 'listings';
+            
+            const uploadResult = await uploadToCloudinary(resizedBuffer, folderName);
+            uploadedUrls.push(uploadResult.secure_url);
+        }
+
+        // Detect single vs multiple
+        if (req.file || files.length === 1 && req.route.path.includes('users')) {
+            req.body[singleField] = uploadedUrls[0];
+        } else {
+            req.body[multiField] = uploadedUrls;
+        }
+
+        console.log('Uploaded URLs:', uploadedUrls);
+        next();
+        } catch (err) {
+        console.error('Upload Error:', err);
+        res.status(500).json({
+            status: 'Failed',
+            message: 'Image upload failed',
+            error: err.message,
+        });
+        }
+    };
 };
 
 export default upload;
