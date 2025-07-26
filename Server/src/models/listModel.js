@@ -48,9 +48,9 @@ const listSchema = new Schema({
         type:[String],
         validate:{
             validator: (value)=>{
-                return value.length <=10;
+                return value.length <=5;
             },
-            message:"Max 10 photos are allowed."
+            message:"Max 5 photos are allowed."
         }
     },
     averageRating:{

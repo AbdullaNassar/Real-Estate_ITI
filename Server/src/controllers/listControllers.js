@@ -2,9 +2,31 @@ import listModel from '../models/listModel.js'
 
 export const createList = async (req,res) => {
     try {
-        req.body.host = req.user._id;
 
-        const list = await listModel.create(req.body);
+        const {
+            title,
+            descrption,
+            pricePerNight,
+            categoryId,
+            locationType,
+            location,
+            amenitiesId,
+            maxGustes,
+            photos
+        } = req.body;
+
+        const list = await listModel.create({
+            host:req.user._id,
+            title,
+            descrption,
+            pricePerNight,
+            categoryId,
+            locationType,
+            location,
+            amenitiesId,
+            maxGustes,
+            photos
+        });
 
         res.status(201).json({
             status:"Success",
@@ -43,7 +65,7 @@ export const readLists = async (req,res)=> {
         }
 
         const lists = await query;
-        res.status(201).json({
+        res.status(200).json({
             status:"Success",
             results:lists.length,
             data:lists
