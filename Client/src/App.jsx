@@ -16,6 +16,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import VerifyOtp from "./pages/VerifyOtp";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/verifyOtp" element={<VerifyOtp />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
