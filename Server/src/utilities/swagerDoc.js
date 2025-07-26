@@ -72,7 +72,7 @@ const swaggerDefinition = {
                 500: { description: 'Internal server error' },
                 },
             },
-            },
+        },
         '/users/login': {
         post: {
             summary: 'Log in a user',

@@ -15,6 +15,14 @@ export const createList = async (req,res) => {
             photos
         } = req.body;
 
+        if(!title || !descrption || !pricePerNight || !categoryId || !location || !maxGustes || !photos){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Provide All Fields"
+            })
+        }
+
         const list = await listModel.create({
             host:req.user._id,
             title,
@@ -65,6 +73,14 @@ export const readLists = async (req,res)=> {
         }
 
         const lists = await query;
+
+        if(!lists){
+            return res.status(404).json({
+                status:"Failed",
+                message:"No Listings Found"
+            });
+        }
+
         res.status(200).json({
             status:"Success",
             results:lists.length,
@@ -82,6 +98,15 @@ export const readLists = async (req,res)=> {
 export const getListById =async (req,res)=>{
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Listing Id Is required"
+            })
+        }
+
         const list = await  listModel.findOne({_id:id});
         if(!list){
             return res.status(404).json({
@@ -89,10 +114,12 @@ export const getListById =async (req,res)=>{
             message:"List Not Found"
         })
         }
-        return res.status(201).json({
+
+        return res.status(200).json({
             status:"Success",
             data: list
-        })
+        });
+
     } catch (error) {
         return res.status(500).json({
             status:"Failed",
@@ -105,29 +132,45 @@ export const getListById =async (req,res)=>{
 export const updateList = async (req,res)=> {
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Listing Id Is required"
+            })
+        }
+
         const host = req.user._id;
 
         const list = await listModel.findOne({_id:id});
+
         if(!list){
+
             return res.status(404).json({
             status:"Failed",
             message:"List Not Found"
         })
         }
+
         if(list.host.toString()!==host.toString()){
+
             return res.status(403).json({
             status:"Failed",
             message:"Can not to Update this List"
         })
         }
-        const newList = await listModel.findByIdAndUpdate(id,req.body,{
+
+        await listModel.findByIdAndUpdate(id,req.body,{
             new:true,
             runValidators:true
         });
-        res.status(200).json({
+
+        res.status(204).json({
             status:"Success",
-            data: newList
+            message:"Listing Updated Successfuly"
         })
+
     } catch (error) {
         res.status(500).json({
             status:"Failed",
@@ -140,27 +183,42 @@ export const updateList = async (req,res)=> {
 export const deleteList = async (req,res)=> {
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Listing Id Is required"
+            })
+        }
+
         const host = req.user._id;
 
         const list = await listModel.findOne({_id:id});
+
         if(!list){
+
             return res.status(404).json({
             status:"Failed",
             message:"List Not Found"
         })
         }
+
         if(list.host.toString()!==host.toString()){
+
             return res.status(403).json({
             status:"Failed",
             message:"Can not to Delete This List",
         })
         }
-        const resData  = await listModel.deleteOne({_id:id});
-        return res.status(200).json({
+
+        await listModel.deleteOne({_id:id});
+
+        return res.status(204).json({
             status:"Success",
             message:"List Deleted",
-            data:resData
         })
+
     } catch (error) {
         return res.status(500).json({
             status:"Failed",
@@ -199,6 +257,7 @@ export const searchLists = async (req,res)=>{
         if(amenities?.trim()){
             query.amenities = {$regex: new RegExp(amenities,"i")}
         }
+
         const lists = await listModel.find(query);
         
         res.status(200).json({
@@ -218,11 +277,20 @@ export const searchLists = async (req,res)=>{
 export const approvedListing = async (req,res)=>{
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Listing Id Is required"
+            })
+        }
+
         const listing = await listModel.findByIdAndUpdate(id,{isApproved:true},{new:true,runValidators:true});
-        return res.status(200).json({
+
+        return res.status(204).json({
             status:"Success",
-            message:"Listing Approved Successfuly",
-            data:listing
+            message:"Listing Approved Successfuly"
         })
 
     } catch (error) {

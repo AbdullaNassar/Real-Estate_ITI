@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getRatingsForListing, guestRate } from "../controllers/ratingController.js";
-import { isUserLoggedIn, userPermission } from "../controllers/authControllers.js";
+import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
+import { userPermission } from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 
