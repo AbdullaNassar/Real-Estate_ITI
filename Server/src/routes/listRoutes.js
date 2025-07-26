@@ -1,6 +1,8 @@
 import express from 'express'
-import { isUserLoggedIn,userPermission } from '../controllers/authControllers.js';
 import { approvedListing, createList, deleteList, getListById, readLists, searchLists, updateList } from '../controllers/listControllers.js';
+import upload, { processAndUploadImages } from '../middlewares/uploadImage.middleware.js';
+import { isUserLoggedIn } from '../middlewares/authentication.middleware.js';
+import { userPermission } from '../middlewares/authorization.middleware.js';
 
 const router = express.Router();
 
@@ -21,7 +23,12 @@ router
 
 router
     .route('/')
-    .post(userPermission('host'),createList)
+    .post(
+        userPermission('host'),
+        upload.array('photos',5),
+        processAndUploadImages,
+        createList
+    )
 
 router
     .route('/:id')

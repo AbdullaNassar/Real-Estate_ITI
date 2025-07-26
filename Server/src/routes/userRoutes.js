@@ -1,6 +1,18 @@
 import express from 'express';
-import { changePassword, deleteAllUsers, deleteUser, getAllUsers, requestPasswordReset, resendOTP, resetPassword, updateUser, verifyOTP } from '../controllers/userControllers.js';
-import { isUserLoggedIn, login, signUp, userPermission } from '../controllers/authControllers.js';
+import {
+            changePassword,
+            deleteAllUsers,
+            deleteUser,
+            getAllUsers,
+            requestPasswordReset,
+            resendOTP,
+            resetPassword,
+            updateUser,
+            verifyOTP
+        } from '../controllers/userControllers.js';
+import { login, signUp } from '../controllers/authControllers.js';
+import { isUserLoggedIn } from '../middlewares/authentication.middleware.js';
+import { userPermission } from '../middlewares/authorization.middleware.js';
 
 const router = express.Router();
 

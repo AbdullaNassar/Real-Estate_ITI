@@ -12,7 +12,7 @@ import categoryRouter from './src/routes/categoryRoutes.js';
 import amenityRouter from './src/routes/amenityRoutes.js';
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 
-dotenv.config({ path: "config.env" });
+dotenv.config({ path: "./config.env" });
 const app = express();
 const port = process.env.PORT;
 

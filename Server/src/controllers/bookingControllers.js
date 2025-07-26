@@ -3,10 +3,26 @@ import listModel from "../models/listModel.js";
 
 export const createBooking = async (req,res)=>{
     try {
-        const {id} = req.params;
+        const {listingId} = req.params;
+
+        if(!listingId){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Listing Id Is Required"
+            })
+        }
+
         const {checkIn,checkOut,paymentMethod} = req.body;
+
+        if(!checkIn || !checkOut || !paymentMethod ){
+            return res.status(400).json({
+                status:"Failed",
+                message:"Provide All Fields"
+            })
+        }
+
         const guest = req.user._id;
-        const listingId = id;
 
         const listing = await listModel.findById(listingId);
 
@@ -18,6 +34,7 @@ export const createBooking = async (req,res)=>{
         }
 
         const days = (new Date(checkOut) - new Date(checkIn))/(1000*60*60*24);
+
         if(days <=0){
             return res.status(400).json({
                 status:"Failed",
@@ -53,6 +70,15 @@ export const createBooking = async (req,res)=>{
 export const updateBooking = async (req,res)=>{
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Booking Id Is Required"
+            })
+        }
+
         const booking = await bookingModel.findById(id);
         if(!booking){
             return res. status(404).json({
@@ -60,15 +86,18 @@ export const updateBooking = async (req,res)=>{
                 message:"Booking Not Found"
             });
         }
-        if(booking.guest.toString()!== req.user._id.toString()){
+
+        if(booking.guest.toString() !== req.user._id.toString()){
             return res.status(403).json({
                 status:"Failed",
                 message:"Can Not update this Booking"
             })
         }
+
         const {checkIn,checkOut,paymentMethod} = req.body;
 
         if(checkIn&&checkOut){
+
             const days = (new Date(checkOut) - new Date(checkIn))/(1000*60*60*24);
             if(days <=0){
                 return res.status(400).json({
@@ -76,6 +105,7 @@ export const updateBooking = async (req,res)=>{
                     message:"Invalid check-in/check-out dates"
                 })
             }
+
             const listing = await listModel.findById(booking.listing);
             booking.totalPrice = listing.pricePerNight * days;
             booking.checkIn = checkIn;
@@ -88,13 +118,14 @@ export const updateBooking = async (req,res)=>{
 
         await booking.save();
 
-        return res.status(200).json({
+        return res.status(204).json({
+
             status:"Success",
             message:"Booking is Up-To-Date",
-            data:booking
         })
     } catch (error) {
         return res.status(500).json({
+
             status:"Failed",
             message:"Internal Servrer Error",
             error:error.message
@@ -105,6 +136,15 @@ export const updateBooking = async (req,res)=>{
 export const deleteBooking = async (req,res)=>{
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Booking Id Is Required"
+            })
+        }
+
         const booking = await bookingModel.findById(id);
         if(!booking){
             return res.status(404).json({
@@ -112,20 +152,22 @@ export const deleteBooking = async (req,res)=>{
                 message:"Booking Not Found"
             });
         };
-        if(booking.guest.toString()!== req.user._id.toString()){
+
+        if(booking.guest.toString() !==  req.user._id.toString()){
+
             return res.status(403).json({
                 status:"Failed",
                 message:"Can Not Delete This Booking"
             })
         }
         
-        const bookingData = await bookingModel.deleteOne({_id:id});
+        await bookingModel.deleteOne({_id:id});
 
-        return res.status(200).json({
+        return res.status(204).json({
+
             status:"Success",
             message:"Booking Deleted Successfuly",
-            data:bookingData
-        })
+        });
 
     } catch (error) {
         return rs.status(500).json({
@@ -141,6 +183,14 @@ export const getAllGuestBooking = async (req,res)=>{
         const bookings = await bookingModel.find({guest:req.user._id})
             .populate("listing","title location pricePerNight")
             .sort({createdAt: -1});
+
+        if(!bookings){
+
+            return res.status(404).json({
+                status:"Failed",
+                message:"No Booking Found"
+            });
+        }
 
         return res.status(200).json({
             status:"Success",
@@ -160,6 +210,14 @@ export const getAllHostListingBooked = async (req,res)=>{
     try {
         const listings = await listModel.find({host:req.user._id});
 
+        if(!listings){
+
+            return res.status(404).json({
+                status:"Failed",
+                message:"Host Not Have Listings"
+            })
+        }
+
         const listingIds = listings.map((l)=>l._id);
 
         const bookings = await bookingModel.find({listing:{$in:listingIds}})
@@ -167,11 +225,18 @@ export const getAllHostListingBooked = async (req,res)=>{
             .populate("listing","title location")
             .sort({createdAt: -1});
 
+            if(!bookings){
+                return res.status(404).json({
+                    status:"Failed",
+                    message:"You Don not Have Any Bookings.....!"
+                })
+            }
+
         return res.status(200).json({
             status:"Success",
             results:bookings.length,
             data: bookings
-        })
+        });
 
     } catch (error) {
         return res.status(500).json({
@@ -185,7 +250,17 @@ export const getAllHostListingBooked = async (req,res)=>{
 export const getBookingById = async (req,res)=>{
     try {
         const {id} = req.params;
+
+        if(!id){
+
+            return res.status(400).json({
+                status:"Failed",
+                message:"Booking Id Is Required"
+            })
+        }
+
         const booking = await bookingModel.findById(id);
+
         if(!booking){
             return res.status(404).json({
                 status:"Failed",
