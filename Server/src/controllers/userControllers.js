@@ -35,13 +35,13 @@ export const updateUser =async (req,res)=>{
     try {
 
         const id = req.user._id;
-
-        await userModel.findByIdAndUpdate(id,req.body,{
+        
+        await userModel.findByIdAndUpdate(id,{$set:req.body},{
             new:true,
             runValidators: true
         });
 
-        res.status(204).json({
+        res.status(200).json({
             status:"Success",
             message:"User Updated Successfuly",
         })

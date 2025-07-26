@@ -37,10 +37,13 @@ const userSchema = new Schema({
         //     message:"password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number"
         // }
     },
+    profilePic:{
+        type:String,
+        default:''
+    },
     gender:{
         type:String,
         enum:["male","female"],
-        // requierd:[true,'Gender Is required']
     },
     role:{
         type:String,

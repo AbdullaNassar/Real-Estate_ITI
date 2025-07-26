@@ -13,6 +13,7 @@ import {
 import { login, signUp } from '../controllers/authControllers.js';
 import { isUserLoggedIn } from '../middlewares/authentication.middleware.js';
 import { userPermission } from '../middlewares/authorization.middleware.js';
+import upload, { processAndUploadImages } from '../middlewares/uploadImage.middleware.js';
 
 const router = express.Router();
 
@@ -47,7 +48,12 @@ router
 
 router
     .route('/')
-    .patch(isUserLoggedIn,updateUser)
+    .patch(
+        isUserLoggedIn,
+        upload.single('profilePic'),
+        processAndUploadImages('profilePictures'),
+        updateUser
+    )
     .delete(isUserLoggedIn,deleteUser);
 
 router

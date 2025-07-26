@@ -26,7 +26,7 @@ router
     .post(
         userPermission('host'),
         upload.array('photos',5),
-        processAndUploadImages,
+        processAndUploadImages('listings'),
         createList
     )
 
