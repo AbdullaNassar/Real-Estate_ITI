@@ -333,3 +333,10 @@ export const changePassword = async (req, res) => {
     });
   }
 };
+
+export const getUserInfo = async (req, res) => {
+  const { _id: id, userName, email, role, isVerified } = req.user;
+  res.status(200).json({
+    user: { id, userName, email, role, isVerified },
+  });
+};

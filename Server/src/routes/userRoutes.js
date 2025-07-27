@@ -9,6 +9,7 @@ import {
   resetPassword,
   updateUser,
   verifyOTP,
+  getUserInfo,
 } from "../controllers/userControllers.js";
 import { login, signUp } from "../controllers/authControllers.js";
 import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
@@ -36,8 +37,10 @@ router
   .get(isUserLoggedIn, userPermission("admin"), getAllUsers)
   .delete(isUserLoggedIn, userPermission("admin"), deleteAllUsers);
 
+router.get("/me", isUserLoggedIn, getUserInfo);
 router
   .route("/")
+
   .patch(
     isUserLoggedIn,
     upload.single("profilePic"),

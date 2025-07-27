@@ -123,10 +123,17 @@ export const login = async (req, res) => {
 
     const token = generateToken(user._id, user.userName, user.role);
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production",
+      // sameSite: "Strict",
+      // maxAge: 24 * 60 * 60 * 1000,
+    });
     return res.status(200).json({
       status: "Success",
       message: "User Logged In Successfully",
       token: token,
+      user,
     });
   } catch (error) {
     return res.status(500).json({

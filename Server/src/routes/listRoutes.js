@@ -16,7 +16,7 @@ import { userPermission } from "../middlewares/authorization.middleware.js";
 
 const router = express.Router();
 
-router.route("/").get(readLists);
+router.route("/").get(isUserLoggedIn, readLists);
 
 router.route("/search").get(searchLists);
 

@@ -11,6 +11,7 @@ import ratingRouter from "./src/routes/ratingRoutes.js";
 import categoryRouter from "./src/routes/categoryRoutes.js";
 import amenityRouter from "./src/routes/amenityRoutes.js";
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -34,6 +35,7 @@ swaggerDocs(app);
 
 //general middlewares
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(cors());
 
