@@ -7,19 +7,17 @@ import mongoose from "mongoose";
 import userRouter from "./src/routes/userRoutes.js";
 import listRouter from "./src/routes/listRoutes.js";
 import bookingRouter from "./src/routes/bookingRoutes.js";
-import ratingRouter from './src/routes/ratingRoutes.js';
-import categoryRouter from './src/routes/categoryRoutes.js';
-import amenityRouter from './src/routes/amenityRoutes.js';
+import ratingRouter from "./src/routes/ratingRoutes.js";
+import categoryRouter from "./src/routes/categoryRoutes.js";
+import amenityRouter from "./src/routes/amenityRoutes.js";
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
-const port = process.env.PORT;
 
 // connect to database
 const DB_LOCAL = process.env.DB_LOCAL;
 const DB = process.env.DB;
-console.log(DB);
 mongoose
   // .connect(DB)
   .connect(DB_LOCAL)
@@ -47,11 +45,12 @@ app.use("/api/v1/ratings", ratingRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/amenities", amenityRouter);
 
-
 //server
+
+const PORT = process.env.PORT;
 app
-  .listen(port, () => {
-    console.log("listining to server...");
+  .listen(PORT, () => {
+    console.log(`listining to server on port ${PORT}...`);
   })
   .on("error", (error) => {
     console.log("Error while starting server: ", error);
