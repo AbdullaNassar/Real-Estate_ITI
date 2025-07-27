@@ -15,3 +15,8 @@ export async function getCurrentUser() {
     }
   }
 }
+
+export async function logout() {
+  const res = await axiosInstance.post("/users/logout"); // or /auth/logout
+  return res.data;
+}

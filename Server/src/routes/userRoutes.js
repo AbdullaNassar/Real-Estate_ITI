@@ -11,7 +11,7 @@ import {
   verifyOTP,
   getUserInfo,
 } from "../controllers/userControllers.js";
-import { login, signUp } from "../controllers/authControllers.js";
+import { login, logout, signUp } from "../controllers/authControllers.js";
 import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
 import { userPermission } from "../middlewares/authorization.middleware.js";
 import upload, {
@@ -23,6 +23,8 @@ const router = express.Router();
 router.route("/login").post(login);
 
 router.route("/signup").post(signUp);
+
+router.route("/logout").post(logout);
 
 router.route("/verify-otp").post(verifyOTP);
 
