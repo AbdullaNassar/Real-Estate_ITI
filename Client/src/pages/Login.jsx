@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Header from "../ui/Header";
+import { useDispatch } from "react-redux";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,15 +14,17 @@ export default function Login() {
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
 
+  const dispatch = useDispatch();
+
   function handleLogin(value) {
     SetIsLoading(true);
-    console.log(value);
     axios
-      .post("http://localhost:8000/api/v1/users/login", value)
+      .post("http://localhost:8000/api/v1/users/login", value, {
+        withCredentials: true,
+      })
       .then((res) => {
-        console.log("login success", res);
         toast.success("login successful");
-        navigate("/profile");
+        navigate("/");
       })
       .catch((err) => {
         SetErrMessage(err.response.data.message);
@@ -74,12 +77,12 @@ export default function Login() {
   });
 
   return (
-    <>
+    <div className="bg-gray-100">
       <Header />
-      <div className="flex justify-center items-center min-h-screen p-4 bg-gray-50">
+      <div className="flex justify-center items-center min-h-screen p-4 bg-gray-100">
         <form
           onSubmit={loginForm.handleSubmit}
-          className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-white shadow-2xl rounded-2xl p-8 sm:px-10 sm:py-10"
+          className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-gray-150 shadow-2xl rounded-2xl p-8 sm:px-10 sm:py-10"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
             Log In
@@ -104,7 +107,9 @@ export default function Login() {
             />
           </div>
           {loginForm.errors.email && loginForm.touched.email ? (
-            <p className="text-red-400 mb-2 text-sm sm:text-base">{loginForm.errors.email}</p>
+            <p className="text-red-400 mb-2 text-sm sm:text-base">
+              {loginForm.errors.email}
+            </p>
           ) : (
             ""
           )}
@@ -133,7 +138,9 @@ export default function Login() {
             </span>
           </div>
           {loginForm.errors.password && loginForm.touched.password ? (
-            <p className="text-red-400 mb-2 text-sm sm:text-base">{loginForm.errors.password}</p>
+            <p className="text-red-400 mb-2 text-sm sm:text-base">
+              {loginForm.errors.password}
+            </p>
           ) : (
             ""
           )}
@@ -172,6 +179,6 @@ export default function Login() {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }

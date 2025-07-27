@@ -11,17 +11,19 @@ import Profile from "./pages/Profile";
 import Booking from "./pages/Booking";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
-import ThemeProvider from "./contexts/ThemeContext";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import VerifyOtp from "./pages/VerifyOtp";
+import { store } from "./store";
+import { Provider } from "react-redux";
+
 const queryClient = new QueryClient();
 function App() {
   return (
     <>
-      <ThemeProvider>
+      <Provider store={store}>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools
             initialIsOpen={false}
@@ -65,7 +67,7 @@ function App() {
             }}
           />
         </QueryClientProvider>
-      </ThemeProvider>
+      </Provider>
     </>
   );
 }

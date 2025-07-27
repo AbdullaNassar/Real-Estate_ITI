@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import * as YUP from "yup";
 import { useNavigate } from "react-router-dom";
-import { FaSpinner,FaEye ,FaEyeSlash } from "react-icons/fa";
+import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Header from "../ui/Header";
 
@@ -13,7 +13,6 @@ export default function Signup() {
   const navigate = useNavigate();
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
- 
 
   function handleRegister(value) {
     SetIsLoading(true);
@@ -24,7 +23,7 @@ export default function Signup() {
       .then((res) => {
         console.log("signup success", res);
         toast.success("Signup successful");
-        navigate("/verifyOtp",{ state: { email: payload.email } });
+        navigate("/verifyOtp", { state: { email: payload.email } });
       })
       .catch((err) => {
         SetErrMessage(err.response.data.message);
@@ -77,12 +76,12 @@ export default function Signup() {
   });
 
   return (
-    <>
-    <Header/>
+    <div className="bg-gray-100">
+      <Header />
       <div className="flex justify-center items-center min-h-screen p-4 sm:px-6 lg:px-8 bg-gray-50">
         <form
           onSubmit={registerForm.handleSubmit}
-          className="w-full sm:max-w-md max-w-md bg-white shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8"
+          className="w-full sm:max-w-md max-w-md bg-gray-100 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
             Sign Up
@@ -147,16 +146,16 @@ export default function Signup() {
               onChange={registerForm.handleChange}
               onBlur={registerForm.handleBlur}
               value={registerForm.values.password}
-              type={showPassword?"text":"password"}
+              type={showPassword ? "text" : "password"}
               id="password"
               placeholder="Enter your password"
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
             <span
-            onClick={()=>setShowPassword(!showPassword)}
-            className="absolute right-3 top-[45px] text-gray-500 cursor-pointer" 
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
             >
-              {showPassword?<FaEyeSlash /> : <FaEye />}
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
           {registerForm.errors.password && registerForm.touched.password ? (
@@ -176,16 +175,16 @@ export default function Signup() {
               onChange={registerForm.handleChange}
               onBlur={registerForm.handleBlur}
               value={registerForm.values.confirmPassword}
-              type={showConfirmPassword ?"text":"password"}
+              type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
               placeholder="Confirm password"
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
-            onClick={()=>setShowConfirmPassword(!showConfirmPassword )}
-            className="absolute right-3 top-[45px] text-gray-500 cursor-pointer" 
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
             >
-              {showConfirmPassword ?<FaEyeSlash /> : <FaEye />}
+              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
           {registerForm.errors.confirmPassword &&
@@ -260,17 +259,18 @@ export default function Signup() {
             </button>
           </div>
           <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-           Already have an account ?{" "}
-            <button onClick={()=>navigate("/login")} className="text-blue-600 hover:underline font-medium">
-              Log In
-            </button>
-            
-          </p>
-        </div>
-          
+            <p className="text-sm text-gray-600">
+              Already have an account ?{" "}
+              <button
+                onClick={() => navigate("/login")}
+                className="text-blue-600 hover:underline font-medium"
+              >
+                Log In
+              </button>
+            </p>
+          </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }

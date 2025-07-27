@@ -125,9 +125,9 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      // secure: process.env.NODE_ENV === "production",
-      // sameSite: "Strict",
-      // maxAge: 24 * 60 * 60 * 1000,
+      secure: false, // only secure in prod
+      sameSite: "Lax", // or "None" if you're testing cross-site (rarely needed in localhost)
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
     });
     return res.status(200).json({
       status: "Success",

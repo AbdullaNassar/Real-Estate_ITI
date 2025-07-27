@@ -1,9 +1,95 @@
 @import "tailwindcss";
+/* src/index.css or src/App.css */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-primary-500: #0d91f2;
-  --color-primary-600: #0c83da;
-  --color-primary-700: #0a74c2;
-  --color-primary-800: #0966a9;
-  --color-primary-900: #085791;
-  --color-primary-950: #031d30;
+  --color-primary: #166534; /* Forest green, softer than original */
+  --color-muted: #e5e5e5; /* Light gray for subtle elements */
+  --color-tertiary: #94a3b8; /* Slate blue-gray, Notion-like */
+  --color-surface: #ffffff; /* Pure white for surfaces */
+  --color-accent: #64748b; /* Grayscale accent with bluish tint */
+  --color-secondary: #dcfce7; /* Very light green for highlights */
+  --color-content: #0f172a; /* Almost black, but softer */
+  --color-background: #f8fafc; /* Off-white background, Notion-like */
+  --color-gray-0: #fff;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  --color-blue-100: #e0f2fe;
+  --color-blue-700: #0369a1;
+  --color-green-100: #dcfce7;
+  --color-green-700: #15803d;
+  --color-yellow-100: #fef9c3;
+  --color-yellow-700: #a16207;
+  --color-silver-100: #e5e7eb;
+  --color-silver-700: #374151;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-700: #4338ca;
+
+  --color-red-100: #fee2e2;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+
+  --backdrop-color: rgba(255, 255, 255, 0.1);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
+
+  --image-grayscale: 0;
+  --image-opacity: 100%;
+}
+
+.dark {
+  --color-primary: #4ade80; /* Brighter green for dark mode */
+  --color-muted: #334155; /* Muted slate color */
+  --color-tertiary: #64748b; /* Medium gray with blue tint */
+  --color-surface: #1e293b; /* Dark blue-gray for surfaces */
+  --color-accent: #94a3b8; /* Medium-light gray accent */
+  --color-secondary: #064e3b; /* Dark teal-green */
+  --color-content: #f1f5f9; /* Off-white text */
+  --color-background: #0f172a; /* Very dark blue-gray background */
+  --color-gray-0: #18212f;
+  --color-gray-50: #111827;
+  --color-gray-100: #1f2937;
+  --color-gray-200: #374151;
+  --color-gray-300: #4b5563;
+  --color-gray-400: #6b7280;
+  --color-gray-500: #9ca3af;
+  --color-gray-600: #d1d5db;
+  --color-gray-700: #e5e7eb;
+  --color-gray-800: #f3f4f6;
+  --color-gray-900: #f9fafb;
+
+  --color-blue-100: #075985;
+  --color-blue-700: #e0f2fe;
+  --color-green-100: #166534;
+  --color-green-700: #dcfce7;
+  --color-yellow-100: #854d0e;
+  --color-yellow-700: #fef9c3;
+  --color-silver-100: #374151;
+  --color-silver-700: #f3f4f6;
+  --color-indigo-100: #3730a3;
+  --color-indigo-700: #e0e7ff;
+
+  --color-red-100: #fee2e2;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+
+  --backdrop-color: rgba(0, 0, 0, 0.3);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.4);
+
+  --image-grayscale: 10%;
+  --image-opacity: 90%;
 }
