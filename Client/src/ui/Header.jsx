@@ -6,6 +6,8 @@ import { CiLight } from "react-icons/ci";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../features/auth/useUser";
 import { useTheme } from "../features/theme/useTheme";
+import { useLogout } from "../features/auth/useLogout";
+import { validateYupSchema } from "formik";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export default function Header() {
   const { theme, toggleTheme } = useTheme();
   console.log(theme);
 
+  const { isPending: isLogout, logout } = useLogout();
   const { isLoading, error, user } = useUser();
   if (isLoading) return <h1>loading...</h1>;
   if (error) return <h1>error{error.message}</h1>;
@@ -52,8 +55,15 @@ export default function Header() {
           >
             {theme == "light" ? <CiDark /> : <CiLight />}
           </button>
-          {user && (
-            <button className="size-8 rounded-full bg-gray-200 text-gray-600 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all ">
+          {user && !isAuthPage && (
+            <button
+              disabled={isLogout}
+              onClick={() => {
+                navigate("/login");
+                logout();
+              }}
+              className="size-8 rounded-full bg-gray-200 text-gray-600 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all "
+            >
               <CiLogin />
             </button>
           )}
