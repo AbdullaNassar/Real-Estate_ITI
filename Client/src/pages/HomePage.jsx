@@ -1,6 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useUser } from "../features/auth/useUser";
+import Hero from "../component/Hero";
+import ListsContainer from "../component/ListsContainer";
 
 export default function HomePage() {
   let { error, isLoading, user: curUser } = useUser();
@@ -10,5 +12,10 @@ export default function HomePage() {
   console.log("here", curUser);
   curUser = curUser?.user;
 
-  return <div>Hello,{curUser?.userName}</div>;
+  return (
+    <div className="bg-gray-100">
+      <Hero />
+      <ListsContainer />
+    </div>
+  );
 }

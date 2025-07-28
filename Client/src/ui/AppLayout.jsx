@@ -3,9 +3,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 export default function AppLayout() {
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] max-w-[1600px] bg-gray-100 text-gray-900">
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] max-w-[1600px] mx-auto bg-gray-100 text-gray-900">
       <Header />
-      <main className="mx-4 md:mx-24">
+      <main className="mx-4 md:mx-36">
         <Outlet />
       </main>
       <Footer />
