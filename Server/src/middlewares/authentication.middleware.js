@@ -21,7 +21,7 @@ export const isUserLoggedIn = async (req,res,next)=>{
             })
         }
 
-        const payLoad = jwt.verify(token,process.env.JWT_SECRET);        
+        const payLoad = jwt.verify(token,process.env.JWT_SECRET);    
 
         const user = await userModel.findById(payLoad.id);
         
@@ -30,6 +30,18 @@ export const isUserLoggedIn = async (req,res,next)=>{
                 status:"Failed",
                 message:"User Not Found"
             })
+        }
+
+        if (user.passwordChangedAt) {
+
+            const passwordChangedTimestamp = parseInt(user.passwordChangedAt.getTime() / 1000, 10);
+            if (payLoad.iat < passwordChangedTimestamp) {
+
+                return res.status(401).json({
+                status: 'Failed',
+                message: 'User recently changed password! Please log in again.',
+                });
+            }
         }
 
         req.user = user;
