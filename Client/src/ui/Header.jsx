@@ -84,6 +84,11 @@ export default function Header() {
             login
           </Link>
         )}
+        {!isAuthPage && user && (
+          <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
+            <img className="w-3/4" src="./imgs/user.svg" alt="" />
+          </div>
+        )}
       </div>
     </header>
   );
