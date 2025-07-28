@@ -31,6 +31,34 @@ export const getAllUsers = async (req,res)=>{
     }
 }
 
+export const getUserData = async (req,res)=>{  
+    try {
+
+        const user = await userModel.findOne({_id:req.user._id}).select('-password -role -__v -_id');
+        
+        if(!user){
+
+            return res.status(404).json({
+                status:"Failed",
+                message:"No Users Found"
+            })
+        }
+
+        res.status(200).json({
+            status:"Success",
+            data:user
+        })
+
+    } catch (error) {
+
+        res.status(500).json({
+            status:"Failed",
+            mesage:"Internal server error",
+            error:error.message
+        })
+    }
+}
+
 export const updateUser =async (req,res)=>{
     try {
 

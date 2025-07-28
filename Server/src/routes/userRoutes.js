@@ -4,6 +4,7 @@ import {
             deleteAllUsers,
             deleteUser,
             getAllUsers,
+            getUserData,
             requestPasswordReset,
             resendOTP,
             resetPassword,
@@ -45,6 +46,10 @@ router
     .route('/all')
     .get(isUserLoggedIn,userPermission('admin'),getAllUsers)
     .delete(isUserLoggedIn,userPermission('admin'),deleteAllUsers);
+
+router
+    .route('/me')
+    .get(isUserLoggedIn,getUserData);
 
 router
     .route('/')

@@ -123,6 +123,39 @@ const swaggerDefinition = {
             },
         },
         },
+        '/users/me': {
+            get: {
+                summary: 'Get logged-in user data',
+                description: 'Returns data of the currently authenticated user',
+                security: [{ bearerAuth: [] }],
+                tags: ['Users'],
+                responses: {
+                    200: {
+                        description: 'User data retrieved successfully',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        status: { type: 'string' },
+                                        data: {
+                                            type: 'object',
+                                            example: {
+                                                name: 'John Doe',
+                                                email: 'john@example.com'
+                                                // other user fields except password, _id, role, __v
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    404: { description: 'No user found' },
+                    500: { description: 'Internal server error' },
+                },
+            },
+        },
         '/users': {
         patch: {
             summary: 'Update logged-in user profile',

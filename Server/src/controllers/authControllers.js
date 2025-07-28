@@ -111,7 +111,7 @@ export const login = async (req,res)=>{
             });
         }
 
-        if(user.phoneNumber){
+        if(user.phoneNumber !=='' ){
             
             user.phoneNumber = Crypto.AES.decrypt(user.phoneNumber,process.env.USER_PASSWORD_KEY).toString(Crypto.enc.Utf8);
             await user.save();
