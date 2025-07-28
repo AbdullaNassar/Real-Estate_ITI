@@ -321,7 +321,7 @@ export const changePassword = async (req, res) => {
 
     await user.save();
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Password Changed Successfuly",
     });

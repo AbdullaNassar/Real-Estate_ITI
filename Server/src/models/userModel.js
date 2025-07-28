@@ -87,6 +87,7 @@ const userSchema = new Schema(
     otpExpiresAt: Date,
     resetPasswordOTP: String,
     resetPasswordOTPExpires: Date,
+    passwordChangedAt:Date
   },
   { timestamps: true }
 );
@@ -95,6 +96,7 @@ userSchema.pre("save", async function (next) {
   try {
     if (this.isModified("password")) {
       this.password = bcrypt.hashSync(this.password, +process.env.HASHING_SALT);
+      this.passwordChangedAt = Date.now() - 1000;
     }
 
     if (this.isModified("phoneNumber") && this.phoneNumber) {

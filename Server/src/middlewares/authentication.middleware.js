@@ -32,6 +32,18 @@ export const isUserLoggedIn = async (req, res, next) => {
       });
     }
 
+    if (user.passwordChangedAt) {
+
+      const passwordChangedTimestamp = parseInt(user.passwordChangedAt.getTime() / 1000, 10);
+      if (payLoad.iat < passwordChangedTimestamp) {
+
+          return res.status(401).json({
+          status: 'Failed',
+          message: 'User recently changed password! Please log in again.',
+          });
+        }
+    }
+
     req.user = user;
     next();
   } catch (error) {
