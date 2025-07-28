@@ -145,12 +145,21 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("token", {
+  try {
+    res.clearCookie("token", {
     httpOnly: true,
     sameSite: "Lax",
     secure: process.env.NODE_ENV === "production",
   });
-  res
-    .status(200)
-    .json({ status: "success", message: "User logged out succssfully" });
+    res
+      .status(200)
+      .json({ status: "success", message: "User logged out succssfully" });
+  } catch (error) {
+    res.status(500).json({
+      status:"Failed",
+      message:"Internal Server Error",
+      error:error.message
+    })
+  }
+  
 };

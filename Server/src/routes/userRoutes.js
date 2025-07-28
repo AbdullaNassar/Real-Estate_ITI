@@ -39,7 +39,7 @@ router
   .get(isUserLoggedIn, userPermission("admin"), getAllUsers)
   .delete(isUserLoggedIn, userPermission("admin"), deleteAllUsers);
 
-router.get("/me", isUserLoggedIn, getUserInfo);
+router.route("/me").get(isUserLoggedIn, getUserInfo);
 router
   .route("/")
 

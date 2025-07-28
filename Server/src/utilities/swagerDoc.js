@@ -98,6 +98,7 @@ const swaggerDefinition = {
       post: {
         summary: "Log in a user",
         tags: ["Users"],
+        description: "Logs in a registered and verified user. Sets a token cookie and returns user data.",
         requestBody: {
           required: true,
           content: {
@@ -106,22 +107,149 @@ const swaggerDefinition = {
                 type: "object",
                 required: ["email", "password"],
                 properties: {
-                  email: { type: "string", example: "john@example.com" },
-                  password: { type: "string", example: "Password123!" },
-                },
-              },
-            },
-          },
+                  email: {
+                    type: "string",
+                    example: "john@example.com"
+                  },
+                  password: {
+                    type: "string",
+                    example: "Password123!"
+                  }
+                }
+              }
+            }
+          }
         },
         responses: {
-          200: { description: "User logged in successfully (JWT returned)" },
-          400: { description: "Missing email or password" },
-          401: { description: "Invalid email or password" },
-          403: { description: "Email not verified (OTP pending)" },
-          404: { description: "User not found" },
-          500: { description: "Internal server error" },
-        },
-      },
+          200: {
+            description: "User logged in successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Success" },
+                    message: { type: "string", example: "User Logged In Successfully" },
+                    token: { type: "string", example: "JWT_TOKEN_HERE" },
+                    user: {
+                      type: "object",
+                      properties: {
+                        _id: { type: "string", example: "64a31e6aeb891f2a5e271f5c" },
+                        userName: { type: "string", example: "john_doe" },
+                        email: { type: "string", example: "john@example.com" },
+                        role: { type: "string", example: "user" },
+                        phoneNumber: { type: "string", example: "01012345678" },
+                        isVerified: { type: "boolean", example: true }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          400: {
+            description: "Missing or invalid credentials",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Failed" },
+                    message: { type: "string", example: "Invalid Email Or Password" }
+                  }
+                }
+              }
+            }
+          },
+          403: {
+            description: "Email not verified",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Failed" },
+                    message: {
+                      type: "string",
+                      example: "Please verify your email via OTP first"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          404: {
+            description: "User not found",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "failed" },
+                    message: {
+                      type: "string",
+                      example: "User Must Register First"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          500: {
+            description: "Internal server error",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "failed" },
+                    message: { type: "string", example: "internal Server Error" },
+                    error: { type: "string", example: "Some error message" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      get: {
+        summary: "Log out a user",
+        tags: ["Users"],
+        description: "Clears the authentication token cookie and logs out the user.",
+        responses: {
+          200: {
+            description: "User logged out successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "success" },
+                    message: { type: "string", example: "User logged out succssfully" }
+                  }
+                }
+              }
+            }
+          },
+          500: {
+            description: "Internal server error",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Failed" },
+                    message: { type: "string", example: "Internal Server Error" },
+                    error: { type: "string", example: "Some error message" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/users/all": {
       get: {
@@ -143,6 +271,39 @@ const swaggerDefinition = {
           500: { description: "Internal server error" },
         },
       },
+    },
+    '/users/me': {
+            get: {
+                summary: 'Get logged-in user data',
+                description: 'Returns data of the currently authenticated user',
+                security: [{ bearerAuth: [] }],
+                tags: ['Users'],
+                responses: {
+                    200: {
+                        description: 'User data retrieved successfully',
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        status: { type: 'string' },
+                                        data: {
+                                            type: 'object',
+                                            example: {
+                                                name: 'John Doe',
+                                                email: 'john@example.com'
+                                                // other user fields except password, _id, role, __v
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    404: { description: 'No user found' },
+                    500: { description: 'Internal server error' },
+                },
+            },
     },
     "/users": {
       patch: {
