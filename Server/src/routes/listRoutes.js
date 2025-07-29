@@ -38,6 +38,6 @@ router
   .patch(userPermission("admin", "host"), updateList)
   .delete(userPermission("admin", "host"), deleteList);
 
-router.route("/approved/:id").patch(approvedListing);
+router.route("/approved/:id").patch(userPermission('admin'),approvedListing);
 
 export default router;

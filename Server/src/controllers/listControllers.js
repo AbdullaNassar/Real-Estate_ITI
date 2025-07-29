@@ -167,7 +167,7 @@ export const updateList = async (req, res) => {
       runValidators: true,
     });
 
-    res.status(204).json({
+    res.status(200).json({
       status: "Success",
       message: "Listing Updated Successfuly",
     });
@@ -211,7 +211,7 @@ export const deleteList = async (req, res) => {
 
     await listModel.deleteOne({ _id: id });
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "List Deleted",
     });
@@ -287,7 +287,7 @@ export const approvedListing = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Listing Approved Successfuly",
     });

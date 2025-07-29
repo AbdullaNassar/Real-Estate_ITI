@@ -123,7 +123,7 @@ export const deleteAmenity = async (req, res) => {
 
     await amenityModel.deleteOne({ _id: id });
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Amenity Deleted Successfuly",
     });

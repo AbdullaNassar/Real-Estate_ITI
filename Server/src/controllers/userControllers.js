@@ -61,7 +61,7 @@ export const deleteUser = async (req, res) => {
     const id = req.user._id;
     await userModel.deleteOne({ _id: id });
 
-    res.status(204).json({
+    res.status(200).json({
       status: "Success",
       message: "User Deleted Successfuly",
     });
@@ -76,9 +76,9 @@ export const deleteUser = async (req, res) => {
 
 export const deleteAllUsers = async (req, res) => {
   try {
-    const users = await userModel.deleteMany({ role: { $ne: "admin" } });
+    await userModel.deleteMany({ role: { $ne: "admin" } });
 
-    res.status(204).json({
+    res.status(200).json({
       status: "Success",
       message: "All Users Deleted Successfuly",
     });
@@ -130,7 +130,7 @@ export const verifyOTP = async (req, res) => {
     user.otpExpiresAt = undefined;
     await user.save();
 
-    res.status(204).json({
+    res.status(200).json({
       status: "Success",
       message: "Email verified successfully",
     });
@@ -268,7 +268,7 @@ export const resetPassword = async (req, res) => {
     user.resetPasswordOTPExpires = undefined;
     await user.save();
 
-    res.status(204).json({
+    res.status(200).json({
       status: "Success",
       message: "Password reset Successfully",
     });
@@ -335,8 +335,16 @@ export const changePassword = async (req, res) => {
 };
 
 export const getUserInfo = async (req, res) => {
-  const { _id: id, userName, email, role, isVerified } = req.user;
-  res.status(200).json({
-    user: { id, userName, email, role, isVerified },
-  });
+  try {
+    const { _id: id, userName, email, role, isVerified , profilePic } = req.user;
+    res.status(200).json({
+      user: { id, userName, email, role, isVerified ,profilePic },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status:"Failed",
+      message:"Internal Server Error",
+      error:error.message
+    })
+  }
 };

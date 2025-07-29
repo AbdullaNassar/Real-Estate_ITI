@@ -116,7 +116,7 @@ export const updateBooking = async (req, res) => {
 
     await booking.save();
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Booking is Up-To-Date",
     });
@@ -157,7 +157,7 @@ export const deleteBooking = async (req, res) => {
 
     await bookingModel.deleteOne({ _id: id });
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Booking Deleted Successfuly",
     });

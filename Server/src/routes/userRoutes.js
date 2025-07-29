@@ -40,6 +40,7 @@ router
   .delete(isUserLoggedIn, userPermission("admin"), deleteAllUsers);
 
 router.route("/me").get(isUserLoggedIn, getUserInfo);
+
 router
   .route("/")
 

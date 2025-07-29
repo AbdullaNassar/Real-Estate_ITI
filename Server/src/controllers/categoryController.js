@@ -78,7 +78,7 @@ export const updateCategory = async (req, res) => {
       { new: true, runValidators: true }
     );
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Category Updated Successfuly",
     });
@@ -112,7 +112,7 @@ export const deleteCategory = async (req, res) => {
 
     await categoryModel.deleteOne({ _id: id });
 
-    return res.status(204).json({
+    return res.status(200).json({
       status: "Success",
       message: "Category Deleted Successfuly",
     });
