@@ -3,7 +3,7 @@ import logoBlack from "/imgs/logoBlack.svg";
 import { TbWorld } from "react-icons/tb";
 import { CiDark, CiLogin } from "react-icons/ci";
 import { CiLight } from "react-icons/ci";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../features/auth/useUser";
 import { useTheme } from "../features/theme/useTheme";
 import { useLogout } from "../features/auth/useLogout";
@@ -35,16 +35,54 @@ export default function Header() {
           alt="Maskn Logo"
         />
       </button>
+
+      <ul className="space-x-6 flex">
+        <li>
+          <NavLink
+            to="/home"
+            className={({ isActive }) =>
+              `linkSide ${isActive ? "linkSide-active" : ""}
+              }`
+            }
+          >
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/listings"
+            className={({ isActive }) =>
+              `linkSide ${isActive ? "linkSide-active" : ""}
+              }`
+            }
+          >
+            Listings
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `linkSide ${isActive ? "linkSide-active" : ""}
+              }`
+            }
+          >
+            About
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              `linkSide ${isActive ? "linkSide-active" : ""}
+              }`
+            }
+          >
+            Contact us
+          </NavLink>
+        </li>
+      </ul>
       <div className="flex gap-4 items-center">
-        {!isAuthPage && (
-          <>
-            <input
-              className="bg-gray-200 rounded-full py-2 px-4 focus:outline-0 focus:ring focus:ring-blue-300 focus:ring-offset-2 text-gray-700"
-              type="search"
-              placeholder="Search..."
-            />
-          </>
-        )}
         <div className="flex gap-2">
           <button className="size-8 rounded-full text-gray-600 bg-gray-200 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all ">
             <TbWorld />
@@ -86,7 +124,7 @@ export default function Header() {
         )}
         {!isAuthPage && user && (
           <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
-            <img className="w-3/4" src="./imgs/user.svg" alt="" />
+            <img className="w-3/4" src="/imgs/user.svg" alt="" />
           </div>
         )}
       </div>
