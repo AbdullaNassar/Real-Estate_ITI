@@ -35,7 +35,10 @@ router
 
 router
   .route("/:id")
-  .patch(userPermission("admin", "host"), updateList)
+  .patch(
+    userPermission("admin", "host"),
+    upload.array("photos", 5),
+    updateList)
   .delete(userPermission("admin", "host"), deleteList);
 
 router.route("/approved/:id").patch(userPermission('admin'),approvedListing);

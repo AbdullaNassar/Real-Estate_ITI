@@ -8,7 +8,9 @@ export const createList = async (req, res) => {
       pricePerNight,
       categoryId,
       locationType,
-      location,
+      address,
+      longitude,
+      latitude, 
       amenitiesId,
       maxGustes,
       photos,
@@ -18,8 +20,9 @@ export const createList = async (req, res) => {
       !title ||
       !descrption ||
       !pricePerNight ||
-      !categoryId ||
-      !location ||
+      !longitude ||
+      !latitude ||
+      !address ||
       !maxGustes ||
       !photos
     ) {
@@ -36,7 +39,12 @@ export const createList = async (req, res) => {
       pricePerNight,
       categoryId,
       locationType,
-      location,
+      location:{
+        address,
+        coordinates:{
+          coordinates:[parseFloat(longitude),parseFloat(latitude)]
+        }
+      },
       amenitiesId,
       maxGustes,
       photos,
@@ -162,7 +170,51 @@ export const updateList = async (req, res) => {
       });
     }
 
-    await listModel.findByIdAndUpdate(id, req.body, {
+    if(!req.body){
+      return res.status(400).json({
+        status:"Failed",
+        message:"Body Is Empty"
+      })
+    }
+
+    const {
+      title,
+      descrption,
+      pricePerNight,
+      categoryId,
+      locationType,
+      address,
+      longitude,
+      latitude,
+      amenitiesId,
+      maxGustes,
+    } = req.body;
+
+    const updateData = {
+      ...(title && { title }),
+      ...(descrption && { descrption }),
+      ...(pricePerNight && { pricePerNight }),
+      ...(categoryId && { categoryId }),
+      ...(locationType && { locationType }),
+      ...(amenitiesId && { amenitiesId }),
+      ...(maxGustes && { maxGustes }),
+    };
+
+    if (address && longitude && latitude) {
+      updateData.location = {
+        address,
+        coordinates: {
+          type: 'Point',
+          coordinates: [parseFloat(longitude), parseFloat(latitude)],
+        },
+      };
+    }
+
+    if (req.files?.length > 0) {
+      updateData.photos = req.files.map((file) => file.path); // or cloudinary URLs
+    }
+
+    await listModel.findByIdAndUpdate(id,updateData, {
       new: true,
       runValidators: true,
     });

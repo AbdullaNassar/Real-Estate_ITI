@@ -36,9 +36,22 @@ const listSchema = new Schema(
       enum: ["seaside", "city", "mountain", "rural"],
       default: "city",
     },
-    location: {
+    location:{
+      address: {
       type: String,
-      required: [true, "Location is Required"],
+      required: [true, "Address is Required"],
+      },
+      coordinates: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          default: 'Point',
+        },
+        coordinates: {
+          type: [Number], // [longitude, latitude]
+          required: [true,'Location coordinates is Required'],
+        },
+      }
     },
     amenitiesId: {
       type: [mongoose.Types.ObjectId],

@@ -470,76 +470,114 @@ const swaggerDefinition = {
     },
     // ------------------- LISTS -------------------
     "/lists": {
-      post: {
-        summary: "Create a new list (host only)",
-        security: [{ bearerAuth: [] }],
-        tags: ["Lists"],
-        requestBody: {
-          required: true,
-          content: {
+      "post": {
+        "summary": "Create a new listing (host only)",
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Lists"],
+        "requestBody": {
+          "required": true,
+          "content": {
             "multipart/form-data": {
-              // <-- Important for file uploads
-              schema: {
-                type: "object",
-                properties: {
-                  title: { type: "string" },
-                  description: { type: "string" },
-                  pricePerNight: { type: "number" },
-                  location: { type: "string" },
-                  categoryId: { type: "string" },
-                  amenitiesId: {
-                    type: "array",
-                    items: { type: "string" },
-                    description: "Array of amenity IDs",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "descrption": { "type": "string" },
+                  "pricePerNight": { "type": "number" },
+                  "categoryId": { "type": "string" },
+                  "locationType": { "type": "string" },
+                  "address": {
+                    "type": "string",
+                    "description": "Street address or general location"
                   },
-                  width: {
-                    type: "integer",
-                    example: 800,
-                    description: "Image resize width",
+                  "longitude": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Longitude coordinate"
                   },
-                  height: {
-                    type: "integer",
-                    example: 600,
-                    description: "Image resize height",
+                  "latitude": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Latitude coordinate"
                   },
-                  quality: {
-                    type: "integer",
-                    example: 80,
-                    description: "Image quality (1-100)",
+                  "maxGustes": {
+                    "type": "integer",
+                    "description": "Maximum number of guests"
                   },
-                  images: {
-                    type: "array",
-                    items: {
-                      type: "string",
-                      format: "binary", // <-- Required for file uploads
+                  "amenitiesId": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "Array of amenity IDs"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
                     },
-                    description: "List of images to upload",
+                    "description": "List of images to upload"
                   },
+                  "width": {
+                    "type": "integer",
+                    "example": 800,
+                    "description": "Image resize width"
+                  },
+                  "height": {
+                    "type": "integer",
+                    "example": 600,
+                    "description": "Image resize height"
+                  },
+                  "quality": {
+                    "type": "integer",
+                    "example": 80,
+                    "description": "Image quality (1-100)"
+                  }
                 },
-                required: ["title", "pricePerNight", "location", "categoryId"],
-              },
-            },
+                "required": [
+                  "title",
+                  "descrption",
+                  "pricePerNight",
+                  "categoryId",
+                  "address",
+                  "longitude",
+                  "latitude",
+                  "maxGustes",
+                  "photos"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "List created successfully"
           },
-        },
-        responses: {
-          201: { description: "List created successfully" },
-          500: { description: "Internal server error" },
-        },
+          "400": {
+            "description": "Missing or invalid input"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
       },
-      get: {
-        summary: "Get all approved lists with filtering",
-        tags: ["Lists"],
-        parameters: [
-          { name: "sort", in: "query", schema: { type: "string" } },
-          { name: "page", in: "query", schema: { type: "integer" } },
-          { name: "limit", in: "query", schema: { type: "integer" } },
-          { name: "field", in: "query", schema: { type: "string" } },
+      "get": {
+        "summary": "Get all approved lists with filtering",
+        "tags": ["Lists"],
+        "parameters": [
+          { "name": "sort", "in": "query", "schema": { "type": "string" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          { "name": "field", "in": "query", "schema": { "type": "string" } }
         ],
-        responses: {
-          200: { description: "List of approved listings" },
-          500: { description: "Internal server error" },
-        },
-      },
+        "responses": {
+          "200": {
+            "description": "List of approved listings"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     },
     "/lists/{id}": {
       get: {
@@ -574,22 +612,55 @@ const swaggerDefinition = {
         requestBody: {
           required: true,
           content: {
-            "application/json": {
+            "multipart/form-data": {
               schema: {
                 type: "object",
                 properties: {
                   title: { type: "string" },
-                  description: { type: "string" },
+                  descrption: { type: "string" },
                   pricePerNight: { type: "number" },
-                  location: { type: "string" },
+                  categoryId: { type: "string" },
+                  locationType: { type: "string" },
+                  address: {
+                    type: "string",
+                    description: "Address of the listing",
+                  },
+                  longitude: {
+                    type: "number",
+                    format: "float",
+                    description: "Longitude for location",
+                  },
+                  latitude: {
+                    type: "number",
+                    format: "float",
+                    description: "Latitude for location",
+                  },
+                  maxGustes: {
+                    type: "integer",
+                    description: "Maximum guests allowed",
+                  },
+                  amenitiesId: {
+                    type: "array",
+                    items: { type: "string" },
+                    description: "Array of amenity IDs",
+                  },
+                  photos: {
+                    type: "array",
+                    items: {
+                      type: "string",
+                      format: "binary",
+                    },
+                    description: "Optional new photo uploads",
+                  },
                 },
               },
             },
           },
         },
         responses: {
-          200: { description: "List updated successfully" },
-          403: { description: "Cannot update this list" },
+          200: { description: "Listing updated successfully" },
+          400: { description: "Bad request or empty body" },
+          403: { description: "User not authorized to update this listing" },
           404: { description: "List not found" },
           500: { description: "Internal server error" },
         },
