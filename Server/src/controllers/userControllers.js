@@ -336,9 +336,9 @@ export const changePassword = async (req, res) => {
 
 export const getUserInfo = async (req, res) => {
   try {
-    const { _id: id, userName, email, role, isVerified , profilePic } = req.user;
+    const { _id: id, userName, email, role, isVerified, gender , profilePic ,dateOfBirth , phoneNumber , createdAt} = req.user;
     res.status(200).json({
-      user: { id, userName, email, role, isVerified ,profilePic },
+      user: { id, userName, email, role, isVerified ,profilePic , gender ,dateOfBirth ,phoneNumber , createdAt },
     });
   } catch (error) {
     res.status(500).json({
