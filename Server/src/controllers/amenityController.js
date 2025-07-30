@@ -2,7 +2,8 @@ import amenityModel from "../models/amenityModel.js";
 
 export const createAmenity = async (req, res) => {
   try {
-    const { name, icon } = req.body;
+    const { name } = req.body;
+    const icon = req.body.icon;
 
     if (!name) {
       return res.status(400).json({
@@ -10,6 +11,16 @@ export const createAmenity = async (req, res) => {
         message: "Amenity Name Is Required...!",
       });
     }
+
+    const isExisting = await amenityModel.findOne({name});
+    
+    if (isExisting) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "This Amenity Is Created Before",
+      });
+    }
+
     const amenity = await amenityModel.create({
       name,
       icon,
@@ -63,13 +74,6 @@ export const updateAmenity = async (req, res) => {
       return res.status(400).json({
         status: "Failed",
         message: "Id of Amenity Is Required",
-      });
-    }
-
-    if (!name) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Name Or Icon of Amenity Is Required",
       });
     }
 
