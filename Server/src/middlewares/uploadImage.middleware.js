@@ -28,9 +28,9 @@ export const processAndUploadImages = (options = {}) => {
       const files = req.files || (req.file ? [req.file] : []);
       if (!files || files.length === 0) return next();
 
-      const width = parseInt(req.body.width) || 800;
+      const width = parseInt(req.body.width) || 600;
       const height = parseInt(req.body.height) || 600;
-      const quality = parseInt(req.body.quality) || 80;
+      const quality = parseInt(req.body.quality) || 90;
 
       const uploadedUrls = [];
 

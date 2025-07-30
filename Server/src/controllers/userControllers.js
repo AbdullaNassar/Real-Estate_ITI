@@ -1,6 +1,7 @@
 import userModel from "../models/userModel.js";
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 import bcrypt from "bcryptjs";
+import Crypto from "crypto-js";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -116,8 +117,10 @@ export const verifyOTP = async (req, res) => {
       });
     }
 
-    const isOTPValid = user.otp === otp && user.otpExpiresAt > new Date();
+    const decryptUserOtp = Crypto.AES.decrypt(user.otp,process.env.USER_OTP_KEY).toString(Crypto.enc.Utf8);
 
+    const isOTPValid = (decryptUserOtp === otp) && (user.otpExpiresAt > new Date());
+    
     if (!isOTPValid) {
       return res.status(400).json({
         status: "Failed",
@@ -337,8 +340,14 @@ export const changePassword = async (req, res) => {
 export const getUserInfo = async (req, res) => {
   try {
     const { _id: id, userName, email, role, isVerified, gender , profilePic ,dateOfBirth , phoneNumber , createdAt} = req.user;
+
+    let decryptedPhone = '';
+    if(phoneNumber){
+      decryptedPhone = Crypto.AES.decrypt(phoneNumber,process.env.USER_PHONE_KEY).toString(Crypto.enc.Utf8);
+    }
+
     res.status(200).json({
-      user: { id, userName, email, role, isVerified ,profilePic , gender ,dateOfBirth ,phoneNumber , createdAt },
+      user: { id, userName, email, role, isVerified ,profilePic , gender ,dateOfBirth ,phoneNumber:decryptedPhone , createdAt },
     });
   } catch (error) {
     res.status(500).json({

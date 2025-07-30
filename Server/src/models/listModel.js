@@ -17,6 +17,10 @@ const listSchema = new Schema(
       type: String,
       required: [true, "Listing Description is required"],
     },
+    roomNumbers:{
+      type:Number,
+      default:1
+    },
     pricePerNight: {
       type: Number,
       required: [true, "Price Per Night is Required"],

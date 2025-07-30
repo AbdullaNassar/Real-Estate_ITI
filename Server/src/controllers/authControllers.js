@@ -52,6 +52,8 @@ export const signUp = async (req, res) => {
     const otp = Math.floor(10000 + Math.random() * 900000).toString();
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
+    const profilePic = 'https://res.cloudinary.com/dxfmw4nch/image/upload/v1753882410/profilePics/muxts6jedfnjupzdqzgf.jpg';
+
     const user = await userModel.create({
       userName,
       email,
@@ -60,6 +62,7 @@ export const signUp = async (req, res) => {
       role,
       dateOfBirth,
       phoneNumber,
+      profilePic,
       otp,
       otpExpiresAt,
     });
@@ -104,14 +107,6 @@ export const login = async (req, res) => {
         status: "Failed",
         message: "Invalid Eamil Or Password",
       });
-    }
-
-    if (user.phoneNumber) {
-      user.phoneNumber = Crypto.AES.decrypt(
-        user.phoneNumber,
-        process.env.USER_PASSWORD_KEY
-      ).toString(Crypto.enc.Utf8);
-      await user.save();
     }
 
     if (!user.isVerified) {

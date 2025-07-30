@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import Crypto from "crypto-js";
+
 const userSchema = new Schema(
   {
     userName: {
@@ -72,7 +73,6 @@ const userSchema = new Schema(
     },
     phoneNumber: {
       type: String,
-      sparse: true,
       // requierd:[true,'Phone Number is required'],
       // unique:[true,'This Number Registerd Before'],
       //Egyption Phone Number
@@ -102,7 +102,14 @@ userSchema.pre("save", async function (next) {
     if (this.isModified("phoneNumber") && this.phoneNumber) {
       this.phoneNumber = Crypto.AES.encrypt(
         this.phoneNumber,
-        process.env.USER_PASSWORD_KEY
+        process.env.USER_PHONE_KEY
+      ).toString();
+    }
+
+    if (this.isModified("otp") && this.otp) {
+      this.otp = Crypto.AES.encrypt(
+        this.otp,
+        process.env.USER_OTP_KEY
       ).toString();
     }
 
