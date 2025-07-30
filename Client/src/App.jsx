@@ -18,6 +18,8 @@ import Privacy from "./pages/Privacy";
 import VerifyOtp from "./pages/VerifyOtp";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import { ScrollToTop } from "./component/ScrollToTop";
+import AddList from "./pages/AddList";
 
 const queryClient = new QueryClient();
 function App() {
@@ -30,17 +32,19 @@ function App() {
             buttonPosition="bottom-left"
           />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route element={<AppLayout />}>
                 <Route index element={<Navigate replace to="home" />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/ListDetails" element={<ListingDetails />} />
+                <Route path="/ListDetails/:id" element={<ListingDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Booking" element={<Booking />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
+                <Route path="/addList" element={<AddList />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
