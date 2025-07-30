@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ratingSchema = mongoose.Schema(
+export const ratingSchema = mongoose.Schema(
   {
     guestId: {
       type: mongoose.Types.ObjectId,

@@ -6,7 +6,7 @@ export const guestRate = async (req, res) => {
   try {
     const { bookingId } = req.params;
 
-    if (bookingId) {
+    if (!bookingId) {
       return res.status(400).json({
         status: "Failed",
         message: "Booking Id Is Required",
@@ -64,16 +64,10 @@ export const guestRate = async (req, res) => {
       comment,
     });
 
-    const ratings = await ratingModel.find({ listingId: booking.listing });
-    const avgRating = ratings.reduce((sum, r) => {
-      return (sum + r.rating) / ratings.length;
-    }, 0);
+    const listing = await listModel.findById(booking.listing);
+    listing.reviews.push(newRating);
+    await listing.save();
 
-    await listModel.findByIdAndUpdate(
-      booking.listing,
-      { averageRating: avgRating },
-      { new: true, runValidators: true }
-    );
 
     return res.status(201).json({
       status: "Success",
@@ -128,3 +122,52 @@ export const getRatingsForListing = async (req, res) => {
     });
   }
 };
+
+export const removeExistingRating = async (req,res)=>{
+  try {
+
+    const { ratingId } = req.params;
+
+    if (!ratingId) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "Rating Id Is Required",
+      });
+    }
+
+    const rating = await ratingModel.findById(ratingId);
+
+    if (!rating) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "Rating Not Found",
+      });
+    }
+
+    const listing = await listModel.findById(rating.listingId);
+
+    if(!listing){
+      return res.status(404).json({
+        status: "Failed",
+        message: "Listing Not Found",
+      })
+    }
+
+    listing.reviews = listing.reviews.filter((r)=> r._id.toString() !== ratingId.toString() );
+    await listing.save();
+
+    await ratingModel.deleteOne({_id:ratingId});
+
+    return res.status(200).json({
+      status:"Success",
+      message:"Rating Deleted"
+    })
+
+  } catch (error) {
+    return res.status(500).json({
+      status:"Failed",
+      message:"Internal Server Error",
+      error:error.message
+    })
+  }
+}

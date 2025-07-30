@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { ratingSchema } from "./ratingModel.js";
 
 const listSchema = new Schema(
   {
@@ -55,10 +56,7 @@ const listSchema = new Schema(
         message: "Max 5 photos are allowed.",
       },
     },
-    averageRating: {
-      type: Number,
-      default: 0,
-    },
+    reviews: [ratingSchema],
     isApproved: {
       type: Boolean,
       default: false,
@@ -66,6 +64,18 @@ const listSchema = new Schema(
   },
   { timestamps: true }
 );
+
+listSchema.virtual('averageRating').get(function (){
+  if(this.reviews.length === 0) return 0;
+
+  const total = this.reviews.reduce((sum,review)=> sum + review.rating , 0);
+
+  return total / this.reviews.length;
+});
+
+listSchema.set('toObject', { virtuals: true });
+listSchema.set('toJSON', { virtuals: true });
+
 
 const listModel = mongoose.model("List", listSchema);
 export default listModel;
