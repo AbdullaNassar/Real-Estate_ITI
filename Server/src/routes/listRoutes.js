@@ -4,6 +4,7 @@ import {
   createList,
   deleteList,
   getListById,
+  getListingsByGovernorate,
   readLists,
   searchLists,
   updateList,
@@ -19,6 +20,10 @@ const router = express.Router();
 router.route("/").get(readLists);
 
 router.route("/search").get(searchLists);
+
+router
+    .route('/governorate/:governorate')
+    .get(getListingsByGovernorate);
 
 router.route("/:id").get(getListById);
 

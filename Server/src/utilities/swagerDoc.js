@@ -579,6 +579,46 @@ const swaggerDefinition = {
         }
       }
     },
+    "/lists/governorate/{governorate}": {
+      get: {
+        summary: "Get listings by governorate",
+        tags: ["Lists"],
+        parameters: [
+          {
+            name: "governorate",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+            description: "Name of the Egyptian governorate to filter listings by",
+            example: "Cairo"
+          }
+        ],
+        responses: {
+          200: {
+            description: "Listings retrieved successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Success" },
+                    results: { type: "integer", example: 5 },
+                    data: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/Listing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          404: { description: "No listings found for this governorate" },
+          500: { description: "Internal server error" }
+        }
+      }
+    },
     "/lists/{id}": {
       get: {
         summary: "Get list by ID",

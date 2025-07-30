@@ -11,6 +11,7 @@ export const createList = async (req, res) => {
       address,
       longitude,
       latitude, 
+      governorate,
       amenitiesId,
       maxGustes,
       photos,
@@ -24,7 +25,8 @@ export const createList = async (req, res) => {
       !latitude ||
       !address ||
       !maxGustes ||
-      !photos
+      !photos ||
+      !governorate
     ) {
       return res.status(400).json({
         status: "Failed",
@@ -45,6 +47,7 @@ export const createList = async (req, res) => {
           coordinates:[parseFloat(longitude),parseFloat(latitude)]
         }
       },
+      governorate,
       amenitiesId,
       maxGustes,
       photos,
@@ -140,6 +143,53 @@ export const getListById = async (req, res) => {
     });
   }
 };
+
+export const getListingsByGovernorate  = async (req,res) =>{
+  try {
+    const { governorate } = req.params;
+
+    const validGovernorates = [
+      "Cairo", "Giza", "Alexandria", "Qalyubia", "Port Said", "Suez",
+      "Dakahlia", "Sharqia", "Gharbia", "Monufia", "Beheira",
+      "Kafr El Sheikh", "Fayoum", "Beni Suef", "Minya", "Assiut",
+      "Sohag", "Qena", "Luxor", "Aswan", "Red Sea", "New Valley",
+      "Matrouh", "North Sinai", "South Sinai"
+    ];
+
+    if(!governorate){
+
+      return res.status(400).json({
+        status:"Failed",
+        message:"Governorate Is Required"
+      });
+    }
+
+    if(!validGovernorates.includes(governorate)){
+
+      return res.status(400).json({
+        status:"Failed",
+        message:"Invalid governorate name"
+      });
+    }
+
+    const listing = await listModel.find({governorate});
+
+    return res.status(200).json({
+      status:"Success",
+      results:listing.length,
+      data: listing
+    })
+
+
+
+  } catch (error) {
+    return res.status(500).json({
+      status:"Failed",
+      message:"Internal Server Error",
+      error:error.message
+    })
+  }
+}
 
 export const updateList = async (req, res) => {
   try {
@@ -278,8 +328,10 @@ export const deleteList = async (req, res) => {
 
 export const searchLists = async (req, res) => {
   try {
-    const { title, description, price, date, location, amenities } = req?.query;
-    const query = {};
+    const { title, description, price, date, location, amenities , governorate } = req?.query;
+    const query = {
+      isApproved:true
+    };
     if (title?.trim()) {
       query.title = { $regex: new RegExp(title, "i") };
     }
@@ -305,6 +357,10 @@ export const searchLists = async (req, res) => {
     if (amenities?.trim()) {
       query.amenities = { $regex: new RegExp(amenities, "i") };
     }
+
+    if (governorate?.trim()) {
+      query.governorate = { $regex: new RegExp(governorate, "i") };
+    }    
 
     const lists = await listModel.find(query);
 
