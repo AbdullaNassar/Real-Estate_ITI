@@ -3,9 +3,9 @@ import hero from "/imgs/hero.jpg";
 export default function Hero() {
   return (
     <div className="shadow-2xl relative bg-[url('imgs/hero.jpg')] bg-center bg-cover min-h-[80vh] w-full text-center">
-      <div class="absolute inset-0 bg-black/50 bg-opacity-50"></div>
-      <div class="absolute inset-0 flex items-center justify-center z-10 flex-col gap-6 md:p-8  p-4 lg:p-36">
-        <h1 class="text-stone-100 text-2xl md:text-4xl lg:text-5xl font-bold">
+      <div className="absolute inset-0 bg-black/50 bg-opacity-50"></div>
+      <div className="absolute inset-0 flex items-center justify-center z-10 flex-col gap-6 md:p-8  p-4 lg:p-36">
+        <h1 className="text-stone-100 text-2xl md:text-4xl lg:text-5xl font-bold">
           Find your perfect rental in Egypt
         </h1>
 
@@ -15,13 +15,13 @@ export default function Hero() {
           easy-to-use search tools.
         </h2>
 
-        <div class="flex w-full max-w-md gap-1 ">
+        <div className="flex w-full max-w-md gap-1 ">
           <input
             type="text"
             placeholder="Where to?"
-            class="flex-1 px-4 py-2 rounded-l-md border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="flex-1 px-4 py-2 rounded-l-md border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
           />
-          <button class="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-primary-hover hover:cursor-pointer transition-all">
+          <button className="bg-primary text-white px-4 py-2 rounded-r-md hover:bg-primary-hover hover:cursor-pointer transition-all">
             Search
           </button>
         </div>

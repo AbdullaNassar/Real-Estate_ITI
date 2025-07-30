@@ -20,6 +20,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 import { ScrollToTop } from "./component/ScrollToTop";
 import AddList from "./pages/AddList";
+import Lists from "./pages/Lists";
 
 const queryClient = new QueryClient();
 function App() {
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/addList" element={<AddList />} />
+                <Route path="/listings" element={<Lists />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />

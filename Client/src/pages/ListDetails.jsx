@@ -238,7 +238,7 @@ export default function ListingDetails() {
             <span className="text-gray-500">Total</span>
             <span className="font-semibold">$500</span>
           </div>
-          <button className="bg-primary mt-8 mb-4 py-2 text-gray-100 rounded-sm text-lg hover:bg-primary-hover hover:cursor-pointer transition-all">
+          <button className="bg-primary mt-8 mb-4 py-2 text-stone-100 rounded-sm text-lg hover:bg-primary-hover hover:cursor-pointer transition-all">
             Book Now
           </button>
         </div>

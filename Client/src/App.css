@@ -3,6 +3,16 @@
 /* @plugin "daisyui"; */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Hide number input arrows for all browsers */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
 @theme {
   --color-primary: #c69963; /* Forest green, softer than original */
   --color-primary-hover: #8b6b45;
@@ -95,4 +105,13 @@
 
   --image-grayscale: 10%;
   --image-opacity: 90%;
+}
+
+@layer components {
+  .linkSide {
+    @apply text-xl hover:text-primary;
+  }
+  .linkSide-active {
+    @apply text-primary border-b-2 pb-2 font-semibold;
+  }
 }

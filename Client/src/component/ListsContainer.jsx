@@ -7,7 +7,6 @@ export default function ListsContainer() {
       <ListsBox />
       <ListsBox />
       <ListsBox />
-      <ListsBox />
     </div>
   );
 }
