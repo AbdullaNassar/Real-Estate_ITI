@@ -73,15 +73,6 @@ const userSchema = new Schema(
     },
     phoneNumber: {
       type: String,
-      // requierd:[true,'Phone Number is required'],
-      // unique:[true,'This Number Registerd Before'],
-      //Egyption Phone Number
-      // validate:{
-      //     validator: (value)=>{
-      //         return /^01[0-2,5]\d{8}$/.test(value);
-      //     },
-      //     message:"Please enter a Valid Phone Number"
-      // }
     },
     otp: String,
     otpExpiresAt: Date,

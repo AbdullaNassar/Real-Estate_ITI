@@ -16,7 +16,7 @@ router.use(isUserLoggedIn);
 
 router
   .route("/guest")
-  .get(userPermission("admin", "guest"), getAllGuestBooking);
+  .get(userPermission("admin"), getAllGuestBooking);
 
 router
   .route("/host")
@@ -25,6 +25,9 @@ router
 router
   .route("/:listingId")
   .post(userPermission("admin", "guest"), createBooking)
+
+router
+  .route('/:bookingId')
   .get(userPermission("admin", "guest"), getBookingById)
   .patch(userPermission("admin", "guest"), updateBooking)
   .delete(userPermission("admin", "guest"), deleteBooking);

@@ -18,10 +18,10 @@ const app = express();
 
 // connect to database
 const DB_LOCAL = process.env.DB_LOCAL;
-const DB = process.env.DB;
+const DB_ATLAS = process.env.DB_ATLAS;
 mongoose
   // .connect(DB)
-  .connect(DB_LOCAL)
+  .connect(DB_ATLAS)
   .then(() => {
     console.log("DB Connected Successfully");
   })

@@ -50,7 +50,7 @@ export const signUp = async (req, res) => {
     }
 
     const otp = Math.floor(10000 + Math.random() * 900000).toString();
-    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);    
 
     const profilePic = 'https://res.cloudinary.com/dxfmw4nch/image/upload/v1753882410/profilePics/muxts6jedfnjupzdqzgf.jpg';
 

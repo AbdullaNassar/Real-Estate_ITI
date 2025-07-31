@@ -34,6 +34,13 @@ export const createList = async (req, res) => {
       });
     }
 
+    if(photos.length !==5){
+      return res.status(400).json({
+        status:"Failed",
+        message:`Listing Must have 5 Images you Exactly upload ${photos.length}`
+      })
+    }
+
     const list = await listModel.create({
       host: req.user._id,
       title,
@@ -189,7 +196,7 @@ export const getListingsByGovernorate  = async (req,res) =>{
       error:error.message
     })
   }
-}
+};
 
 export const updateList = async (req, res) => {
   try {

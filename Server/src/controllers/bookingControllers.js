@@ -110,25 +110,21 @@ export const createBooking = async (req, res) => {
       paymentMethod,
     });
 
-    // Create an array of dates between check-in and check-out
-    const bookedDatesUpdate = [];
-    for (let current = new Date(startDate); current <= endDate;) {
-      bookedDatesUpdate.push({
-        date: new Date(current),
-        bookingId: booking._id,
-        guestId: guest,
-        checkInDate: checkInDate,
-        checkOutDate: checkOutDate,
-        dayType: current.getTime() === checkInDate.getTime() ? 'check-in' :
-                current.getTime() === checkOutDate.getTime() ? 'check-out' : 'stay'
-      });
-      current = new Date(current.setDate(current.getDate() + 1));
-    }
+    // Create an object of dates between check-in and check-out
+    const current = new Date(checkInDate); // or use any specific day you want
 
-    // Update the listing with new dates
+    const bookedDate = {
+      date: current,
+      bookingId: booking._id,
+      guestId: guest,
+      checkInDate,
+      checkOutDate,
+      dayType: 'check-in' // or 'stay' or 'check-out'
+    };
+
     await listModel.findByIdAndUpdate(
       listingId,
-      { $push: { bookedDates: { $each: bookedDatesUpdate } } },
+      { $push: { bookedDates: bookedDate } },
       { new: true }
     );
 
@@ -148,16 +144,16 @@ export const createBooking = async (req, res) => {
 
 export const updateBooking = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { bookingId } = req.params;
 
-    if (!id) {
+    if (!bookingId) {
       return res.status(400).json({
         status: "Failed",
         message: "Booking Id Is Required",
       });
     }
 
-    const booking = await bookingModel.findById(id);
+    const booking = await bookingModel.findById(bookingId);
     if (!booking) {
       return res.status(404).json({
         status: "Failed",
@@ -174,9 +170,31 @@ export const updateBooking = async (req, res) => {
 
     const { checkIn, checkOut, paymentMethod } = req.body;
 
+    const listing = await listModel.findById(booking.listing);
+
+    if (!listing) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "Listing Not Found",
+      });
+    }
+
+    // Step 1: Remove old bookedDates linked to this booking
+    await listModel.findByIdAndUpdate(
+      listing._id,
+      {
+        $pull: {
+          bookedDates: { bookingId: booking._id }
+        }
+      }
+    );
+
+    // Step 2: Update booking fields
     if (checkIn && checkOut) {
-      const days =
-        (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+
+      const days = (end - start) / (1000 * 60 * 60 * 24);
       if (days <= 0) {
         return res.status(400).json({
           status: "Failed",
@@ -184,12 +202,40 @@ export const updateBooking = async (req, res) => {
         });
       }
 
-      const listing = await listModel.findById(booking.listing);
       booking.totalPrice = listing.pricePerNight * days;
       booking.checkIn = checkIn;
       booking.checkOut = checkOut;
+
+      // Step 3: Rebuild new bookedDates
+      const current = new Date(checkIn); // You can use any specific date here
+
+      const checkInDateObj = new Date(checkIn);
+      const checkOutDateObj = new Date(checkOut);
+
+      let dayType = 'stay';
+      if (current.getTime() === checkInDateObj.getTime()) {
+        dayType = 'check-in';
+      } else if (current.getTime() === checkOutDateObj.getTime()) {
+        dayType = 'check-out';
+      }
+
+      const bookedDate = {
+        date: current,
+        bookingId: booking._id,
+        guestId: booking.guest,
+        checkInDate:checkIn,
+        checkOutDate:checkOut,
+        dayType
+      };
+
+      await listModel.findByIdAndUpdate(
+        listing._id,
+        { $push: { bookedDates: bookedDate } }, // Pushes one object, not an array
+        { new: true }
+      );
     }
 
+    // Update payment method if provided
     if (paymentMethod) {
       booking.paymentMethod = paymentMethod;
     }
@@ -198,12 +244,12 @@ export const updateBooking = async (req, res) => {
 
     return res.status(200).json({
       status: "Success",
-      message: "Booking is Up-To-Date",
+      message: "Booking and listing dates updated successfully",
     });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",
-      message: "Internal Servrer Error",
+      message: "Internal Server Error",
       error: error.message,
     });
   }
@@ -211,46 +257,49 @@ export const updateBooking = async (req, res) => {
 
 export const deleteBooking = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { bookingId } = req.params;
 
-    if (!id) {
+    if (!bookingId) {
       return res.status(400).json({
         status: "Failed",
-        message: "Booking Id Is Required",
+        message: "Booking ID is required",
       });
     }
 
-    const booking = await bookingModel.findById(id);
+    const booking = await bookingModel.findById(bookingId);
     if (!booking) {
       return res.status(404).json({
         status: "Failed",
-        message: "Booking Not Found",
+        message: "Booking not found",
       });
     }
 
     if (booking.guest.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         status: "Failed",
-        message: "Can Not Delete This Booking",
+        message: "You are not allowed to delete this booking",
       });
     }
 
-    // Remove the booking
-    await bookingModel.deleteOne({ _id: id });
-
-    // Remove the booked dates from the listing
+    // Step 1: Remove related bookedDates from the listing
     await listModel.findByIdAndUpdate(
       booking.listing,
-      { $pull: { bookedDates: { bookingId: id } } },
-      { new: true }
+      {
+        $pull: {
+          bookedDates: { bookingId: booking._id }
+        }
+      }
     );
+
+    // Step 2: Delete the booking itself
+    await bookingModel.findByIdAndDelete(bookingId);
 
     return res.status(200).json({
       status: "Success",
-      message: "Booking Deleted Successfully",
+      message: "Booking and related dates removed successfully",
     });
   } catch (error) {
-    return rs.status(500).json({
+    return res.status(500).json({
       status: "Failed",
       message: "Internal Server Error",
       error: error.message,
@@ -261,8 +310,8 @@ export const deleteBooking = async (req, res) => {
 export const getAllGuestBooking = async (req, res) => {
   try {
     const bookings = await bookingModel
-      .find({ guest: req.user._id })
-      .populate("listing", "title location pricePerNight")
+      .find()
+      // .populate("listing", "title location pricePerNight")
       .sort({ createdAt: -1 });
 
     if (!bookings) {
@@ -274,8 +323,7 @@ export const getAllGuestBooking = async (req, res) => {
 
     return res.status(200).json({
       status: "Success",
-      results: bookings.length,
-      data: bookings,
+      data: bookings
     });
   } catch (error) {
     return res.status(500).json({
@@ -328,16 +376,16 @@ export const getAllHostListingBooked = async (req, res) => {
 
 export const getBookingById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { bookingId } = req.params;
 
-    if (!id) {
+    if (!bookingId) {
       return res.status(400).json({
         status: "Failed",
         message: "Booking Id Is Required",
       });
     }
 
-    const booking = await bookingModel.findById(id);
+    const booking = await bookingModel.findById(bookingId);
 
     if (!booking) {
       return res.status(404).json({
