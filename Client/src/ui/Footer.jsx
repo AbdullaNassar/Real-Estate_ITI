@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer className=" bg-gray-200  shadow-md mx-4 md:mx-24 text-gray-700 p-8   text-center">
       <ul className="flex justify-around mb-8  underline">
@@ -20,6 +21,13 @@ export default function Footer() {
       </ul>
 
       <h2>&copy; 2025 Maskn. All rights reserved.</h2>
+
+      <button
+        onClick={() => navigate("/addList")}
+        className="bg-primarry text-stone-50 hover:cursor-pointer"
+      >
+        Add List
+      </button>
     </footer>
   );
 }

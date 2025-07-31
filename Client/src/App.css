@@ -1,10 +1,21 @@
 @import "tailwindcss";
 /* src/index.css or src/App.css */
+@plugin "daisyui";
 @custom-variant dark (&:where(.dark, .dark *));
+/* Hide number input arrows for all browsers */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
 
 @theme {
-  --color-primary: #c69963; /* Forest green, softer than original */
-  --color-primary-hover: #8b6b45;
+  --color-primarry: #c69963; /* Forest green, softer than original */
+  --color-primarry-hover: #8b6b45;
   --color-muted: #e5e5e5; /* Light gray for subtle elements */
   --color-tertiary: #94a3b8; /* Slate blue-gray, Notion-like */
   --color-surface: #ffffff; /* Pure white for surfaces */
@@ -50,8 +61,8 @@
 }
 
 .dark {
-  --color-primary: #8a6b3f; /* Brighter green for dark mode */
-  --color-primary-hover: #7a5e3c;
+  --color-primarry: #8a6b3f; /* Brighter green for dark mode */
+  --color-primarry-hover: #7a5e3c;
   --color-muted: #334155; /* Muted slate color */
   --color-tertiary: #64748b; /* Medium gray with blue tint */
   --color-surface: #1e293b; /* Dark blue-gray for surfaces */
@@ -94,4 +105,13 @@
 
   --image-grayscale: 10%;
   --image-opacity: 90%;
+}
+
+@layer components {
+  .linkSide {
+    @apply text-xl hover:text-primarry;
+  }
+  .linkSide-active {
+    @apply text-primarry border-b-2 pb-2 font-semibold;
+  }
 }
