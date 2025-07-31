@@ -18,6 +18,7 @@ import Privacy from "./pages/Privacy";
 import VerifyOtp from "./pages/VerifyOtp";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import EditProfileModal from "./component/EditProfileModal";
 
 const queryClient = new QueryClient();
 function App() {
@@ -46,6 +47,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/verifyOtp" element={<VerifyOtp />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/editProfile" element={<EditProfileModal />} />
             </Routes>
           </BrowserRouter>
           <Toaster
