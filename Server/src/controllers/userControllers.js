@@ -36,7 +36,7 @@ export const updateUser = async (req, res) => {
 
     const id = req.user._id;
 
-    let { userName, email , phoneNumber , profilePic } = req.body;
+    let { userName, email , phoneNumber , profilePic , gender , dateOfBirth } = req.body;
 
     if(phoneNumber){
       phoneNumber = Crypto.AES.encrypt(phoneNumber,process.env.USER_PHONE_KEY).toString();
@@ -48,7 +48,9 @@ export const updateUser = async (req, res) => {
         userName,
         email,
         phoneNumber,
-        profilePic
+        profilePic,
+        gender,
+        dateOfBirth
       },
       {
         new: true,
