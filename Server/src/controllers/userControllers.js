@@ -33,14 +33,26 @@ export const getAllUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
+
     const id = req.user._id;
+
+    let { userName, email , phoneNumber , profilePic } = req.body;
+
+    if(phoneNumber){
+      phoneNumber = Crypto.AES.encrypt(phoneNumber,process.env.USER_PHONE_KEY).toString();
+    }
 
     await userModel.findByIdAndUpdate(
       id,
-      { $set: req.body },
+      {
+        userName,
+        email,
+        phoneNumber,
+        profilePic
+      },
       {
         new: true,
-        runValidators: true,
+        runValidators:true
       }
     );
 

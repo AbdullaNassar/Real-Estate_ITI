@@ -31,27 +31,107 @@ export const createBooking = async (req, res) => {
         message: "Listing Not Found",
       });
     }
+        
+    // Convert dates to Egypt timezone (UTC+2)
+    const egyptTimezone = 'Africa/Cairo';
+    
+    // Get current time in Egypt for validation
+    const currentEgyptTime = new Date().toLocaleString('en-US', { timeZone: egyptTimezone });
+    const currentDate = new Date(currentEgyptTime);
+    
+    // Convert check-in/out dates to Egypt time
+    const checkInDate = new Date(new Date(checkIn).toLocaleString('en-US', { timeZone: egyptTimezone }));
+    const checkOutDate = new Date(new Date(checkOut).toLocaleString('en-US', { timeZone: egyptTimezone }));
+    
+    // Keep check-in as is (preserving the time) and set check-out to end of day
+    checkOutDate.setHours(23, 59, 59, 999);
 
-    const days =
-      (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24);
-
-    if (days <= 0) {
+    if (checkInDate < currentDate) {
       return res.status(400).json({
         status: "Failed",
-        message: "Invalid check-in/check-out dates",
+        message: "Check-in date must be in the future",
       });
     }
 
+    if (checkOutDate <= checkInDate) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "Check-out date must be after check-in date",
+      });
+    }
+
+    // Calculate total days (including partial days)
+    const days = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
     const totalPrice = listing.pricePerNight * days;
 
+    // Generate booking dates with proper time information
+    const requestedDates = [];
+    const startDate = new Date(checkInDate);
+    const endDate = new Date(checkOutDate);
+    
+    for (let current = startDate; current <= endDate;) {
+      requestedDates.push({
+        date: new Date(current),
+        isCheckIn: current.getTime() === startDate.getTime(),
+        isCheckOut: current.getTime() === endDate.getTime()
+      });
+      current = new Date(current.setDate(current.getDate() + 1));
+    }
+
+    // Check for date conflicts
+    if (listing.bookedDates && listing.bookedDates.length > 0) {
+      const hasConflict = listing.bookedDates.some(bookedDate => {
+        const bookedStart = new Date(new Date(bookedDate.checkInDate).toLocaleString('en-US', { timeZone: egyptTimezone }));
+        const bookedEnd = new Date(new Date(bookedDate.checkOutDate).toLocaleString('en-US', { timeZone: egyptTimezone }));
+        
+        // More precise time-based conflict checking
+        return (
+          (checkInDate.getTime() >= bookedStart.getTime() && checkInDate.getTime() <= bookedEnd.getTime()) ||
+          (checkOutDate.getTime() >= bookedStart.getTime() && checkOutDate.getTime() <= bookedEnd.getTime()) ||
+          (checkInDate.getTime() <= bookedStart.getTime() && checkOutDate.getTime() >= bookedEnd.getTime())
+        );
+      });
+
+      if (hasConflict) {
+        return res.status(400).json({
+          status: "Failed",
+          message: "These dates are not available for booking",
+        });
+      }
+    }
+
+    // Create the booking with exact check-in/out times
     const booking = await bookingModel.create({
       guest,
       listing: listingId,
-      checkIn,
-      checkOut,
+      checkIn: checkInDate,
+      checkOut: checkOutDate,
       totalPrice,
       paymentMethod,
     });
+
+    // Create an array of dates between check-in and check-out
+    const bookedDatesUpdate = [];
+    for (let current = new Date(startDate); current <= endDate;) {
+      bookedDatesUpdate.push({
+        date: new Date(current),
+        bookingId: booking._id,
+        guestId: guest,
+        checkInDate: checkInDate,
+        checkOutDate: checkOutDate,
+        dayType: current.getTime() === checkInDate.getTime() ? 'check-in' :
+                current.getTime() === checkOutDate.getTime() ? 'check-out' : 'stay'
+      });
+      current = new Date(current.setDate(current.getDate() + 1));
+    }
+
+    // Update the listing with new dates
+    await listModel.findByIdAndUpdate(
+      listingId,
+      { $push: { bookedDates: { $each: bookedDatesUpdate } } },
+      { new: true }
+    );
+
     return res.status(201).json({
       status: "Success",
       message: "Booking Created",
@@ -155,11 +235,19 @@ export const deleteBooking = async (req, res) => {
       });
     }
 
+    // Remove the booking
     await bookingModel.deleteOne({ _id: id });
+
+    // Remove the booked dates from the listing
+    await listModel.findByIdAndUpdate(
+      booking.listing,
+      { $pull: { bookedDates: { bookingId: id } } },
+      { new: true }
+    );
 
     return res.status(200).json({
       status: "Success",
-      message: "Booking Deleted Successfuly",
+      message: "Booking Deleted Successfully",
     });
   } catch (error) {
     return rs.status(500).json({
