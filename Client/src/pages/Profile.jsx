@@ -1,141 +1,125 @@
 import React, { useState } from "react";
-import { useFormik } from "formik";
 import { useUser } from "../features/auth/useUser";
-import avatar from "/imgs/download.jpg";
-import axios from "axios";
+import EditProfileModal from "../component/EditProfileModal";
+import toast from "react-hot-toast";
 
 export default function Profile() {
-  let { user: curUser } = useUser();
-  curUser = curUser?.user;
-  console.log(curUser);
-  const [isEditing, setIsEditing] = useState(false);
-  const [previewimg, setPreviewimg] = useState(null);
-  const [isLoading, SetIsLoading] = useState(false);
+  const { user, refetch } = useUser();
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [isRefetching, setIsRefetching] = useState(false);
+  const curUser = user?.user;
 
-  const handleUpdate = (value)=>{
-    SetIsLoading(true);
-    console.log(value)
-
-
-  }
-
-  const updateFormik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      userName: curUser?.userName,
-      phoneNumber: curUser?.phoneNumber,
-      gender: curUser?.gender,
-      dateOfBirth: curUser?.dateOfBirth,
-      profilePic: null,
-    },
-  });
-
-  const handleFileChange = (e) => {
-    const file = e.currentTarget.file[0];
-    updateFormik.setFieldValue("profilePic", file);
-    if (file) {
-      setPreviewimg(URL.createObjectURL(file));
+  const handleEditSuccess = async () => {
+    setIsRefetching(true);
+    try {
+      await refetch();
+      setShowEditModal(false);
+    } catch (err) {
+      console.error("Failed to refetch user data:", err);
+      toast.error(
+        "Profile updated but failed to refresh. Please reload the page."
+      );
+      setShowEditModal(false);
+    } finally {
+      setIsRefetching(false);
     }
   };
 
   return (
-    <div className=" mx-auto p-4 md:p-8">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-4 overflow-x-hidden">
       {/* avatar part */}
-      <div className="flex flex-col md:flex-row justify-between items-center">
-        <div className="flex items-center space-x-4 ">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 w-full">
+        <div className="flex flex-col sm:flex-row items-center gap-6 flex-wrap w-full min-w-0">
           <img
-            src={curUser?.profilePic ? curUser.profilePic : avatar}
+            src={curUser?.profilePic}
             alt="profile image"
-            className="w-40 h-40 rounded-full object-cover"
+            className="w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover border shadow-sm max-w-full"
           />
-          {isEditing && (
-            <input
-              type="file"
-              name="profilePic"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          )}
-          <div>
-            <h2 className="text-2xl font-bold">{curUser?.userName}</h2>
-            <p>Joined in </p>
+          <div className="text-center sm:text-left w-full sm:w-auto min-w-0">
+            <h2 className="text-2xl font-bold break-words">
+              {curUser?.userName}
+            </h2>
+            <p className="text-gray-600">{curUser?.role}</p>
+            <p className="text-gray-600">
+              Joined in{" "}
+              {curUser?.createdAt
+                ? new Date(curUser.createdAt).getFullYear()
+                : ""}
+            </p>
           </div>
         </div>
-        <button className="mt-4 md:mt-0 px-28 py-2 border rounded text-gray-700 ">
-          {isEditing ? "save" : "update profile"}
-        </button>
+
+        {/*button*/}
+        <div className="w-full sm:w-auto flex flex-col gap-2">
+          <button
+            onClick={() => setShowEditModal(true)}
+            className="sm:w-auto px-6 py-2 border rounded bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer"
+            disabled={isRefetching}
+          >
+            Edit Profile
+          </button>
+
+          <button className="sm:w-auto px-11 py-2 border rounded bg-blue-400 text-white hover:bg-blue-700 transition whitespace-nowrap cursor-pointer">
+            Change Password
+          </button>
+        </div>
       </div>
-      {/* for tabs */}
-      <div className="mt-6 flex">
-        <button className=" px-4 py-2 hover:border-b-2 font-semibold hover:font-bold cursor-pointer">
+
+      {showEditModal && (
+        <EditProfileModal
+          onClose={() => setShowEditModal(false)}
+          onSuccess={handleEditSuccess}
+        />
+      )}
+
+      {/* tabs */}
+      <div className="mt-6 flex flex-wrap border-b gap-2">
+        <button className="px-4 py-2 font-semibold hover:border-b-2 hover:font-bold cursor-pointer">
           About
         </button>
-        <button className=" px-4 py-2 hover:border-b-2 font-semibold hover:font-bold cursor-pointer">
-          {curUser?.role === "host" ? "your apartment" : "your booking"}
+        <button className="px-4 py-2 font-semibold hover:border-b-2 hover:font-bold cursor-pointer">
+          {curUser?.role === "host" ? "Your Apartment" : "Your Booking"}
         </button>
       </div>
+
       {/* confirmed info */}
       <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">Confirmed information</h3>
-        <div className="p-4 grid gap-4 sm:grid-cols-2">
-          <div>
-            <p className="text-lg font-semibold text-gray-500">Email address</p>
-            <p>{curUser?.email}</p>
+        <h3 className="text-lg font-semibold mb-2">Confirmed Information</h3>
+        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-4">
+          <div className="min-w-0">
+            <p className="text-lg font-semibold text-gray-500">Email Address</p>
+            <p className="break-words">{curUser?.email}</p>
           </div>
-          <div>
-            <p className="text-lg font-semibold text-gray-500">Phone number</p>
-            {isEditing ? (
-              <input
-                type="text"
-                name="phoneNumber"
-                onChange={updateFormik.handleChange}
-                value={updateFormik.values.phoneNumber}
-                className="w-full border px-3 py-2 rounded"
-              />
-            ) : (
-              <p>{curUser?.phoneNumber || "01*********"}</p>
-            )}
+          <div className="min-w-0">
+            <p className="text-lg font-semibold text-gray-500">Phone Number</p>
+            <p>{curUser?.phoneNumber || "not available yet"}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-lg font-semibold text-gray-500">Government ID</p>
-            <p>{curUser?.isVerified === true ? "Verified" : ""}</p>
+            <p>{curUser?.isVerified ? "Verified" : "Not verified"}</p>
           </div>
         </div>
       </div>
-      {/* about */}
+
+      {/* about section */}
       <div className="mt-6">
         <h3 className="text-lg font-semibold mb-2">About</h3>
-        <div className="p-4 grid gap-4 sm:grid-cols-2">
-          <div>
+        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+          <div className="min-w-0">
             <p className="text-lg font-semibold text-gray-500">Gender</p>
-            {isEditing ? (
-              <select
-                name="gender"
-                onChange={updateFormik.handleChange}
-                value={updateFormik.values.gender}
-                className="w-full border px-3 py-2 rounded"
-              >
-                <option value="">select gender</option>
-                <option value="male">male</option>
-                <option value="female">female</option>
-              </select>
-            ) : (
-              <p>{curUser?.gender || "Not selected yet"}</p>
-            )}
+            <p>{curUser?.gender || "Not selected yet"}</p>
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-lg font-semibold text-gray-500">Birth Date</p>
-            {isEditing ? (
-              <input
-                type="date"
-                name="dateOfBirth"
-                onChange={updateFormik.handleChange}
-                value={updateFormik.values.dateOfBirth}
-                className="w-full border px-3 py-2 rounded"
-              />
-            ) : (
-              <p>{curUser?.dateOfBirth || "**/**/****"}</p>
-            )}
+            <p className="text-gray-800 mt-1">
+              {curUser?.dateOfBirth
+                ? new Date(curUser.dateOfBirth).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })
+                : "Not selected yet"}
+            </p>
           </div>
         </div>
       </div>
