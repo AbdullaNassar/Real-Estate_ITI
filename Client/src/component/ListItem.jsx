@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function ListItem() {
   const navigate = useNavigate();
   return (
-    <div className=" border border-primary shadow-xl text-center">
+    <div className=" border border-primarry shadow-xl text-center">
       <img src="./imgs/list1.jpg" alt="list" className="h-48 w-full" />
       <div className="p-2 space-y-2">
         <h3>Stylish Apartment in Downtown Cairo</h3>
@@ -15,28 +15,28 @@ export default function ListItem() {
 
       <div className="text-gray-500 flex justify-around items-center mb-4">
         <span className="flex gap-1 items-center">
-          <MdOutlineRoom className="text-xl text-primary" />
+          <MdOutlineRoom className="text-xl text-primarry" />
           <span>Cairo</span>
         </span>
         <span className="flex gap-1 items-center">
-          <CiUser className="text-xl text-primary" />
+          <CiUser className="text-xl text-primarry" />
           <span>5 rooms</span>
         </span>
       </div>
       <div className="text-gray-500 flex justify-around items-center mb-3">
         <span className="flex gap-1 items-center">
-          <RiStarSFill className="text-xl text-primary" />
+          <RiStarSFill className="text-xl text-primarry" />
           <span>3.6 </span>
         </span>
         <span className="flex gap-1 items-center">
-          <IoPricetagOutline className="text-xl text-primary" />
+          <IoPricetagOutline className="text-xl text-primarry" />
           <span>1,00/night</span>
         </span>
       </div>
       <div>
         <button
           onClick={() => navigate("/ListDetails/45")}
-          className="bg-primary w-full  py-4 text-stone-100 transition-all mt-4 hover:cursor-pointer hover:bg-primary-hover"
+          className="bg-primarry w-full  py-4 text-stone-100 transition-all mt-4 hover:cursor-pointer hover:bg-primarry-hover"
         >
           Show Details
         </button>

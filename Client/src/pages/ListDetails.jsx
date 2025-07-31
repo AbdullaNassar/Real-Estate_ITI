@@ -120,7 +120,7 @@ export default function ListingDetails() {
                 <h3 className="text-gray-500">June 2025</h3>
               </div>
             </div>
-            <span className="flex gap-0.5 text-primary">
+            <span className="flex gap-0.5 text-primarry">
               <RiStarSFill />
               <RiStarSFill />
               <RiStarSFill />
@@ -139,7 +139,7 @@ export default function ListingDetails() {
                 <h3 className="text-gray-500">June 2025</h3>
               </div>
             </div>
-            <span className="flex gap-0.5 text-primary">
+            <span className="flex gap-0.5 text-primarry">
               <RiStarSFill />
               <RiStarSFill />
               <RiStarSFill />
@@ -158,7 +158,7 @@ export default function ListingDetails() {
                 <h3 className="text-gray-500">June 2025</h3>
               </div>
             </div>
-            <span className="flex gap-0.5 text-primary">
+            <span className="flex gap-0.5 text-primarry">
               <RiStarSFill />
               <RiStarSFill />
               <RiStarSFill />
@@ -238,7 +238,7 @@ export default function ListingDetails() {
             <span className="text-gray-500">Total</span>
             <span className="font-semibold">$500</span>
           </div>
-          <button className="bg-primary mt-8 mb-4 py-2 text-stone-100 rounded-sm text-lg hover:bg-primary-hover hover:cursor-pointer transition-all">
+          <button className="bg-primarry mt-8 mb-4 py-2 text-stone-100 rounded-sm text-lg hover:bg-primarry-hover hover:cursor-pointer transition-all">
             Book Now
           </button>
         </div>

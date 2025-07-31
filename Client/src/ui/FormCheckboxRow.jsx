@@ -25,7 +25,7 @@ export default function FormCheckboxRow({
               type="checkbox"
               value={opt.value}
               {...register(id, rules)}
-              className="accent-primary text-gray-50"
+              className="accent-primarry text-gray-50"
             />
             <span>{opt}</span>
           </label>

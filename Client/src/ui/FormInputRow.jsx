@@ -20,7 +20,7 @@ export default function FormInputRow({
         id={id}
         {...register(id, rules)}
         type={type}
-        className="bg-gray-200 p-2 md:w-82 rounded-sm border-none focus:ring focus:ring-primary focus:ring-offset-1 border-0 outline-0"
+        className="bg-gray-200 p-2 md:w-82 rounded-sm border-none focus:ring focus:ring-primarry focus:ring-offset-1 border-0 outline-0"
         placeholder={placeholder}
       />
       {errors?.[id] && (
