@@ -23,7 +23,7 @@ export default function FormSelectRow({
         id={id}
         {...register(id, rules)}
         disabled={disabled}
-        className="bg-gray-200 p-2 md:w-82 rounded-sm border-none focus:ring focus:ring-primary focus:ring-offset-1 border-0 outline-0 disabled:opacity-50"
+        className="bg-gray-200 p-2 md:w-82 rounded-sm border-none focus:ring focus:ring-primarry focus:ring-offset-1 border-0 outline-0 disabled:opacity-50"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>

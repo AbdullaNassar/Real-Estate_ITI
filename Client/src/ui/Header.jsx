@@ -8,27 +8,33 @@ import { useUser } from "../features/auth/useUser";
 import { useTheme } from "../features/theme/useTheme";
 import { useLogout } from "../features/auth/useLogout";
 import { validateYupSchema } from "formik";
+import { HiMenuAlt1 } from "react-icons/hi";
+import { useState } from "react";
+import { SidebarModal } from "./Modal";
 
 export default function Header() {
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
-  console.log(theme);
 
   const { isPending: isLogout, logout } = useLogout();
   const { isLoading, error, user } = useUser();
   if (isLoading) return <h1>loading...</h1>;
   if (error) return <h1>error{error.message}</h1>;
-  console.log(user);
 
   const isLoginPage = location.pathname === "/login";
   const isSignupPage = location.pathname === "/signup";
   const isVerifyPage = location.pathname === "/verifyOtp";
   const isAuthPage = isLoginPage || isSignupPage || isVerifyPage;
+
   return (
     // <header className="bg-blue-400">header</header>
     <header className=" flex justify-between items-center px-8 pt-8 pb-4 border-b-gray-300  border-b-2">
-      <button onClick={() => navigate("/")} className="cursor-pointer w-48">
+      <button
+        onClick={() => navigate("/")}
+        className="cursor-pointer hidden md:block md:w-48 "
+      >
         <img
           src={theme === "light" ? logo : logoBlack}
           className="w-full"
@@ -36,7 +42,20 @@ export default function Header() {
         />
       </button>
 
-      <ul className="space-x-6 flex">
+      {/* Mobile menu */}
+      <button
+        onClick={() => setIsOpenSidebar(true)}
+        className="md:hidden text-3xl"
+      >
+        <HiMenuAlt1 />
+      </button>
+
+      <SidebarModal
+        isOpen={isOpenSidebar}
+        onCancel={() => setIsOpenSidebar(false)}
+      />
+
+      <ul className="space-x-4 lg:space-x-6 md:flex hidden">
         <li>
           <NavLink
             to="/home"
@@ -82,7 +101,7 @@ export default function Header() {
           </NavLink>
         </li>
       </ul>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-2 md:gap-4 items-center">
         <div className="flex gap-2">
           <button className="size-8 rounded-full text-gray-600 bg-gray-200 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all ">
             <TbWorld />
@@ -93,23 +112,11 @@ export default function Header() {
           >
             {theme == "light" ? <CiDark /> : <CiLight />}
           </button>
-          {user && !isAuthPage && (
-            <button
-              disabled={isLogout}
-              onClick={() => {
-                navigate("/login");
-                logout();
-              }}
-              className="size-8 rounded-full bg-gray-200 text-gray-600 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all "
-            >
-              <CiLogin />
-            </button>
-          )}
         </div>
         {isLoginPage && (
           <Link
             to="/signup"
-            className="bg-primary-500 px-4 py-2 rounded-md bg-primary text-gray-100 hover:cursor-pointer transition-all hover:bg-primary-700"
+            className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-gray-100 hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
             signup
           </Link>
@@ -117,15 +124,47 @@ export default function Header() {
         {(isSignupPage || (!user && !isLoginPage)) && (
           <Link
             to="/login"
-            className="bg-primary-500 px-4 py-2 rounded-md bg-primary text-gray-100  hover:cursor-pointer transition-all hover:bg-primary-700"
+            className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-gray-100  hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
             login
           </Link>
         )}
         {!isAuthPage && user && (
-          <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
-            <img className="w-3/4" src="/imgs/user.svg" alt="" />
-          </div>
+          <>
+            {/* <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
+              <img className="w-3/4" src="/imgs/user.svg" alt="" />
+            </div> */}
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content text-stone-100 bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <Link to="/profile" className="justify-between">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/settings">Settings</Link>
+                </li>
+                <li onClick={logout}>
+                  <Link to="/login">Logout</Link>
+                </li>
+              </ul>
+            </div>
+          </>
         )}
       </div>
     </header>

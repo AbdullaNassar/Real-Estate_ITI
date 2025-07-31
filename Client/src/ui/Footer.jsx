@@ -24,7 +24,7 @@ export default function Footer() {
 
       <button
         onClick={() => navigate("/addList")}
-        className="bg-primary text-stone-50 hover:cursor-pointer"
+        className="bg-primarry text-stone-50 hover:cursor-pointer"
       >
         Add List
       </button>

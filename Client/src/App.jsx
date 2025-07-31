@@ -21,6 +21,7 @@ import { Provider } from "react-redux";
 import { ScrollToTop } from "./component/ScrollToTop";
 import AddList from "./pages/AddList";
 import Lists from "./pages/Lists";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 function App() {
@@ -28,10 +29,11 @@ function App() {
     <>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools
+          {/* <ReactQueryDevtools
             initialIsOpen={false}
             buttonPosition="bottom-left"
-          />
+        
+          /> */}
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
@@ -47,6 +49,7 @@ function App() {
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/addList" element={<AddList />} />
                 <Route path="/listings" element={<Lists />} />
+                <Route path="/settings  " element={<Settings />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />

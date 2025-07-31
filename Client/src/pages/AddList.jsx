@@ -217,7 +217,7 @@ export default function AddList() {
               id="bedroom"
               {...register("bedroom")}
               type="number"
-              className="bg-gray-200 p-2 w-full rounded-sm border-none focus:ring focus:ring-primary focus:ring-offset-1 border-0 outline-0"
+              className="bg-gray-200 p-2 w-full rounded-sm border-none focus:ring focus:ring-primarry focus:ring-offset-1 border-0 outline-0"
               placeholder="bedrooms..."
             />
           </div>
@@ -227,7 +227,7 @@ export default function AddList() {
               id="bathrooms"
               {...register("bathrooms")}
               type="number"
-              className="bg-gray-200 w-full p-2 rounded-sm border-none focus:ring focus:ring-primary focus:ring-offset-1 border-0 outline-0"
+              className="bg-gray-200 w-full p-2 rounded-sm border-none focus:ring focus:ring-primarry focus:ring-offset-1 border-0 outline-0"
               placeholder="bathrooms..."
             />
           </div>
@@ -302,7 +302,7 @@ export default function AddList() {
             <p></p>
           </div>
         </div>
-        <button className="bg-primary py-2 text-stone-100 px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primary-hover hover:cursor-pointer transition-all text-lg font-semibold">
+        <button className="bg-primarry py-2 text-stone-100 px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primarry-hover hover:cursor-pointer transition-all text-lg font-semibold">
           Save Listing
         </button>
       </form>

@@ -8,7 +8,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
           </h1>
           <p className="mb-8 text-gray-500 font-mono">{error.message}</p>
           <button
-            className="bg-primary px-2 py-4 rounded-md hover:cursor-pointer hover:bg-blue-500 "
+            className="bg-primarry px-2 py-4 rounded-md hover:cursor-pointer hover:bg-blue-500 "
             size="large"
             onClick={resetErrorBoundary}
           >

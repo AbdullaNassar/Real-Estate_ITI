@@ -21,7 +21,7 @@ export default function HomePage() {
       <ListsContainer />
       <button
         onClick={() => navigate("/listings")}
-        className="border border-primary px-4 py-2 self-center flex items-center gap-1 text-xl my-4 font-semibold hover:bg-primary justify-center hover:cursor-pointer transition-all text-gray-800 hover:text-stone-200"
+        className="border border-primarry px-4 py-2 self-center flex items-center gap-1 text-xl my-4 font-semibold hover:bg-primarry justify-center hover:cursor-pointer transition-all text-gray-800 hover:text-stone-200"
       >
         <span>Show All Listings</span>
         <span className="text-2xl">

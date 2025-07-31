@@ -26,6 +26,7 @@ export const signUp = async (req, res) => {
       dateOfBirth,
       phoneNumber,
     } = req.body;
+    console.log("here", req.body);
 
     if (!userName || !email || !password || !confirmPassword) {
       return res.status(400).json({
@@ -51,21 +52,25 @@ export const signUp = async (req, res) => {
 
     const otp = Math.floor(10000 + Math.random() * 900000).toString();
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    console.log("user", isUserExist);
 
-    const profilePic = 'https://res.cloudinary.com/dxfmw4nch/image/upload/v1753882410/profilePics/muxts6jedfnjupzdqzgf.jpg';
+    const profilePic =
+      "https://res.cloudinary.com/dxfmw4nch/image/upload/v1753882410/profilePics/muxts6jedfnjupzdqzgf.jpg";
 
+    console.log("sadsd");
     const user = await userModel.create({
       userName,
       email,
       password,
       gender,
       role,
-      dateOfBirth,
+      // dateOfBirth,
       phoneNumber,
       profilePic,
       otp,
       otpExpiresAt,
     });
+    console.log("okk");
 
     await sendOTPEmail(user.email, otp);
 
@@ -74,7 +79,7 @@ export const signUp = async (req, res) => {
       message: "User Created Successfuly",
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(501).json({
       status: "Failed",
       message: "Internal Server Error",
       error: error.message,
@@ -141,19 +146,18 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   try {
     res.clearCookie("token", {
-    httpOnly: true,
-    sameSite: "Lax",
-    secure: process.env.NODE_ENV === "production",
-  });
+      httpOnly: true,
+      sameSite: "Lax",
+      secure: process.env.NODE_ENV === "production",
+    });
     res
       .status(200)
       .json({ status: "success", message: "User logged out succssfully" });
   } catch (error) {
     res.status(500).json({
-      status:"Failed",
-      message:"Internal Server Error",
-      error:error.message
-    })
+      status: "Failed",
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
-  
 };
