@@ -11,6 +11,7 @@ const listSchema = new Schema(
     title: {
       type: String,
       required: [true, "Listing Title is required"],
+      unique:[true,"Title Must Be Unique"],
       trim: true,
     },
     descrption: {
@@ -96,14 +97,32 @@ const listSchema = new Schema(
     },
     photos: {
       type: [String],
-      required: [true, "One To Five Photo Required"],
+      required: [true, "Five Photo Required"],
       validate: {
         validator: (value) => {
-          return value.length <= 5;
+          return value.length >= 5;
         },
-        message: "Max 5 photos are allowed.",
+        message: "{PATH} must have 5 photos At Least",
       },
     },
+    bookedDates: [{
+      date: Date,
+      bookingId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Booking'
+      },
+      guestId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      },
+      checkInDate: Date,
+      checkOutDate: Date,
+      dayType: {
+        type: String,
+        enum: ['check-in', 'stay', 'check-out'],
+        default: 'stay'
+      }
+    }],
     reviews: [ratingSchema],
     isApproved: {
       type: Boolean,

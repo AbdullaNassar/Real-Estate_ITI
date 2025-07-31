@@ -7,7 +7,7 @@ export const getAllUsers = async (req, res) => {
   try {
     const users = await userModel.find(
       {},
-      { password: 0, phoneNumber: 0, role: 0, __v: 0 }
+      { password: 0, phoneNumber: 0, __v: 0 }
     );
 
     if (!users) {
@@ -33,14 +33,28 @@ export const getAllUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
+
     const id = req.user._id;
+
+    let { userName, email , phoneNumber , profilePic , gender , dateOfBirth } = req.body;
+
+    if(phoneNumber){
+      phoneNumber = Crypto.AES.encrypt(phoneNumber,process.env.USER_PHONE_KEY).toString();
+    }
 
     await userModel.findByIdAndUpdate(
       id,
-      { $set: req.body },
+      {
+        userName,
+        email,
+        phoneNumber,
+        profilePic,
+        gender,
+        dateOfBirth
+      },
       {
         new: true,
-        runValidators: true,
+        runValidators:true
       }
     );
 
