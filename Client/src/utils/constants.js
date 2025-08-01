@@ -1,1 +1,30 @@
 export const BASE_URL = "http://localhost:8000/api/v1/";
+export const PAGE_SIZE = 1;
+
+export const governmentList = [
+  { name: "Cairo", _id: "Cairo" },
+  { name: "Giza", _id: "Giza" },
+  { name: "Alexandria", _id: "Alexandria" },
+  { name: "Qalyubia", _id: "Qalyubia" },
+  { name: "Port Said", _id: "PortSaid" },
+  { name: "Suez", _id: "Suez" },
+  { name: "Dakahlia", _id: "Dakahlia" },
+  { name: "Sharqia", _id: "Sharqia" },
+  { name: "Gharbia", _id: "Gharbia" },
+  { name: "Monufia", _id: "Monufia" },
+  { name: "Beheira", _id: "Beheira" },
+  { name: "Kafr El Sheikh", _id: "KafrElSheikh" },
+  { name: "Fayoum", _id: "Fayoum" },
+  { name: "Beni Suef", _id: "BeniSuef" },
+  { name: "Minya", _id: "Minya" },
+  { name: "Assiut", _id: "Assiut" },
+  { name: "Sohag", _id: "Sohag" },
+  { name: "Qena", _id: "Qena" },
+  { name: "Luxor", _id: "Luxor" },
+  { name: "Aswan", _id: "Aswan" },
+  { name: "Red Sea", _id: "RedSea" },
+  { name: "New Valley", _id: "NewValley" },
+  { name: "Matrouh", _id: "Matrouh" },
+  { name: "North Sinai", _id: "NorthSinai" },
+  { name: "South Sinai", _id: "SouthSinai" },
+];

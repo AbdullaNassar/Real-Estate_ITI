@@ -10,7 +10,7 @@ export const createList = async (req, res) => {
       locationType,
       address,
       longitude,
-      latitude, 
+      latitude,
       governorate,
       amenitiesId,
       maxGustes,
@@ -34,13 +34,14 @@ export const createList = async (req, res) => {
       });
     }
 
-    if(photos.length !==5){
+    if (photos.length !== 5) {
       return res.status(400).json({
-        status:"Failed",
-        message:`Listing Must have 5 Images you Exactly upload ${photos.length}`
-      })
+        status: "Failed",
+        message: `Listing Must have 5 Images you Exactly upload ${photos.length}`,
+      });
     }
 
+    console.log(req.user);
     const list = await listModel.create({
       host: req.user._id,
       title,
@@ -48,11 +49,11 @@ export const createList = async (req, res) => {
       pricePerNight,
       categoryId,
       locationType,
-      location:{
+      location: {
         address,
-        coordinates:{
-          coordinates:[parseFloat(longitude),parseFloat(latitude)]
-        }
+        coordinates: {
+          coordinates: [parseFloat(longitude), parseFloat(latitude)],
+        },
       },
       governorate,
       amenitiesId,
@@ -66,6 +67,7 @@ export const createList = async (req, res) => {
       data: list,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       status: "Failed",
       message: "Internal Server Error",
@@ -76,10 +78,25 @@ export const createList = async (req, res) => {
 
 export const readLists = async (req, res) => {
   try {
-    const { sort, page, limit, field } = req?.query;
+    const { sort, page, limit = 10, field } = req?.query;
+
+    const allowedFilters = ["governorate", "categoryId"];
+    const filters = {};
+
+    allowedFilters.forEach((key) => {
+      if (req.query[key]) filters[key] = req.query[key];
+    });
+
     const queryBody = {
       isApproved: true,
+      ...filters,
     };
+    console.log(queryBody);
+    console.log(page, limit);
+    console.log("price", req.query.price);
+    if (req.query.price) queryBody.pricePerNight = { $lte: +req.query.price };
+    //get total count before pagination
+    const totalDocs = await listModel.countDocuments(queryBody);
 
     let query = listModel.find(queryBody).populate("categoryId amenitiesId");
 
@@ -107,6 +124,7 @@ export const readLists = async (req, res) => {
 
     res.status(200).json({
       status: "Success",
+      total: totalDocs,
       results: lists.length,
       data: lists,
     });
@@ -130,7 +148,9 @@ export const getListById = async (req, res) => {
       });
     }
 
-    const list = await listModel.findOne({ _id: id });
+    const list = await listModel
+      .findOne({ _id: id })
+      .populate("host categoryId amenitiesId");
     if (!list) {
       return res.status(404).json({
         status: "Failed",
@@ -151,50 +171,65 @@ export const getListById = async (req, res) => {
   }
 };
 
-export const getListingsByGovernorate  = async (req,res) =>{
+export const getListingsByGovernorate = async (req, res) => {
   try {
     const { governorate } = req.params;
 
     const validGovernorates = [
-      "Cairo", "Giza", "Alexandria", "Qalyubia", "Port Said", "Suez",
-      "Dakahlia", "Sharqia", "Gharbia", "Monufia", "Beheira",
-      "Kafr El Sheikh", "Fayoum", "Beni Suef", "Minya", "Assiut",
-      "Sohag", "Qena", "Luxor", "Aswan", "Red Sea", "New Valley",
-      "Matrouh", "North Sinai", "South Sinai"
+      "Cairo",
+      "Giza",
+      "Alexandria",
+      "Qalyubia",
+      "Port Said",
+      "Suez",
+      "Dakahlia",
+      "Sharqia",
+      "Gharbia",
+      "Monufia",
+      "Beheira",
+      "Kafr El Sheikh",
+      "Fayoum",
+      "Beni Suef",
+      "Minya",
+      "Assiut",
+      "Sohag",
+      "Qena",
+      "Luxor",
+      "Aswan",
+      "Red Sea",
+      "New Valley",
+      "Matrouh",
+      "North Sinai",
+      "South Sinai",
     ];
 
-    if(!governorate){
-
+    if (!governorate) {
       return res.status(400).json({
-        status:"Failed",
-        message:"Governorate Is Required"
+        status: "Failed",
+        message: "Governorate Is Required",
       });
     }
 
-    if(!validGovernorates.includes(governorate)){
-
+    if (!validGovernorates.includes(governorate)) {
       return res.status(400).json({
-        status:"Failed",
-        message:"Invalid governorate name"
+        status: "Failed",
+        message: "Invalid governorate name",
       });
     }
 
-    const listing = await listModel.find({governorate});
+    const listing = await listModel.find({ governorate });
 
     return res.status(200).json({
-      status:"Success",
-      results:listing.length,
-      data: listing
-    })
-
-
-
+      status: "Success",
+      results: listing.length,
+      data: listing,
+    });
   } catch (error) {
     return res.status(500).json({
-      status:"Failed",
-      message:"Internal Server Error",
-      error:error.message
-    })
+      status: "Failed",
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
 
@@ -227,11 +262,11 @@ export const updateList = async (req, res) => {
       });
     }
 
-    if(!req.body){
+    if (!req.body) {
       return res.status(400).json({
-        status:"Failed",
-        message:"Body Is Empty"
-      })
+        status: "Failed",
+        message: "Body Is Empty",
+      });
     }
 
     const {
@@ -261,7 +296,7 @@ export const updateList = async (req, res) => {
       updateData.location = {
         address,
         coordinates: {
-          type: 'Point',
+          type: "Point",
           coordinates: [parseFloat(longitude), parseFloat(latitude)],
         },
       };
@@ -271,7 +306,7 @@ export const updateList = async (req, res) => {
       updateData.photos = req.files.map((file) => file.path); // or cloudinary URLs
     }
 
-    await listModel.findByIdAndUpdate(id,updateData, {
+    await listModel.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
     });
@@ -335,9 +370,17 @@ export const deleteList = async (req, res) => {
 
 export const searchLists = async (req, res) => {
   try {
-    const { title, description, price, date, location, amenities , governorate } = req?.query;
+    const {
+      title,
+      description,
+      price,
+      date,
+      location,
+      amenities,
+      governorate,
+    } = req?.query;
     const query = {
-      isApproved:true
+      isApproved: true,
     };
     if (title?.trim()) {
       query.title = { $regex: new RegExp(title, "i") };
@@ -367,7 +410,7 @@ export const searchLists = async (req, res) => {
 
     if (governorate?.trim()) {
       query.governorate = { $regex: new RegExp(governorate, "i") };
-    }    
+    }
 
     const lists = await listModel.find(query);
 

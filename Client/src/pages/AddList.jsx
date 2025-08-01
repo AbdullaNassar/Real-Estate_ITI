@@ -5,33 +5,13 @@ import FormSelectRow from "../ui/FromSelectRow";
 import FormCheckboxRow from "../ui/FormCheckboxRow";
 import { useState } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
+import L, { latLng } from "leaflet";
 import toast from "react-hot-toast";
-const governmentList = [
-  { label: "sohag", value: "sohag" },
-  { label: "cairo", value: "cairo" },
-  { label: "sohag", value: "soha" },
-  { label: "cairo", value: "cair" },
-  { label: "sohag", value: "sohg" },
-  { label: "cairo", value: "caio" },
-  { label: "sohag", value: "shag" },
-  { label: "cairo", value: "cro" },
-];
-
-const aminitiesList = [
-  "wifi",
-  "aircondition",
-  "parking",
-  "pool",
-  "GYM",
-  "24/7 Security",
-];
-
-const propertyType = [
-  { label: "studio", value: "studio" },
-  { label: "house", value: "house" },
-  { label: "vill", value: "villa" },
-];
+import { useAminites } from "../features/Lists/aminites/useAminites";
+import { useCategories } from "../features/Lists/categories/useCategories";
+import { useCreateList } from "../features/Lists/useCreateList";
+import Spinner from "../ui/Spinner";
+import { governmentList } from "../utils/constants";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -54,8 +34,20 @@ export default function AddList() {
   const [images, setImages] = useState([]);
   const [errorImages, setErrorImages] = useState(null);
 
+  const {
+    amenities,
+    isLoading: isAminites,
+    error: errorAminites,
+  } = useAminites();
+
+  const {
+    categories,
+    error: errorCategories,
+    isLoading: loadingCategories,
+  } = useCategories();
   const handleFilesChange = (e) => {
     const file = Array.from(e.target.files);
+    console.log(file);
     if (!file) return;
 
     if (images.length + file.length > 5) {
@@ -77,6 +69,7 @@ export default function AddList() {
     reset,
   } = useForm();
 
+  const { createList, isPending: isCreatingList } = useCreateList();
   const [position, setPosition] = useState(null);
 
   const handleMapClick = (latlng) => {
@@ -84,20 +77,38 @@ export default function AddList() {
     console.log("Latitude:", latlng.lat, "Longitude:", latlng.lng);
   };
 
-  console.log(errorImages);
   const submitForm = (data) => {
-    data.images = images;
+    data.photos = images;
+    data.longitude = position.lng;
+    data.latitude = position.lat;
     if (images.length < 5) {
       setErrorImages("You must upload 5 images");
-      console.log("here");
       return;
     }
-    reset();
-    setErrorImages("");
-    setImages([]);
+
+    // const locationData = {
+    //   address: data.address,
+    //   coordinates: {
+    //     type: "Point",
+    //     coordinates: [latLng.lat, latLng.lng], // [longitude, latitude]
+    //   },
+    // };
+    // data.location = locationData;
     console.log(data);
-    document.getElementById("my_modal_5").showModal();
+    createList(data, {
+      onSuccess: () => {
+        setImages([]);
+        document.getElementById("my_modal_5").showModal();
+        reset();
+      },
+    });
+    setErrorImages("");
   };
+
+  if (isAminites || loadingCategories) return <Spinner />;
+  if (errorAminites || errorCategories) return <h1>Eroor in aminties</h1>;
+
+  console.log(categories);
   return (
     <div className="my-4">
       <h1 className="text-3xl font-semibold">Add New Listing</h1>
@@ -167,7 +178,7 @@ export default function AddList() {
         </div>
         <FormSelectRow
           required={true}
-          id="government"
+          id="governorate"
           label="Government"
           register={register}
           errors={errors}
@@ -191,8 +202,8 @@ export default function AddList() {
         />
 
         <FormCheckboxRow
-          options={aminitiesList}
-          id="Amenity"
+          options={amenities.data}
+          id="amenitiesId"
           label="Aminities"
           register={register}
           errors={errors}
@@ -202,12 +213,12 @@ export default function AddList() {
           required={true}
           errors={errors}
           register={register}
-          id="Category"
+          id="categoryId"
           label="Property Type"
           rules={{
             required: { value: true, message: "Property type is required" },
           }}
-          options={propertyType}
+          options={categories.data}
         />
 
         <div className="md:flex  md:w-82 gap-2">

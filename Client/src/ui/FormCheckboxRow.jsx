@@ -20,14 +20,14 @@ export default function FormCheckboxRow({
 
       <div className="flex flex-col gap-2">
         {options.map((opt) => (
-          <label key={opt} className="inline-flex items-center gap-2">
+          <label key={opt._id} className="inline-flex items-center gap-2">
             <input
               type="checkbox"
-              value={opt.value}
+              value={opt._id}
               {...register(id, rules)}
               className="accent-primarry text-gray-50"
             />
-            <span>{opt}</span>
+            <span>{opt.name}</span>
           </label>
         ))}
       </div>

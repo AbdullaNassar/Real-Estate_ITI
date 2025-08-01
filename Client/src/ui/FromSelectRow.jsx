@@ -26,8 +26,8 @@ export default function FormSelectRow({
         className="bg-gray-200 p-2 md:w-82 rounded-sm border-none focus:ring focus:ring-primarry focus:ring-offset-1 border-0 outline-0 disabled:opacity-50"
       >
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
+          <option key={opt._id} value={opt._id}>
+            {opt.name}
           </option>
         ))}
       </select>

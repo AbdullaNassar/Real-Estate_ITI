@@ -39,13 +39,16 @@ export default function Profile() {
             <h2 className="text-2xl font-bold break-words">
               {curUser?.userName}
             </h2>
-            <p className="text-gray-600">{curUser?.role}</p>
+            {/* <p className="text-gray-600">{curUser?.role}</p> */}
             <p className="text-gray-600">
               Joined in{" "}
               {curUser?.createdAt
                 ? new Date(curUser.createdAt).getFullYear()
                 : ""}
             </p>
+            <div className="badge font-semibold badge-accent">
+              {curUser.role}
+            </div>
           </div>
         </div>
 

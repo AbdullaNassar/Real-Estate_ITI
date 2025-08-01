@@ -4,7 +4,7 @@ import { MdOutlineRoom } from "react-icons/md";
 import { RiStarSFill } from "react-icons/ri";
 import { IoPricetagOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-export default function ListItem() {
+export default function ListItemCard() {
   const navigate = useNavigate();
   return (
     <div className=" border border-primarry shadow-xl text-center">

@@ -26,18 +26,16 @@ import AddList from "./pages/AddList";
 import Lists from "./pages/Lists";
 import Settings from "./pages/Settings";
 
-
 const queryClient = new QueryClient();
 function App() {
   return (
     <>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          {/* <ReactQueryDevtools
+          <ReactQueryDevtools
             initialIsOpen={false}
             buttonPosition="bottom-left"
-        
-          /> */}
+          />
           <BrowserRouter>
             <ScrollToTop />
             <Routes>

@@ -10,7 +10,7 @@ import { userPermission } from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 
-router.use(isUserLoggedIn, userPermission("admin"));
+// router.use(isUserLoggedIn, userPermission("admin"));
 
 router.route("/").post(createCategory).get(getAllCategories);
 

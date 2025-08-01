@@ -6,7 +6,6 @@ import { useTheme } from "../features/theme/useTheme";
 import { NavLink } from "react-router-dom";
 export function SidebarModal({ isOpen, onCancel }) {
   const { theme } = useTheme();
-  console.log(theme);
   if (!isOpen) {
     return null;
   }

@@ -2,9 +2,9 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
 
-const center = [30.0444, 31.2357]; // Cairo
-
-export default function MyMap() {
+export default function MyMap({ lat = 30.0444, lng = 31.2357 }) {
+  const center = [lat, lng]; // Cairo
+  console.log(center);
   return (
     <MapContainer
       center={center}

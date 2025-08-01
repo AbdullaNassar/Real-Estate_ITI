@@ -5,105 +5,75 @@ import MyMap from "../component/Map";
 import { RiStarSFill } from "react-icons/ri";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { useList } from "../features/Lists/useList";
+import Spinner from "../ui/Spinner";
+import { useUser } from "../features/auth/useUser";
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const images = [
-    { src: "/card/1.png", alt: "Image 1" },
-    { src: "/card/2.png", alt: "Image 2" },
-    { src: "/card/3.png", alt: "Image 3" },
-  ];
+  const { list, error, isLoading } = useList();
+
+  let { user, isLoading: isLoadingUser, error: errorUser } = useUser();
+  if (isLoading || isLoadingUser) return <Spinner />;
+  if (error || errorUser) return <h2>{error?.message}error???</h2>;
+  console.log(list);
+  const data = list.data;
+  user = user.user;
+  console.log(user);
   return (
     <div className="flex flex-col gap-8 ">
       {/* gallery */}
       <div className="grid grid-cols-[1fr_1fr_.5fr] gap-4 bg-gray-50 p-4 mt-1 grid-rows-[10rem_5rem_5rem_5rem] min-h-[60vh] ">
         <div className="bg-red-300 col-span-1 row-span-1 ">
-          <img className="h-full w-full" src={pic1} alt="" />
+          <img className="h-full w-full" src={data.photos[0]} alt="" />
         </div>
         <div className="bg-green-300 col-span-2 row-span-2">
-          <img className="w-full h-full" src={pic1} alt="" />
+          <img className="w-full h-full" src={data.photos[1]} alt="" />
         </div>
         <div className="bg-blue-500 col-span-1 row-span-3">
-          <img className="w-full h-full" src={pic1} alt="" />
+          <img className="w-full h-full" src={data.photos[2]} alt="" />
         </div>
         <div className="bg-amber-200 row-span-2">
-          <img className="w-full h-full" src={pic1} alt="" />
+          <img className="w-full h-full" src={data.photos[3]} alt="" />
         </div>
         <div className="bg-amber-200 row-span-2">
-          <img className="w-full h-full" src={pic1} alt="" />
+          <img className="w-full h-full" src={data.photos[4]} alt="" />
         </div>
       </div>
 
       {/* heading */}
       <div>
-        <h2 className="font-semibold text-3xl mb-3">
-          Luxurious Apartment in Zamalek
-        </h2>
-        <p>
-          This exquisite apartment boasts a contemporary design with an
-          open-plan living and dining area, a fully equipped gourmet kitchen,
-          and generously sized bedrooms with en-suite bathrooms. Enjoy panoramic
-          views from your private balcony and take advantage of the building's
-          exceptional facilities, including a state-of-the-art fitness center, a
-          refreshing swimming pool, and round-the-clock security. Located in the
-          prestigious Zamalek district, you'll be surrounded by upscale
-          boutiques, fine dining restaurants, and cultural landmarks.
-        </p>
+        <div className="flex items-center gap-4">
+          <h2 className="font-semibold text-3xl mb-3">{data.title}</h2>
+          <div className="badge badge-accent">{data.categoryId.name}</div>
+        </div>
+        <p>{data.descrption}</p>
       </div>
 
       {/* aminites */}
       <div>
         <h2 className="font-semibold text-3xl mb-3">Aminites</h2>
         <div className="flex gap-3 flex-wrap    ">
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
-          <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-            <span className="text-3xl">
-              <PiSwimmingPoolLight />
-            </span>
-            Swimming Pool
-          </div>
+          {data.amenitiesId.map((item) => {
+            return (
+              <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
+                <span className="text-3xl">
+                  <PiSwimmingPoolLight />
+                </span>
+                {item.name}
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {/* Map */}
       <div>
         <h2 className="font-semibold text-3xl mb-3">Location</h2>
-        <MyMap />
+        <MyMap
+          lat={data.location.coordinates.coordinates[0]}
+          lng={data.location.coordinates.coordinates[1]}
+        />
       </div>
 
       {/* Reviews */}
@@ -176,12 +146,18 @@ export default function ListingDetails() {
         <h2 className="font-semibold text-3xl mb-3">Host</h2>
         <div className="sm:flex items-center gap-8">
           <div className="flex gap-4  items-center">
-            <div className="size-24 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
-              <img className="w-3/4" src="/imgs/user.svg" alt="" />
+            <div className="size-24 flex items-center justify-center  bg-gray-500  overflow-hidden rounded-full p-0.5 ">
+              <img
+                className="w-full rounded-full"
+                src={data.host.profilePic}
+                alt=""
+              />
             </div>
             <div>
-              <h2 className="font-semibold text-2xl">Taha</h2>
-              <h3 className="text-gray-500 text-xl">Host since 2023</h3>
+              <h2 className="font-semibold text-2xl">{data.host.userName}</h2>
+              <h3 className="text-gray-500 text-xl">
+                Host since {new Date(data.host.createdAt).getFullYear()}
+              </h3>
             </div>
           </div>
 

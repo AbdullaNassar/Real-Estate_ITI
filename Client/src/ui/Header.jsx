@@ -7,7 +7,6 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../features/auth/useUser";
 import { useTheme } from "../features/theme/useTheme";
 import { useLogout } from "../features/auth/useLogout";
-import { validateYupSchema } from "formik";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { useState } from "react";
 import { SidebarModal } from "./Modal";
@@ -27,7 +26,6 @@ export default function Header() {
   const isSignupPage = location.pathname === "/signup";
   const isVerifyPage = location.pathname === "/verifyOtp";
   const isAuthPage = isLoginPage || isSignupPage || isVerifyPage;
-
   return (
     // <header className="bg-blue-400">header</header>
     <header className=" flex justify-between items-center px-8 pt-8 pb-4 border-b-gray-300  border-b-2">
@@ -141,10 +139,7 @@ export default function Header() {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  />
+                  <img alt="user Pic" src={user?.user.profilePic} />
                 </div>
               </div>
               <ul

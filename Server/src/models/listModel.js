@@ -11,16 +11,16 @@ const listSchema = new Schema(
     title: {
       type: String,
       required: [true, "Listing Title is required"],
-      unique:[true,"Title Must Be Unique"],
+      unique: [true, "Title Must Be Unique"],
       trim: true,
     },
     descrption: {
       type: String,
       required: [true, "Listing Description is required"],
     },
-    roomNumbers:{
-      type:Number,
-      default:1
+    roomNumbers: {
+      type: Number,
+      default: 1,
     },
     pricePerNight: {
       type: Number,
@@ -37,22 +37,22 @@ const listSchema = new Schema(
       enum: ["seaside", "city", "mountain", "rural"],
       default: "city",
     },
-    location:{
+    location: {
       address: {
-      type: String,
-      required: [true, "Address is Required"],
+        type: String,
+        required: [true, "Address is Required"],
       },
       coordinates: {
         type: {
           type: String,
-          enum: ['Point'],
-          default: 'Point',
+          enum: ["Point"],
+          default: "Point",
         },
         coordinates: {
           type: [Number], // [longitude, latitude]
-          required: [true,'Location coordinates is Required'],
+          required: [true, "Location coordinates is Required"],
         },
-      }
+      },
     },
     governorate: {
       type: String,
@@ -61,27 +61,27 @@ const listSchema = new Schema(
         "Giza",
         "Alexandria",
         "Qalyubia",
-        "Port Said",
+        "PortSaid",
         "Suez",
         "Dakahlia",
         "Sharqia",
         "Gharbia",
         "Monufia",
         "Beheira",
-        "Kafr El Sheikh",
+        "KafrElSheikh",
         "Fayoum",
-        "Beni Suef",
+        "BeniSuef",
         "Minya",
         "Assiut",
         "Sohag",
         "Qena",
         "Luxor",
         "Aswan",
-        "Red Sea",
-        "New Valley",
+        "RedSea",
+        "NewValley",
         "Matrouh",
-        "North Sinai",
-        "South Sinai"
+        "NorthSinai",
+        "SouthSinai",
       ],
       required: [true, "Governorate is required"],
     },
@@ -105,24 +105,26 @@ const listSchema = new Schema(
         message: "{PATH} must have 5 photos At Least",
       },
     },
-    bookedDates: [{
-      date: Date,
-      bookingId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Booking'
+    bookedDates: [
+      {
+        date: Date,
+        bookingId: {
+          type: Schema.Types.ObjectId,
+          ref: "Booking",
+        },
+        guestId: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        checkInDate: Date,
+        checkOutDate: Date,
+        dayType: {
+          type: String,
+          enum: ["check-in", "stay", "check-out"],
+          default: "stay",
+        },
       },
-      guestId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-      },
-      checkInDate: Date,
-      checkOutDate: Date,
-      dayType: {
-        type: String,
-        enum: ['check-in', 'stay', 'check-out'],
-        default: 'stay'
-      }
-    }],
+    ],
     reviews: [ratingSchema],
     isApproved: {
       type: Boolean,
@@ -132,17 +134,16 @@ const listSchema = new Schema(
   { timestamps: true }
 );
 
-listSchema.virtual('averageRating').get(function (){
-  if(this.reviews.length === 0) return 0;
+listSchema.virtual("averageRating").get(function () {
+  if (this.reviews.length === 0) return 0;
 
-  const total = this.reviews.reduce((sum,review)=> sum + review.rating , 0);
+  const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
 
   return total / this.reviews.length;
 });
 
-listSchema.set('toObject', { virtuals: true });
-listSchema.set('toJSON', { virtuals: true });
-
+listSchema.set("toObject", { virtuals: true });
+listSchema.set("toJSON", { virtuals: true });
 
 const listModel = mongoose.model("List", listSchema);
 export default listModel;
