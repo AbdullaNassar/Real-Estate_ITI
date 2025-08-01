@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useUser } from "../features/auth/useUser";
 import EditProfileModal from "../component/EditProfileModal";
 import toast from "react-hot-toast";
+import ChangePasswordModal from "../component/ChangePasswordModal";
 
 export default function Profile() {
   const { user, refetch } = useUser();
   const [showEditModal, setShowEditModal] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
+  const [editPassword,setEditPassword] =useState(false)
   const curUser = user?.user;
 
   const handleEditSuccess = async () => {
@@ -62,18 +64,28 @@ export default function Profile() {
             Edit Profile
           </button>
 
-          <button className="sm:w-auto px-11 py-2 border rounded bg-blue-400 text-white hover:bg-blue-700 transition whitespace-nowrap cursor-pointer">
+          <button 
+          onClick={()=>setEditPassword(true)}
+          className="sm:w-auto px-11 py-2 border rounded bg-blue-400 text-white hover:bg-blue-700 transition whitespace-nowrap cursor-pointer">
             Change Password
           </button>
         </div>
       </div>
-
+        {/* editModal */}
       {showEditModal && (
         <EditProfileModal
           onClose={() => setShowEditModal(false)}
           onSuccess={handleEditSuccess}
         />
       )}
+
+      {/* change password */}
+      {editPassword && (
+        <ChangePasswordModal
+          onClose={() => setEditPassword(false)}
+        />
+      )}
+      
 
       {/* tabs */}
       <div className="mt-6 flex flex-wrap border-b gap-2">
@@ -98,7 +110,7 @@ export default function Profile() {
             <p>{curUser?.phoneNumber || "not available yet"}</p>
           </div>
           <div className="min-w-0">
-            <p className="text-lg font-semibold text-gray-500">Government ID</p>
+            <p className="text-lg font-semibold text-gray-500">Is Verified</p>
             <p>{curUser?.isVerified ? "Verified" : "Not verified"}</p>
           </div>
         </div>
