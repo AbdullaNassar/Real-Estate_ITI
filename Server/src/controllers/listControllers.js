@@ -41,7 +41,6 @@ export const createList = async (req, res) => {
       });
     }
 
-    console.log(req.user);
     const list = await listModel.create({
       host: req.user._id,
       title,
@@ -67,7 +66,6 @@ export const createList = async (req, res) => {
       data: list,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       status: "Failed",
       message: "Internal Server Error",
@@ -78,7 +76,7 @@ export const createList = async (req, res) => {
 
 export const readLists = async (req, res) => {
   try {
-    const { sort, page, limit = 10, field } = req?.query;
+    const { sort, page = 1 , limit = 10, field } = req?.query;
 
     const allowedFilters = ["governorate", "categoryId"];
     const filters = {};
@@ -91,9 +89,6 @@ export const readLists = async (req, res) => {
       isApproved: true,
       ...filters,
     };
-    console.log(queryBody);
-    console.log(page, limit);
-    console.log("price", req.query.price);
     if (req.query.price) queryBody.pricePerNight = { $lte: +req.query.price };
     //get total count before pagination
     const totalDocs = await listModel.countDocuments(queryBody);
