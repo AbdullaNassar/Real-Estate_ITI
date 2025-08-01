@@ -21,7 +21,7 @@ export default function Hero() {
             placeholder="Where to?"
             className="flex-1 px-4 py-2 rounded-l-md border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primarry"
           />
-          <button className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm sm:rounded-r-md hover:bg-primarry-hover hover:cursor-pointer transition-all">
+          <button className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm sm:rounded-none sm:rounded-r-md hover:bg-primarry-hover hover:cursor-pointer transition-all">
             Search
           </button>
         </div>

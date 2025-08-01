@@ -6,7 +6,8 @@ export async function getCurrentUser() {
     return response.data;
   } catch (error) {
     if (
-      error.response?.status === 401 || // Not authorized
+      error.response?.status === 401 ||
+      error.response?.status === 404 || // Not authorized
       error.response?.data?.message?.includes("not authorized")
     ) {
       return null;

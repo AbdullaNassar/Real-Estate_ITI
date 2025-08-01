@@ -43,7 +43,7 @@ export default function Header() {
       {/* Mobile menu */}
       <button
         onClick={() => setIsOpenSidebar(true)}
-        className="md:hidden text-3xl"
+        className="md:hidden text-3xl text-gray-800"
       >
         <HiMenuAlt1 />
       </button>
@@ -114,7 +114,7 @@ export default function Header() {
         {isLoginPage && (
           <Link
             to="/signup"
-            className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-gray-100 hover:cursor-pointer transition-all hover:bg-primarry-700"
+            className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-stone-100 hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
             signup
           </Link>
@@ -122,7 +122,7 @@ export default function Header() {
         {(isSignupPage || (!user && !isLoginPage)) && (
           <Link
             to="/login"
-            className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-gray-100  hover:cursor-pointer transition-all hover:bg-primarry-700"
+            className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-stone-100  hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
             login
           </Link>
@@ -139,7 +139,7 @@ export default function Header() {
                 className="btn btn-ghost btn-circle avatar"
               >
                 <div className="w-10 rounded-full">
-                  <img alt="user Pic" src={user?.user.profilePic} />
+                  <img alt="user Pic" src={user?.user?.profilePic} />
                 </div>
               </div>
               <ul

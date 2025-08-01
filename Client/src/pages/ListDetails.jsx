@@ -7,19 +7,15 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useList } from "../features/Lists/useList";
 import Spinner from "../ui/Spinner";
-import { useUser } from "../features/auth/useUser";
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { list, error, isLoading } = useList();
 
-  let { user, isLoading: isLoadingUser, error: errorUser } = useUser();
-  if (isLoading || isLoadingUser) return <Spinner />;
-  if (error || errorUser) return <h2>{error?.message}error???</h2>;
+  if (isLoading) return <Spinner />;
+  if (error) return <h2>{error?.message}error???</h2>;
   console.log(list);
   const data = list.data;
-  user = user.user;
-  console.log(user);
   return (
     <div className="flex flex-col gap-8 ">
       {/* gallery */}
