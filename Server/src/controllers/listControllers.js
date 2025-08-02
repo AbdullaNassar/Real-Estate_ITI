@@ -76,7 +76,9 @@ export const createList = async (req, res) => {
 
 export const readLists = async (req, res) => {
   try {
-    const { sort, page = 1 , limit = 10, field } = req?.query;
+    const {sort} = req?.query;
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
 
     const allowedFilters = ["governorate", "categoryId"];
     const filters = {};
@@ -89,8 +91,11 @@ export const readLists = async (req, res) => {
       isApproved: true,
       ...filters,
     };
-    if (req.query.price) queryBody.pricePerNight = { $lte: +req.query.price };
-    //get total count before pagination
+
+    if (req.query.price && !isNaN(req.query.price)) {
+      queryBody.pricePerNight = { $lte: +req.query.price };
+    }
+
     const totalDocs = await listModel.countDocuments(queryBody);
 
     let query = listModel.find(queryBody).populate("categoryId amenitiesId");
@@ -99,18 +104,12 @@ export const readLists = async (req, res) => {
       query = query.sort(sort.split(",").join(" "));
     }
 
-    if (field) {
-      query = query.select(field.split(",").join(" "));
-    }
+    const skip = (page - 1) * limit;
+    query = query.skip(skip).limit(limit);
 
-    if (page) {
-      const skip = (page - 1) * limit;
-      query = query.skip(skip).limit(+limit);
-    }
+    const listings = await query;
 
-    const lists = await query;
-
-    if (!lists) {
+    if (!listings || listings.length === 0) {
       return res.status(404).json({
         status: "Failed",
         message: "No Listings Found",
@@ -120,10 +119,11 @@ export const readLists = async (req, res) => {
     res.status(200).json({
       status: "Success",
       total: totalDocs,
-      results: lists.length,
-      data: lists,
+      results: listings.length,
+      data: listings,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       status: "Failed",
       message: "Internal Server Error",
@@ -168,56 +168,30 @@ export const getListById = async (req, res) => {
 
 export const getListingsByGovernorate = async (req, res) => {
   try {
-    const { governorate } = req.params;
 
-    const validGovernorates = [
-      "Cairo",
-      "Giza",
-      "Alexandria",
-      "Qalyubia",
-      "Port Said",
-      "Suez",
-      "Dakahlia",
-      "Sharqia",
-      "Gharbia",
-      "Monufia",
-      "Beheira",
-      "Kafr El Sheikh",
-      "Fayoum",
-      "Beni Suef",
-      "Minya",
-      "Assiut",
-      "Sohag",
-      "Qena",
-      "Luxor",
-      "Aswan",
-      "Red Sea",
-      "New Valley",
-      "Matrouh",
-      "North Sinai",
-      "South Sinai",
-    ];
+    const listings = await listModel.aggregate([
+      {
+        $group: {
+          _id: "$governorate",
+          count: { $sum: 1 },
+          listings: { $push: "$$ROOT" }
+        }
+      },
+      {
+        $sort: { _id: 1 } // sort alphabetically by governorate
+      }
+    ]);
 
-    if (!governorate) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Governorate Is Required",
-      });
+    if(!listings){
+      return res.status(404).json({
+        status:"Failed",
+        message:"No Listings Found"
+      })
     }
-
-    if (!validGovernorates.includes(governorate)) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Invalid governorate name",
-      });
-    }
-
-    const listing = await listModel.find({ governorate });
 
     return res.status(200).json({
       status: "Success",
-      results: listing.length,
-      data: listing,
+      data: listings
     });
   } catch (error) {
     return res.status(500).json({

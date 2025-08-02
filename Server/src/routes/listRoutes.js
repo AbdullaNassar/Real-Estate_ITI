@@ -22,7 +22,7 @@ router.route("/").get(readLists);
 router.route("/search").get(searchLists);
 
 router
-    .route('/governorate/:governorate')
+    .route('/governorate')
     .get(getListingsByGovernorate);
 
 router.route("/:id").get(getListById);
@@ -33,7 +33,7 @@ router
   .route("/")
   .post(
     userPermission("host"),
-    upload.array("photos", 5),
+    upload.array("photos", 10),
     processAndUploadImages("listings"),
     createList
   );
@@ -42,7 +42,7 @@ router
   .route("/:id")
   .patch(
     userPermission("admin", "host"),
-    upload.array("photos", 5),
+    upload.array("photos", 10),
     updateList)
   .delete(userPermission("admin", "host"), deleteList);
 
