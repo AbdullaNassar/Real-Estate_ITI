@@ -7,15 +7,56 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useList } from "../features/Lists/useList";
 import Spinner from "../ui/Spinner";
+import { useUser } from "../features/auth/useUser";
+import { useNavigate } from "react-router-dom";
+import { useCheckoutSessionMutation } from "../features/booking/useCheckoutSession";
+import toast from "react-hot-toast";
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { list, error, isLoading } = useList();
+  const { error: errorUser, isLoading: isLoadingUser, user } = useUser();
+  const navigate = useNavigate();
+  const {
+    fetchCheckoutSession,
+    session,
+    isPending,
+    error: errorCheckout,
+  } = useCheckoutSessionMutation();
 
-  if (isLoading) return <Spinner />;
-  if (error) return <h2>{error?.message}error???</h2>;
-  console.log(list);
+  if (isLoading || isLoadingUser) return <Spinner />;
+  if (error || errorUser) return <h2>{error?.message}error???</h2>;
+
+  console.log("us", user);
   const data = list.data;
+  const days = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+  function handleBook() {
+    if (!user || user?.user.role !== "guest") {
+      toast.error("you must be logged as a guest to book a list");
+      // navigate("/login");
+      return;
+    }
+
+    fetchCheckoutSession(
+      { listId: data._id, checkIn: startDate, checkOut: endDate },
+      {
+        onSuccess: (data) => {
+          navigate("/");
+          console.log(data);
+          window.location.href = data.session.url;
+        },
+        onError: (error) => {
+          const message =
+            error?.response?.data?.message ||
+            error?.message ||
+            "Booking failed. Please try again.";
+          toast.error(message);
+        },
+      }
+    );
+    console.log("booked");
+  }
   return (
     <div className="flex flex-col gap-8 ">
       {/* gallery */}
@@ -196,22 +237,29 @@ export default function ListingDetails() {
         <div className="flex flex-col gap-3 max-w-1/3">
           <div className="flex justify-between">
             <span className="text-gray-500">Nighly rate</span>
-            <span className="font-semibold ">$250</span>
+            <span className="font-semibold ">${data.pricePerNight}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Cleaning Fee</span>
-            <span className="font-semibold">$50</span>
+            <span className="font-semibold">$0</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Service Fee</span>
-            <span className="font-semibold">$250</span>
+            <span className="font-semibold">$0</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Total</span>
-            <span className="font-semibold">$500</span>
+            <span className="font-semibold">
+              ${Math.round(days * data.pricePerNight)}
+            </span>
           </div>
-          <button className="bg-primarry mt-8 mb-4 py-2 text-stone-100 rounded-sm text-lg hover:bg-primarry-hover hover:cursor-pointer transition-all">
-            Book Now
+          <button
+            disabled={isPending}
+            onClick={handleBook}
+            className="bg-primarry mt-8 mb-4 py-2 text-stone-100 rounded-sm
+            text-lg hover:bg-primarry-hover hover:cursor-pointer transition-all"
+          >
+            {isPending ? "Processing..." : "Proceed to Checkout"}
           </button>
         </div>
       </div>

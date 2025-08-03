@@ -5,6 +5,8 @@ import {
   getAllGuestBooking,
   getAllHostListingBooked,
   getBookingById,
+  getCheckout,
+  prepareCheckOut,
   updateBooking,
 } from "../controllers/bookingControllers.js";
 import { userPermission } from "../middlewares/authorization.middleware.js";
@@ -14,9 +16,9 @@ const router = express.Router();
 
 router.use(isUserLoggedIn);
 
-router
-  .route("/guest")
-  .get(userPermission("admin"), getAllGuestBooking);
+router.post("/checkout-session/:listId", prepareCheckOut, getCheckout);
+
+router.route("/guest").get(userPermission("admin"), getAllGuestBooking);
 
 router
   .route("/host")
@@ -24,10 +26,10 @@ router
 
 router
   .route("/:listingId")
-  .post(userPermission("admin", "guest"), createBooking)
+  .post(userPermission("admin", "guest"), createBooking);
 
 router
-  .route('/:bookingId')
+  .route("/:bookingId")
   .get(userPermission("admin", "guest"), getBookingById)
   .patch(userPermission("admin", "guest"), updateBooking)
   .delete(userPermission("admin", "guest"), deleteBooking);

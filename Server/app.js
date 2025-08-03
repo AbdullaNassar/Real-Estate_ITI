@@ -12,6 +12,7 @@ import categoryRouter from "./src/routes/categoryRoutes.js";
 import amenityRouter from "./src/routes/amenityRoutes.js";
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 import cookieParser from "cookie-parser";
+import { stripeWebhookHandler } from "./src/controllers/bookingControllers.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -21,8 +22,8 @@ const DB_LOCAL = process.env.DB_LOCAL;
 const DB_ATLAS = process.env.DB_ATLAS;
 const DB = process.env.DB;
 mongoose
-  // .connect(DB_LOCAL)
-  .connect(DB_ATLAS)
+  .connect(DB_LOCAL)
+  // .connect(DB_ATLAS)
   // .connect(DB)
   .then(() => {
     console.log("DB Connected Successfully");
@@ -34,6 +35,12 @@ mongoose
 
 // Swager Docmintation
 swaggerDocs(app);
+
+app.post(
+  "/webhook-checkout",
+  express.raw({ type: "application/json" }),
+  stripeWebhookHandler
+);
 
 //general middlewares
 app.use(express.json());
