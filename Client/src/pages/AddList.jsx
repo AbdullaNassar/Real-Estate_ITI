@@ -12,6 +12,8 @@ import { useCategories } from "../features/Lists/categories/useCategories";
 import { useCreateList } from "../features/Lists/useCreateList";
 import Spinner from "../ui/Spinner";
 import { governmentList } from "../utils/constants";
+import { useUser } from "../features/auth/useUser";
+import { useNavigate } from "react-router-dom";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -31,8 +33,11 @@ function ClickHandler({ onClick }) {
   return null;
 }
 export default function AddList() {
+  const { error, isLoading, user } = useUser();
+
   const [images, setImages] = useState([]);
   const [errorImages, setErrorImages] = useState(null);
+  const navigate = useNavigate();
 
   const {
     amenities,
@@ -105,10 +110,17 @@ export default function AddList() {
     setErrorImages("");
   };
 
-  if (isAminites || loadingCategories) return <Spinner />;
-  if (errorAminites || errorCategories) return <h1>Eroor in aminties</h1>;
+  if (isAminites || loadingCategories || isLoading) return <Spinner />;
+  if (errorAminites || errorCategories || error)
+    return <h1>Eroor in aminties</h1>;
 
-  console.log(categories);
+  console.log("user", user);
+  if (!user || user?.user.role !== "host") {
+    alert(
+      "you must be login as a host to add a list or create new account as a host"
+    );
+    navigate("/login");
+  }
   return (
     <div className="my-4">
       <h1 className="text-3xl font-semibold">Add New Listing</h1>

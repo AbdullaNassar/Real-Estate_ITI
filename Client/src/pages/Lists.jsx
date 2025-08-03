@@ -122,7 +122,7 @@ export default function Lists() {
             <select
               onChange={(e) => handleGovern(e)}
               value={govern}
-              className="p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
+              className="p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
             >
               <option value="all">Government</option>
               {governmentList.map((item) => {
@@ -136,7 +136,7 @@ export default function Lists() {
             <select
               onChange={(e) => handleCategory(e)}
               value={category}
-              className="p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
+              className="p-2 rounded-sm border focus:ring bg-gray-100 focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
             >
               <option value="all">List Type</option>
               {categories.data.map((item) => {
@@ -157,7 +157,7 @@ export default function Lists() {
                 onChange={(update) => setDateRange(update)}
                 isClearable={true}
                 placeholderText="Select a date range"
-                className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
+                className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
               />
             </div>
             <div className="space-y-2">
