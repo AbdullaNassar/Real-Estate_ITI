@@ -173,22 +173,22 @@ async function createBookinCheckOut(session) {
     });
 
     // Create an object of dates between check-in and check-out
-    // const current = new Date(checkIn); // or use any specific day you want
+    const current = new Date(checkIn); // or use any specific day you want
 
-    // const bookedDate = {
-    //   date: current,
-    //   bookingId: booking._id,
-    //   guestId: user._id,
-    //   checkInDate,
-    //   checkOutDate,
-    //   dayType: "check-in", // or 'stay' or 'check-out'
-    // };
+    const bookedDate = {
+      date: current,
+      bookingId: booking._id,
+      guestId: user._id,
+      checkInDate: checkIn,
+      checkOutDate: checkOut,
+      // dayType: "check-in", // or 'stay' or 'check-out'
+    };
 
-    // await listModel.findByIdAndUpdate(
-    //   { listingId: listing },
-    //   { $push: { bookedDates: bookedDate } },
-    //   { new: true }
-    // );
+    const found = await listModel.findByIdAndUpdate(
+      listing,
+      { $push: { bookedDates: bookedDate } },
+      { new: true }
+    );
   } catch (error) {
     console.log(error);
   }

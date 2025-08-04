@@ -76,7 +76,7 @@ export const createList = async (req, res) => {
 
 export const readLists = async (req, res) => {
   try {
-    const {sort} = req?.query;
+    const { sort } = req?.query;
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
 
@@ -96,6 +96,9 @@ export const readLists = async (req, res) => {
       queryBody.pricePerNight = { $lte: +req.query.price };
     }
 
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+
     const totalDocs = await listModel.countDocuments(queryBody);
 
     let query = listModel.find(queryBody).populate("categoryId amenitiesId");
@@ -109,12 +112,12 @@ export const readLists = async (req, res) => {
 
     const listings = await query;
 
-    if (!listings || listings.length === 0) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "No Listings Found",
-      });
-    }
+    // if (!listings || listings.length === 0) {
+    //   return res.status(404).json({
+    //     status: "Failed",
+    //     message: "No Listings Found",
+    //   });
+    // }
 
     res.status(200).json({
       status: "Success",
@@ -168,30 +171,34 @@ export const getListById = async (req, res) => {
 
 export const getListingsByGovernorate = async (req, res) => {
   try {
-
     const listings = await listModel.aggregate([
+      {
+        $match: {
+          isApproved: true,
+        },
+      },
       {
         $group: {
           _id: "$governorate",
           count: { $sum: 1 },
-          listings: { $push: "$$ROOT" }
-        }
+          listings: { $push: "$$ROOT" },
+        },
       },
       {
-        $sort: { _id: 1 } // sort alphabetically by governorate
-      }
+        $sort: { _id: 1 }, // sort alphabetically by governorate
+      },
     ]);
 
-    if(!listings){
+    if (!listings) {
       return res.status(404).json({
-        status:"Failed",
-        message:"No Listings Found"
-      })
+        status: "Failed",
+        message: "No Listings Found",
+      });
     }
 
     return res.status(200).json({
       status: "Success",
-      data: listings
+      data: listings,
     });
   } catch (error) {
     return res.status(500).json({
