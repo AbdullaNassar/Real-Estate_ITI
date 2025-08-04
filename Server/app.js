@@ -10,6 +10,7 @@ import bookingRouter from "./src/routes/bookingRoutes.js";
 import ratingRouter from "./src/routes/ratingRoutes.js";
 import categoryRouter from "./src/routes/categoryRoutes.js";
 import amenityRouter from "./src/routes/amenityRoutes.js";
+import RAGRouter from './src/routes/RAGChatBootRoutes.js'
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 import cookieParser from "cookie-parser";
 import { stripeWebhookHandler } from "./src/controllers/bookingControllers.js";
@@ -60,6 +61,7 @@ app.use("/api/v1/bookings", bookingRouter);
 app.use("/api/v1/ratings", ratingRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/amenities", amenityRouter);
+app.use("/api/v1/chat-model", RAGRouter);
 
 //server
 
