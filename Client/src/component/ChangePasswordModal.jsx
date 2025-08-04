@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import { axiosInstance } from "../services/axiosInstance";
 import * as YUP from "yup";
-import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function ChangePasswordModal({ onClose }) {
+export default function ChangePasswordModal({ onClose ,onSuccess }) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
+   const queryClient = useQueryClient();
 
   function handleUpdatePassword(value) {
     SetIsLoading(true);
@@ -20,7 +22,11 @@ export default function ChangePasswordModal({ onClose }) {
       .then((res) => {
         console.log("change password success", res);
         toast.success("password change");
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+
+        if (onSuccess) onSuccess();
         onClose();
+        
       })
       .catch((err) => {
         SetErrMessage(err?.response?.data?.message);
