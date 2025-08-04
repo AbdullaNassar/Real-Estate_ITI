@@ -96,8 +96,22 @@ export const readLists = async (req, res) => {
       queryBody.pricePerNight = { $lte: +req.query.price };
     }
 
-    const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
+    const startDateStr = req.query.startDate;
+    const endDateStr = req.query.endDate;
+
+    if (startDateStr && endDateStr) {
+      const startDate = new Date(startDateStr);
+      const endDate = new Date(endDateStr);
+
+      queryBody.bookedDates = {
+        $not: {
+          $elemMatch: {
+            checkInDate: { $lte: endDate },
+            checkOutDate: { $gte: startDate },
+          },
+        },
+      };
+    }
 
     const totalDocs = await listModel.countDocuments(queryBody);
 
@@ -111,13 +125,6 @@ export const readLists = async (req, res) => {
     query = query.skip(skip).limit(limit);
 
     const listings = await query;
-
-    // if (!listings || listings.length === 0) {
-    //   return res.status(404).json({
-    //     status: "Failed",
-    //     message: "No Listings Found",
-    //   });
-    // }
 
     res.status(200).json({
       status: "Success",

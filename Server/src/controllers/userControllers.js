@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 import bcrypt from "bcryptjs";
 import Crypto from "crypto-js";
+import jwt from 'jsonwebtoken';
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -337,6 +338,17 @@ export const changePassword = async (req, res) => {
     user.password = newPassword;
 
     await user.save();
+
+    const token = jwt.sign({ id, userName, role }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+    });
+
+    res.cookie('token',token,{
+      httpOnly: true,
+      secure: false, // only secure in prod
+      sameSite: "Lax", // or "None" if you're testing cross-site (rarely needed in localhost)
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
 
     return res.status(200).json({
       status: "Success",
