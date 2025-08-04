@@ -68,3 +68,16 @@ export async function getListById(id) {
     throw new Error("error while fetch list by id ");
   }
 }
+
+export async function getListsByGovern() {
+  try {
+    const res = await axiosInstance.get("lists/governorate");
+    return res.data;
+  } catch (err) {
+    const message = err?.response?.data?.error;
+    if (message) {
+      throw new Error(message);
+    }
+    throw new Error("Error in load lists ");
+  }
+}

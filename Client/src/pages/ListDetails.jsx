@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useCheckoutSessionMutation } from "../features/booking/useCheckoutSession";
 import toast from "react-hot-toast";
 export default function ListingDetails() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const { list, error, isLoading } = useList();
   const { error: errorUser, isLoading: isLoadingUser, user } = useUser();
   const navigate = useNavigate();
@@ -26,8 +26,11 @@ export default function ListingDetails() {
 
   if (isLoading || isLoadingUser) return <Spinner />;
   if (error || errorUser) return <h2>{error?.message}error???</h2>;
+  const bookedDates = list?.data?.bookedDates?.map((item) => {
+    return { start: item.checkInDate, end: item.checkOutDate };
+  });
+  console.log(bookedDates);
 
-  console.log("us", user);
   const data = list.data;
   const days = (endDate - startDate) / (1000 * 60 * 60 * 24);
 
@@ -56,6 +59,12 @@ export default function ListingDetails() {
       }
     );
     console.log("booked");
+  }
+
+  function handleDate(dates) {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
   }
   return (
     <div className="flex flex-col gap-8 ">
@@ -209,25 +218,19 @@ export default function ListingDetails() {
       {/* Booking Date */}
       <div className="">
         <h2 className="font-semibold text-3xl mb-3">Booking</h2>
-        <div className="flex gap-4">
-          <div className="space-y-2">
-            <h3>Check-in</h3>
-            <DatePicker
-              selected={startDate}
-              minDate={new Date()}
-              onChange={(date) => setStartDate(date)}
-              className="border px-1.5 py-3 text-gray-500 rounded-lg border-gray-400"
-            />
-          </div>
-          <div className="space-y-2">
-            <h3>Check-out</h3>
-            <DatePicker
-              selected={endDate}
-              minDate={startDate}
-              onChange={(date) => setEndDate(date)}
-              className="border px-1.5 py-3 text-gray-500 rounded-lg border-gray-400"
-            />
-          </div>
+
+        <div className="space-y-2 ">
+          <h3> Select Your Stay Dates</h3>
+          <DatePicker
+            selectsRange={true}
+            startDate={startDate}
+            endDate={endDate}
+            onChange={handleDate}
+            isClearable={true}
+            placeholderText="Select a date range"
+            excludeDateIntervals={bookedDates}
+            className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
+          />
         </div>
       </div>
 

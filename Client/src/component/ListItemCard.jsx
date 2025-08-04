@@ -4,23 +4,26 @@ import { MdOutlineRoom } from "react-icons/md";
 import { RiStarSFill } from "react-icons/ri";
 import { IoPricetagOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-export default function ListItemCard() {
+export default function ListItemCard({ list }) {
+  console.log(list);
   const navigate = useNavigate();
   return (
     <div className=" border border-primarry shadow-xl text-center">
-      <img src="./imgs/list1.jpg" alt="list" className="h-48 w-full" />
+      <img src={list.photos[0]} alt="list pic" className="h-48 w-full" />
       <div className="p-2 space-y-2">
-        <h3>Stylish Apartment in Downtown Cairo</h3>
+        <h3>{list.title}</h3>
       </div>
 
       <div className="text-gray-500 flex justify-around items-center mb-4">
         <span className="flex gap-1 items-center">
           <MdOutlineRoom className="text-xl text-primarry" />
-          <span>Cairo</span>
+          <span>{list.governorate}</span>
         </span>
         <span className="flex gap-1 items-center">
           <CiUser className="text-xl text-primarry" />
-          <span>5 rooms</span>
+          <span>
+            {list.roomNumbers} {list.roomNumbers == 1 ? "room" : "rooms"}
+          </span>
         </span>
       </div>
       <div className="text-gray-500 flex justify-around items-center mb-3">
@@ -30,12 +33,12 @@ export default function ListItemCard() {
         </span>
         <span className="flex gap-1 items-center">
           <IoPricetagOutline className="text-xl text-primarry" />
-          <span>1,00/night</span>
+          <span>{list.pricePerNight}/night</span>
         </span>
       </div>
       <div>
         <button
-          onClick={() => navigate("/ListDetails/45")}
+          onClick={() => navigate(`/ListDetails/${list._id}`)}
           className="bg-primarry w-full  py-4 text-stone-100 transition-all mt-4 hover:cursor-pointer hover:bg-primarry-hover"
         >
           Show Details

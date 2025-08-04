@@ -4,7 +4,6 @@ import { LatLngExpression } from "leaflet";
 
 export default function MyMap({ lat = 30.0444, lng = 31.2357 }) {
   const center = [lat, lng]; // Cairo
-  console.log(center);
   return (
     <MapContainer
       center={center}

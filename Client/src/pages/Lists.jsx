@@ -1,5 +1,5 @@
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { data, useNavigate, useSearchParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { CiFilter } from "react-icons/ci";
@@ -13,10 +13,9 @@ export default function Lists() {
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchParam, setSearchParams] = useSearchParams();
   const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
-  console.log(page);
   const navigate = useNavigate();
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [startDate, endDate] = dateRange;
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [price, setPrice] = useState(null);
   const [filter, setFilter] = useState({});
   const { lists, error, isLoading, refetch } = useLists({
@@ -41,7 +40,7 @@ export default function Lists() {
         {errorCategories?.message} {error?.message}Error while loading lists...{" "}
       </h1>
     );
-  console.log(lists);
+
   const handleNext = () => {
     searchParam.set("page", page + 1);
     setSearchParams(searchParam);
@@ -85,13 +84,19 @@ export default function Lists() {
     setSearchParams(searchParam);
   }
 
+  function handleDate(dates) {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  }
   function handleReset() {
     navigate(location.pathname);
     setGovern("Government");
     setCategory("List Type");
     setPrice(null);
+    setStartDate(null);
+    setEndDate(null);
     setFilter({});
-    setDateRange([null, null]);
     refetch();
   }
   function handleApplyFilters() {
@@ -102,8 +107,13 @@ export default function Lists() {
     if (governorate) newFilter.governorate = governorate;
     if (categoryId) newFilter.categoryId = categoryId;
     if (price) newFilter.price = price;
+    if (startDate && endDate) {
+      newFilter.startDate = startDate;
+      newFilter.endDate = endDate;
+    }
     setFilter(newFilter);
     refetch();
+    // console.log(startDate, endDate);
   }
 
   const totalPages = Math.ceil(lists.total / PAGE_SIZE);
@@ -154,7 +164,7 @@ export default function Lists() {
                 selectsRange={true}
                 startDate={startDate}
                 endDate={endDate}
-                onChange={(update) => setDateRange(update)}
+                onChange={handleDate}
                 isClearable={true}
                 placeholderText="Select a date range"
                 className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
@@ -178,7 +188,7 @@ export default function Lists() {
             <div className="flex justify-between ">
               <button
                 onClick={handleReset}
-                className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-gray-800 hover:text-gray-100 transition-all mt-4 mb-2"
+                className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-gray-400 hover:text-gray-100 transition-all mt-4 mb-2"
               >
                 clear Filters
               </button>
