@@ -10,11 +10,14 @@ import Spinner from "../ui/Spinner";
 import { useUser } from "../features/auth/useUser";
 import { useNavigate } from "react-router-dom";
 import { useCheckoutSessionMutation } from "../features/booking/useCheckoutSession";
+import { useGuestBookings } from "../features/booking/useGeustBooking";
 import toast from "react-hot-toast";
+import Review from "../component/review";
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { list, error, isLoading } = useList();
+  const [showReview, setShowReview] = useState(false);
   const { error: errorUser, isLoading: isLoadingUser, user } = useUser();
   const navigate = useNavigate();
   const {
@@ -24,12 +27,20 @@ export default function ListingDetails() {
     error: errorCheckout,
   } = useCheckoutSessionMutation();
 
+  const { data: bookingsData } =
+    useGuestBookings();
+  console.log("bookingsData", bookingsData);
+
   if (isLoading || isLoadingUser) return <Spinner />;
   if (error || errorUser) return <h2>{error?.message}error???</h2>;
 
   console.log("us", user);
   const data = list.data;
   const days = (endDate - startDate) / (1000 * 60 * 60 * 24);
+
+  const validBooking = bookingsData?.find(
+    (b) => b.listing === data._id && new Date(b.checkOut) < new Date()
+  );
 
   function handleBook() {
     if (!user || user?.user.role !== "guest") {
@@ -176,7 +187,18 @@ export default function ListingDetails() {
           </div>
         </div>
       </div>
+      <div className="flex justify-start">
+        <button
+          onClick={() => setShowReview(!showReview)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+        >
+          make a review
+        </button>
+      </div>
 
+      {showReview && validBooking && (
+        <Review bookingId={validBooking._id} onClose={() => setShowReview(false)} />
+      )}
       {/* Host */}
 
       <div>
