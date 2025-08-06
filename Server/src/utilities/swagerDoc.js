@@ -1145,6 +1145,80 @@ const swaggerDefinition = {
         },
       },
     },
+    // ------------------- RAG Chatbot -------------------
+    "/rag/upload": {
+      post: {
+        summary: "Upload documents for embedding and storage",
+        tags: ["RAG Chatbot"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["documents"],
+                properties: {
+                  documents: {
+                    type: "array",
+                    items: { type: "string" },
+                    example: [
+                      "Maskan is a web app for booking rental properties in Egypt."
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: { description: "Documents uploaded and indexed" },
+          400: { description: "documents must be an array" },
+          500: { description: "Failed to upload documents" }
+        }
+      }
+    },
+
+    "/rag/query": {
+      post: {
+        summary: "Ask a question using the RAG assistant",
+        tags: ["RAG Chatbot"],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                required: ["question"],
+                properties: {
+                  question: {
+                    type: "string",
+                    example: "What does Maskan app do?"
+                  }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: "AI-generated answer",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    answer: { type: "string" }
+                  }
+                }
+              }
+            }
+          },
+          400: { description: "question is required" },
+          500: { description: "Failed to process query" }
+        }
+      }
+    }
+
   },
 };
 

@@ -60,10 +60,10 @@ export default function Login() {
       .email("you enter invalid email ")
       .required("email is required"),
     password: YUP.string()
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
-        "password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number"
-      )
+      // .matches(
+      //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
+      //   // "password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number"
+      // )
       .required("password is required"),
   });
 

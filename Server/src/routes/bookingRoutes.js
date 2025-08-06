@@ -18,7 +18,7 @@ router.use(isUserLoggedIn);
 
 router.post("/checkout-session/:listId", prepareCheckOut, getCheckout);
 
-router.route("/guest").get(userPermission("admin"), getAllGuestBooking);
+router.route("/guest").get(userPermission("admin","guest"), getAllGuestBooking);
 
 router
   .route("/host")

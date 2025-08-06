@@ -105,11 +105,21 @@ export const readLists = async (req, res) => {
       ];
     }
 
-    const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
+    const startDateStr = req.query.startDate;
+    const endDateStr = req.query.endDate;
 
-    if (startDate && endDate) {
-      // filter lists by this dates
+    if (startDateStr && endDateStr) {
+      const startDate = new Date(startDateStr);
+      const endDate = new Date(endDateStr);
+
+      queryBody.bookedDates = {
+        $not: {
+          $elemMatch: {
+            checkInDate: { $lte: endDate },
+            checkOutDate: { $gte: startDate },
+          },
+        },
+      };
     }
 
     const totalDocs = await listModel.countDocuments(queryBody);

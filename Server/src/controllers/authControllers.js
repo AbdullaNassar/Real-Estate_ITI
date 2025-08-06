@@ -1,7 +1,6 @@
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import Crypto from "crypto-js";
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 
 const generateToken = (id, userName, role) => {
