@@ -81,3 +81,15 @@ export async function getListsByGovern() {
     throw new Error("Error in load lists ");
   }
 }
+
+export async function searchLists(query) {
+  try {
+    const res = await axiosInstance.get(`/lists/search/?query=${query}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    const message = err.response?.data?.message;
+    if (message) throw new Error(message);
+    throw new Error("Error while searching lists...");
+  }
+}

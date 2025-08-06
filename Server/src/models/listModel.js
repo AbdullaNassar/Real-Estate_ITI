@@ -145,5 +145,11 @@ listSchema.virtual("averageRating").get(function () {
 listSchema.set("toObject", { virtuals: true });
 listSchema.set("toJSON", { virtuals: true });
 
+listSchema.index({
+  title: "text",
+  description: "text",
+  governorate: "text",
+});
+
 const listModel = mongoose.model("List", listSchema);
 export default listModel;

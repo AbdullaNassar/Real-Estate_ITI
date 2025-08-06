@@ -18,7 +18,7 @@ import Privacy from "./pages/Privacy";
 import VerifyOtp from "./pages/VerifyOtp";
 import { store } from "./store";
 import { Provider } from "react-redux";
-
+import "./i18n";
 import EditProfileModal from "./component/EditProfileModal";
 
 import { ScrollToTop } from "./component/ScrollToTop";
@@ -26,7 +26,7 @@ import AddList from "./pages/AddList";
 import Lists from "./pages/Lists";
 import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/paymentSuccess";
-
+import { useTranslation } from "react-i18next";
 const queryClient = new QueryClient();
 function App() {
   return (

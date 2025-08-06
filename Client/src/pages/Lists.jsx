@@ -1,5 +1,5 @@
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { data, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { CiFilter } from "react-icons/ci";
@@ -9,6 +9,8 @@ import ListItem from "../features/Lists/ListItem";
 import { governmentList, PAGE_SIZE } from "../utils/constants";
 import { useCategories } from "../features/Lists/categories/useCategories";
 import Empty from "../ui/Empty";
+import { IoSearch } from "react-icons/io5";
+import { FaArrowRight } from "react-icons/fa";
 export default function Lists() {
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchParam, setSearchParams] = useSearchParams();
@@ -18,6 +20,7 @@ export default function Lists() {
   const [endDate, setEndDate] = useState(null);
   const [price, setPrice] = useState(null);
   const [filter, setFilter] = useState({});
+
   const { lists, error, isLoading, refetch } = useLists({
     page,
     filter,
@@ -41,6 +44,7 @@ export default function Lists() {
       </h1>
     );
 
+  console.log(lists);
   const handleNext = () => {
     searchParam.set("page", page + 1);
     setSearchParams(searchParam);
@@ -52,7 +56,6 @@ export default function Lists() {
   };
 
   function handleGovern(e) {
-    searchParam.set("page", 1);
     if (e.target.value === "all") {
       setGovern("Government");
       searchParam.delete("governorate");
@@ -65,7 +68,6 @@ export default function Lists() {
   }
 
   function handleCategory(e) {
-    searchParam.set("page", 1);
     if (e.target.value === "all") {
       setCategory("List Type");
       searchParam.delete("categoryId");
@@ -78,7 +80,6 @@ export default function Lists() {
   }
 
   function handlePrice(e) {
-    searchParam.set("page", 1);
     setPrice(+e.target.value);
     searchParam.set("pricePerNight", e.target.value);
     setSearchParams(searchParam);
@@ -88,7 +89,29 @@ export default function Lists() {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+    if (start && end) {
+      searchParam.set("startDate", start);
+      searchParam.set("endDate", end);
+    } else {
+      searchParam.delete("startDate");
+      searchParam.delete("endDate");
+    }
+    setSearchParams(searchParam);
   }
+
+  function handleSearch(e) {
+    if (e.target.value) {
+      searchParam.set("query", e.target.value);
+    } else {
+      if (searchParam.get("query")) {
+        handleApplyFilters();
+      }
+      searchParam.delete("query");
+    }
+    setSearchQuery(e.target.value);
+    setSearchParams(searchParam);
+  }
+
   function handleReset() {
     navigate(location.pathname);
     setGovern("Government");
@@ -99,11 +122,17 @@ export default function Lists() {
     setFilter({});
     refetch();
   }
+
   function handleApplyFilters() {
+    searchParam.set("page", 1);
+    setSearchParams(searchParam);
     const newFilter = {};
     const governorate = searchParam.get("governorate");
     const categoryId = searchParam.get("categoryId");
     const price = searchParam.get("pricePerNight");
+    const query = searchParam.get("query");
+    const startDate = searchParam.get("startDate");
+    const endDate = searchParam.get("endDate");
     if (governorate) newFilter.governorate = governorate;
     if (categoryId) newFilter.categoryId = categoryId;
     if (price) newFilter.price = price;
@@ -111,12 +140,18 @@ export default function Lists() {
       newFilter.startDate = startDate;
       newFilter.endDate = endDate;
     }
+
+    if (query) {
+      newFilter.query = query;
+    }
+
     setFilter(newFilter);
     refetch();
     // console.log(startDate, endDate);
   }
 
   const totalPages = Math.ceil(lists.total / PAGE_SIZE);
+
   return (
     <div className="md:flex gap-6 my-6 space-y-4 ">
       <div className=" w-72 shadow pl-4 pt-2 ">
@@ -166,6 +201,7 @@ export default function Lists() {
                 endDate={endDate}
                 onChange={handleDate}
                 isClearable={true}
+                minDate={new Date()}
                 placeholderText="Select a date range"
                 className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
               />
@@ -205,25 +241,22 @@ export default function Lists() {
       <div className=" grow space-y-6 flex flex-col">
         <div className="flex-col-reverse items-start md:flex-row gap-4 md:gap-0 flex md:justify-between md:items-center ">
           <h2 className="text-xl font-bold">{lists.total} Results</h2>
-          <label className="input bg-gray-200 rounded-full">
-            <svg
-              className="h-[1em] opacity-50"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
+          <div className="flex">
+            <input
+              value={searchQuery}
+              onChange={handleSearch}
+              type="search"
+              className=" bg-gray-200 rounded-full rounded-r-none p-2 pl-4 grow focus:!outline-none focus:!isolation-auto focus:!z-0 focus:!outline-offset-0"
+              placeholder="Search"
+            />
+            <button
+              onClick={handleApplyFilters}
+              className="bg-primarry rounded-r-full p-2 hover:cursor-pointer text-stone-200 hover:bg-primarry-hover"
             >
-              <g
-                strokeLinejoin="round"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                fill="none"
-                stroke="currentColor"
-              >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-              </g>
-            </svg>
-            <input type="search" className="grow" placeholder="Search" />
-          </label>
+              <FaArrowRight />
+              {/* <IoSearch /> */}
+            </button>
+          </div>
         </div>
         <hr className="text-gray-500" />
 

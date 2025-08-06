@@ -96,8 +96,21 @@ export const readLists = async (req, res) => {
       queryBody.pricePerNight = { $lte: +req.query.price };
     }
 
+    if (req.query.query) {
+      const searchRegex = new RegExp(req.query.query, "i");
+      queryBody.$or = [
+        { title: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+        { governorate: { $regex: searchRegex } },
+      ];
+    }
+
     const startDate = req.query.startDate;
     const endDate = req.query.endDate;
+
+    if (startDate && endDate) {
+      // filter lists by this dates
+    }
 
     const totalDocs = await listModel.countDocuments(queryBody);
 
@@ -111,13 +124,6 @@ export const readLists = async (req, res) => {
     query = query.skip(skip).limit(limit);
 
     const listings = await query;
-
-    // if (!listings || listings.length === 0) {
-    //   return res.status(404).json({
-    //     status: "Failed",
-    //     message: "No Listings Found",
-    //   });
-    // }
 
     res.status(200).json({
       status: "Success",
@@ -346,53 +352,40 @@ export const deleteList = async (req, res) => {
 
 export const searchLists = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      price,
-      date,
-      location,
-      amenities,
-      governorate,
-    } = req?.query;
-    const query = {
+    const keyword = req.query.query?.trim();
+    if (!keyword || keyword.length < 3) {
+      return res.status(400).json({
+        status: "failed",
+        message: "You must enter at least 3 characters",
+      });
+    }
+
+    const searchRegex = new RegExp(keyword, "i");
+    console.log(searchRegex);
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const totalDocs = await listModel.countDocuments({
       isApproved: true,
-    };
-    if (title?.trim()) {
-      query.title = { $regex: new RegExp(title, "i") };
-    }
-    if (description?.trim()) {
-      query.descrption = { $regex: new RegExp(description, "i") };
-    }
-    if (price?.trim()) {
-      query.pricePerNight = { $lte: price };
-    }
-    if (date?.trim()) {
-      const currDate = new Date(date);
-      const nextDate = new Date(currDate);
-      nextDate.setDate(nextDate.getDate() + 1);
+      $or: [
+        { title: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+        { governorate: { $regex: searchRegex } },
+      ],
+    });
 
-      query.createdAt = {
-        $gte: currDate,
-        $lt: nextDate,
-      };
-    }
-    if (location?.trim()) {
-      query.location = { $regex: new RegExp(location, "i") };
-    }
-    if (amenities?.trim()) {
-      query.amenities = { $regex: new RegExp(amenities, "i") };
-    }
-
-    if (governorate?.trim()) {
-      query.governorate = { $regex: new RegExp(governorate, "i") };
-    }
-
-    const lists = await listModel.find(query);
+    const lists = await listModel.find({
+      isApproved: true,
+      $or: [
+        { title: { $regex: searchRegex } },
+        { description: { $regex: searchRegex } },
+        { governorate: { $regex: searchRegex } },
+      ],
+    });
 
     res.status(200).json({
       status: "Success",
-      results: lists.length,
+      results: totalDocs,
       lists: lists,
     });
   } catch (error) {

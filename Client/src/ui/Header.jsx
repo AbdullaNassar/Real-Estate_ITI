@@ -1,5 +1,8 @@
 import logo from "/imgs/logo.svg";
 import logoBlack from "/imgs/logoBlack.svg";
+import logoar from "/imgs/logoar.svg";
+import logoardark from "/imgs/logoardark.svg";
+
 import { TbWorld } from "react-icons/tb";
 import { CiDark, CiLogin } from "react-icons/ci";
 import { CiLight } from "react-icons/ci";
@@ -10,6 +13,7 @@ import { useLogout } from "../features/auth/useLogout";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { useState } from "react";
 import { SidebarModal } from "./Modal";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
@@ -19,9 +23,16 @@ export default function Header() {
 
   const { isPending: isLogout, logout } = useLogout();
   const { isLoading, error, user } = useUser();
+
+  const { t, i18n } = useTranslation();
+  // Change to Arabic
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "en" ? "ar" : "en";
+    i18n.changeLanguage(newLang);
+    document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr"; // optional for RTL support
+  };
   if (isLoading) return <h1>loading...</h1>;
   if (error) return <h1>error{error.message}</h1>;
-
   const isLoginPage = location.pathname === "/login";
   const isSignupPage = location.pathname === "/signup";
   const isVerifyPage = location.pathname === "/verifyOtp";
@@ -34,7 +45,15 @@ export default function Header() {
         className="cursor-pointer hidden md:block md:w-48 "
       >
         <img
-          src={theme === "light" ? logo : logoBlack}
+          src={
+            theme === "light"
+              ? i18n.language === "en"
+                ? logo
+                : logoar
+              : i18n.language === "en"
+              ? logoBlack
+              : logoardark
+          }
           className="w-full"
           alt="Maskn Logo"
         />
@@ -62,7 +81,7 @@ export default function Header() {
               }`
             }
           >
-            Home
+            {t("Home")}
           </NavLink>
         </li>
         <li>
@@ -73,7 +92,7 @@ export default function Header() {
               }`
             }
           >
-            Listings
+            {t("Listings")}
           </NavLink>
         </li>
         <li>
@@ -84,7 +103,7 @@ export default function Header() {
               }`
             }
           >
-            About
+            {t("About")}
           </NavLink>
         </li>
         <li>
@@ -95,13 +114,16 @@ export default function Header() {
               }`
             }
           >
-            Contact us
+            {t("Contact us")}
           </NavLink>
         </li>
       </ul>
       <div className="flex gap-2 md:gap-4 items-center">
         <div className="flex gap-2">
-          <button className="size-8 rounded-full text-gray-600 bg-gray-200 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all ">
+          <button
+            onClick={toggleLanguage}
+            className="size-8 rounded-full text-gray-600 bg-gray-200 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all "
+          >
             <TbWorld />
           </button>
           <button
