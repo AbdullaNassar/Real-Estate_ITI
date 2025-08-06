@@ -15,3 +15,9 @@ export async function getCheckoutSession({ listId, checkIn, checkOut }) {
     throw new Error(message);
   }
 }
+
+
+export async function getAllGuestBookings() {
+  const res = await axiosInstance.get("/bookings/guest");
+  return res.data.data;
+}
