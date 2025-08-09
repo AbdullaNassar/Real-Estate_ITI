@@ -5,6 +5,7 @@ import {
   getAllGuestBooking,
   getAllHostListingBooked,
   getBookingById,
+  getBookingsList,
   getCheckout,
   prepareCheckOut,
   updateBooking,
@@ -18,11 +19,17 @@ router.use(isUserLoggedIn);
 
 router.post("/checkout-session/:listId", prepareCheckOut, getCheckout);
 
-router.route("/guest").get(userPermission("admin","guest"), getAllGuestBooking);
+router
+  .route("/guest")
+  .get(userPermission("admin", "guest"), getAllGuestBooking);
 
 router
   .route("/host")
   .get(userPermission("admin", "host"), getAllHostListingBooked);
+
+router
+  .route("/host/:listingId")
+  .get(userPermission("admin", "host"), getBookingsList);
 
 router
   .route("/:listingId")

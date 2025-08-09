@@ -5,6 +5,7 @@ import {
   deleteList,
   getListById,
   getListingsByGovernorate,
+  HostLists,
   readLists,
   searchLists,
   updateList,
@@ -21,9 +22,8 @@ router.route("/").get(readLists);
 
 router.route("/search").get(searchLists);
 
-router
-    .route('/governorate')
-    .get(getListingsByGovernorate);
+router.route("/governorate").get(getListingsByGovernorate);
+router.route("/hostlists").get(isUserLoggedIn, HostLists);
 
 router.route("/:id").get(getListById);
 
@@ -43,9 +43,10 @@ router
   .patch(
     userPermission("admin", "host"),
     upload.array("photos", 10),
-    updateList)
+    updateList
+  )
   .delete(userPermission("admin", "host"), deleteList);
 
-router.route("/approved/:id").patch(userPermission('admin'),approvedListing);
+router.route("/approved/:id").patch(userPermission("admin"), approvedListing);
 
 export default router;

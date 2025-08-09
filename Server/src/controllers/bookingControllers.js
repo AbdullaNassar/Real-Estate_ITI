@@ -593,26 +593,27 @@ export const deleteBooking = async (req, res) => {
 export const getAllGuestBooking = async (req, res) => {
   try {
     const bookings = await bookingModel
-      .find()
+      .find({ guest: req.user._id })
+      .populate("listing")
       // .populate("listing", "title location pricePerNight")
       .sort({ createdAt: -1 });
 
-    if (!bookings) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "No Booking Found",
-      });
-    }
+    // if (!bookings) {
+    //   return res.status(404).json({
+    //     status: "Failed",
+    //     message: "No Booking Found",
+    //   });
+    // }
 
     return res.status(200).json({
       status: "Success",
+      results: bookings.length,
       data: bookings,
     });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
+      message: error.message,
     });
   }
 };
@@ -693,6 +694,25 @@ export const getBookingById = async (req, res) => {
       status: "Failed",
       message: "Internal Server Error",
       error: error.message,
+    });
+  }
+};
+
+export const getBookingsList = async (req, res) => {
+  try {
+    const { listingId } = req.params;
+    console.log(listingId);
+    const bookings = await bookingModel
+      .find({ listing: listingId })
+      .populate("guest listing");
+
+    return res
+      .status(200)
+      .json({ status: "success", results: bookings.length, bookings });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err.message,
     });
   }
 };
