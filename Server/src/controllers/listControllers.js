@@ -436,3 +436,19 @@ export const approvedListing = async (req, res) => {
     });
   }
 };
+
+export const HostLists = async (req, res) => {
+  try {
+    const lists = await listModel
+      .find({ host: req.user._id })
+      .populate("categoryId");
+    return res.status(200).json({
+      status: "Success",
+      results: lists.length,
+      lists,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ status: "failed", message: err.message });
+  }
+};
