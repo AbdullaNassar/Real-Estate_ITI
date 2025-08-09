@@ -2,7 +2,7 @@ import bookingModel from "../models/bookingModel.js";
 import listModel from "../models/listModel.js";
 import ratingModel from "../models/ratingModel.js";
 
-export const guestRate = async (req, res) => {
+export const addRating = async (req, res) => {
   try {
     const { bookingId } = req.params;
 
@@ -114,6 +114,65 @@ export const getRatingsForListing = async (req, res) => {
     return res.status(200).json({
       status: "Success",
       ratings,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "Failed",
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const getRatingsForUser = async (req, res) => {
+  try {
+
+    const ratings = await ratingModel.find({ guestId: req.user._id });
+
+    if (!ratings !== (ratings.length==0)) {
+      return res.status(404).json({
+        status: "Failed",
+        message: "This User Not Have Any Ratings"
+      });
+    }
+
+    return res.status(200).json({
+      status: "Success",
+      ratings,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "Failed",
+      message: "Internal Server Error",
+    });
+  }
+};
+
+export const editExistingRating = async (req, res) => {
+  try {
+
+    const {ratingId} = req.params;
+
+    if (!ratingId) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "ratingId Is Required"
+      });
+    }
+
+    const {rating , comment} = req.body;
+
+    if (!rating && !comment) {
+      return res.status(400).json({
+        status: "Failed",
+        message: "New rating Data Is Required"
+      });
+    }
+
+    const existingrate = await ratingModel.findByIdAndUpdate({_id:ratingId},{rating , comment},{new:true,runValidators:true})
+
+    return res.status(200).json({
+      status: "Success",
+      existingrate
     });
   } catch (error) {
     return res.status(500).json({

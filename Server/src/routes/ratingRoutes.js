@@ -1,7 +1,9 @@
 import { Router } from "express";
 import {
+  addRating,
+  editExistingRating,
   getRatingsForListing,
-  guestRate,
+  getRatingsForUser,
   removeExistingRating,
 } from "../controllers/ratingController.js";
 import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
@@ -11,7 +13,11 @@ const router = Router();
 
 router.use(isUserLoggedIn);
 
-router.route("/:bookingId").post(userPermission("guest"), guestRate);
+router
+  .route('')
+  .get(userPermission('admin','guest'),getRatingsForUser);
+
+router.route("/:bookingId").post(userPermission("guest"), addRating);
 
 router
   .route("/listing/:listingId")
@@ -19,6 +25,7 @@ router
 
 router
   .route('/:ratingId')
+  .patch(userPermission('admin','guest'),editExistingRating)
   .delete(userPermission('admin','guest'),removeExistingRating)
 
 export default router;
