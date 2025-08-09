@@ -1,3 +1,4 @@
+import { GrCatalog } from "react-icons/gr";
 import { PAGE_SIZE } from "../utils/constants";
 import { axiosInstance } from "./axiosInstance";
 
@@ -91,5 +92,28 @@ export async function searchLists(query) {
     const message = err.response?.data?.message;
     if (message) throw new Error(message);
     throw new Error("Error while searching lists...");
+  }
+}
+
+export async function getHostLists() {
+  try {
+    const res = await axiosInstance.get("/lists/hostLists");
+    return res.data;
+  } catch (err) {
+    const message = err.response?.data?.message;
+    if (message) throw new Error(message);
+    console.log(err);
+    throw new Error("error while get host lists");
+  }
+}
+
+export async function deleteList(id) {
+  try {
+    const res = await axiosInstance.delete(`/lists/${id}`);
+    return res.data;
+  } catch (err) {
+    const message = err.response?.data?.message;
+    if (message) throw new Error(message);
+    throw new Error("Error while deleting List");
   }
 }

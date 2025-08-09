@@ -9,7 +9,7 @@ import ListItem from "../features/Lists/ListItem";
 import { governmentList, PAGE_SIZE } from "../utils/constants";
 import { useCategories } from "../features/Lists/categories/useCategories";
 import Empty from "../ui/Empty";
-import { IoSearch } from "react-icons/io5";
+import Error from "../ui/Error";
 import { FaArrowRight } from "react-icons/fa";
 export default function Lists() {
   const [searchQuery, setSearchQuery] = useState(null);
@@ -38,11 +38,7 @@ export default function Lists() {
 
   if (isLoading || isLoadingCategories) return <Spinner />;
   if (error || errorCategories)
-    return (
-      <h1>
-        {errorCategories?.message} {error?.message}Error while loading lists...{" "}
-      </h1>
-    );
+    return <Error message={errorCategories?.message || error?.message} />;
 
   console.log(lists);
   const handleNext = () => {

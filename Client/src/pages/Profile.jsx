@@ -5,15 +5,25 @@ import toast from "react-hot-toast";
 import ChangePasswordModal from "../component/ChangePasswordModal";
 import GuestBooking from "../component/GuestBooking";
 import HostApartment from "../component/HostApartment";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const { user, refetch } = useUser();
+  const { user, refetch, isLoading: loadingUser, error: errorUser } = useUser();
   const [showEditModal, setShowEditModal] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
-  const curUser = user?.user;
 
+  const navigate = useNavigate();
+
+  // remote states
+
+  if (loadingUser) return <Spinner />;
+  if (errorUser) return <Error message={errorUser?.message} />;
+
+  const curUser = user?.user;
   const handleEditSuccess = async () => {
     setIsRefetching(true);
     try {
@@ -34,14 +44,16 @@ export default function Profile() {
 
   const handlePasswordChangeSuccess = async () => {
     setEditPassword(false);
-    
+
     try {
       await refetch();
     } catch (error) {
-      console.error("Failed to refetch user data after password change:", error);
+      console.error(
+        "Failed to refetch user data after password change:",
+        error
+      );
       toast.error("password changed but failed to refresh user data.");
     }
-  
   };
 
   return (
@@ -73,9 +85,17 @@ export default function Profile() {
 
         {/*button*/}
         <div className="w-full sm:w-auto flex flex-col gap-2">
+          {curUser.role == "host" && (
+            <button
+              onClick={() => navigate("/addList")}
+              className="sm:w-auto px-6 py-2 border rounded bg-primarry text-stone-100 hover:bg-primarry-hover transition cursor-pointer"
+            >
+              Add New List
+            </button>
+          )}
           <button
             onClick={() => setShowEditModal(true)}
-            className="sm:w-auto px-6 py-2 border rounded bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer"
+            className="sm:w-auto px-6 py-2 border rounded bg-gray-400 text-gray-100 hover:bg-gray-500 transition cursor-pointer"
             disabled={isRefetching}
           >
             Edit Profile
@@ -83,7 +103,7 @@ export default function Profile() {
 
           <button
             onClick={() => setEditPassword(true)}
-            className="sm:w-auto px-11 py-2 border rounded bg-blue-400 text-white hover:bg-blue-700 transition whitespace-nowrap cursor-pointer"
+            className="sm:w-auto px-11 py-2 border rounded bg-gray-400 text-gray-100 hover:bg-gray-500 transition whitespace-nowrap cursor-pointer"
           >
             Change Password
           </button>
@@ -106,11 +126,11 @@ export default function Profile() {
       )}
 
       {/* tabs */}
-      <div className="mt-6 flex flex-wrap border-b gap-2">
+      <div className="mt-6 flex flex-wrap  gap-2">
         <button
-          className={` cursor-pointer px-4 py-2 font-semibold ${
+          className={` cursor-pointer px-4 py-2 font-semibold text-2xl ${
             activeTab === "about"
-              ? "text-blue-700"
+              ? "border-b-3 border-b-primarry"
               : "text-gray-600 hover:text-black"
           }`}
           onClick={() => setActiveTab("about")}
@@ -118,14 +138,14 @@ export default function Profile() {
           About
         </button>
         <button
-          className={` cursor-pointer px-4 py-2 font-semibold ${
+          className={` cursor-pointer text-2xl px-4 py-2 font-semibold ${
             activeTab === "booking"
-              ? "text-blue-700"
+              ? " border-b-3 border-b-primarry"
               : "text-gray-600 hover:text-black"
           }`}
           onClick={() => setActiveTab("booking")}
         >
-          {curUser?.role === "host" ? "Your Apartment" : "Your Booking"}
+          {curUser?.role === "host" ? "Your Apartments" : "Your Bookings"}
         </button>
       </div>
 

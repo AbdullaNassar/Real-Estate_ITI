@@ -27,6 +27,8 @@ import Lists from "./pages/Lists";
 import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/paymentSuccess";
 import { useTranslation } from "react-i18next";
+import HostBookings from "./pages/ListBookings";
+import ListBookings from "./pages/ListBookings";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -52,6 +54,7 @@ function App() {
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/addList" element={<AddList />} />
                 <Route path="/listings" element={<Lists />} />
+                <Route path="/bookings/:id" element={<ListBookings />} />
                 <Route path="/payment-success" element={<PaymentSuccess />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>

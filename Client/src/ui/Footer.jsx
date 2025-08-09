@@ -21,13 +21,6 @@ export default function Footer() {
       </ul>
 
       <h2>&copy; 2025 Maskn. All rights reserved.</h2>
-
-      <button
-        onClick={() => navigate("/addList")}
-        className="bg-primarry text-stone-50 hover:cursor-pointer"
-      >
-        Add List
-      </button>
     </footer>
   );
 }
