@@ -163,12 +163,28 @@ export const editExistingRating = async (req, res) => {
       });
     }
 
+    const rate = await ratingModel.findById(ratingId);
+
+    if(!rate){
+      return res.status(400).json({
+        status: "Failed",
+        message: "rate Is Not Found"
+      });
+    }
+
     const {rating , comment} = req.body;
 
     if (!rating && !comment) {
       return res.status(400).json({
         status: "Failed",
         message: "New rating Data Is Required"
+      });
+    }
+
+    if (rate.guestId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        status: "Failed",
+        message: "Unauthorized or Rating not found",
       });
     }
 
@@ -214,6 +230,13 @@ export const removeExistingRating = async (req,res)=>{
         status: "Failed",
         message: "Listing Not Found",
       })
+    }
+
+    if (rating.guestId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        status: "Failed",
+        message: "Unauthorized or Rating not found"
+      });
     }
 
     listing.reviews = listing.reviews.filter((r)=> r._id.toString() !== ratingId.toString() );
