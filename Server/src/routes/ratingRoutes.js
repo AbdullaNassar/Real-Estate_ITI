@@ -21,7 +21,7 @@ router.route("/:bookingId").post(userPermission("guest"), addRating);
 
 router
   .route("/listing/:listingId")
-  .get(userPermission("admin", "host"), getRatingsForListing);
+  .get(getRatingsForListing);
 
 router
   .route('/:ratingId')

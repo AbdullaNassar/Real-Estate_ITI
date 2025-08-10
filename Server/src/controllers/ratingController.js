@@ -46,7 +46,7 @@ export const addRating = async (req, res) => {
     }
 
     const existingRating = await ratingModel.findOne({
-      bookingId: booking._id,
+      bookingId: booking._id
     });
 
     if (existingRating) {
@@ -72,6 +72,10 @@ export const addRating = async (req, res) => {
     return res.status(201).json({
       status: "Success",
       message: "Rating submitted Successfuly",
+      user:{
+        userName: req.user.userName,
+        profilePicture: req.user.profilePic
+      },
       rating: newRating,
     });
   } catch (error) {
