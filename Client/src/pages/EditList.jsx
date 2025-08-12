@@ -1,15 +1,15 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import L from "leaflet";
+import toast from "react-hot-toast";
+
 import FormInputRow from "../ui/FormInputRow";
 import FromTextareaRow from "../ui/FromTextareaRow";
 import FormSelectRow from "../ui/FromSelectRow";
 import FormCheckboxRow from "../ui/FormCheckboxRow";
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L from "leaflet";
-import toast from "react-hot-toast";
 import { useAminites } from "../features/Lists/aminites/useAminites";
 import { useCategories } from "../features/Lists/categories/useCategories";
-import { useCreateList } from "../features/Lists/useCreateList";
 import Spinner from "../ui/Spinner";
 import { governmentList } from "../utils/constants";
 import { useUser } from "../features/auth/useUser";
@@ -35,45 +35,28 @@ function ClickHandler({ onClick }) {
   });
   return null;
 }
-export default function AddList() {
-  const { error, isLoading, user } = useUser();
-  const { error: errorList, isLoading: loadingList, list: data } = useList();
 
+export default function EditList() {
   const [curImages, setCurImages] = useState([]);
   const [images, setImages] = useState([]);
   const [errorImages, setErrorImages] = useState(null);
+  const [position, setPosition] = useState(null);
   const navigate = useNavigate();
 
+  // hooks
+  const { error, isLoading, user } = useUser();
+  const { error: errorList, isLoading: loadingList, list: data } = useList();
   const {
     amenities,
     isLoading: isAminites,
     error: errorAminites,
   } = useAminites();
-
   const {
     categories,
     error: errorCategories,
     isLoading: loadingCategories,
   } = useCategories();
-
-  const handleFilesChange = (e) => {
-    const file = Array.from(e.target.files);
-    // console.log(file);
-    if (!file) return;
-
-    if (images.length + file.length > 5) {
-      toast.error("You can only upload up to 5 images.");
-      return;
-    }
-
-    setImages((prev) => [...prev, ...file]);
-    // Reset input so user can upload the same file again if needed
-    e.target.value = null;
-  };
-
-  const handleDeleteImage = (idx) => {
-    setImages((prev) => prev.filter((_, i) => idx !== i));
-  };
+  const { mutate: updateList, isPending: isUpdating } = useUpdateList();
 
   const {
     register,
@@ -95,7 +78,28 @@ export default function AddList() {
       rules: "",
     },
   });
+  // end of hooks
 
+  const handleFilesChange = (e) => {
+    const file = Array.from(e.target.files);
+    // console.log(file);
+    if (!file) return;
+
+    if (images.length + file.length > 5) {
+      toast.error("You can only upload up to 5 images.");
+      return;
+    }
+
+    setImages((prev) => [...prev, ...file]);
+    // Reset input so user can upload the same file again if needed
+    e.target.value = null;
+  };
+
+  const handleDeleteImage = (idx) => {
+    setImages((prev) => prev.filter((_, i) => idx !== i));
+  };
+
+  // add initial values to the form
   useEffect(() => {
     if (data?.data) {
       reset({
@@ -128,14 +132,12 @@ export default function AddList() {
     }
   }, [data, reset]);
 
-  const { mutate: updateList, isPending: isUpdating } = useUpdateList();
-  const [position, setPosition] = useState(null);
-
   const handleMapClick = (latlng) => {
     setPosition(latlng);
     // console.log("Latitude:", latlng.lat, "Longitude:", latlng.lng);
   };
 
+  // handel loading and errors states
   if (isAminites || loadingCategories || isLoading || loadingList)
     return <Spinner />;
   if (errorAminites || errorCategories || error || errorList)
@@ -149,7 +151,7 @@ export default function AddList() {
       />
     );
 
-  //   console.log("user", user);
+  // handle unautorized user
   if (!user || user?.user.role !== "host") {
     alert(
       "you must be login as a host to add a list or create new account as a host"
@@ -183,7 +185,7 @@ export default function AddList() {
     );
     setErrorImages("");
   };
-  //   console.log(curImages);
+
   return (
     <div className="my-4">
       <h1 className="text-3xl font-semibold">Edit: {list.title}</h1>

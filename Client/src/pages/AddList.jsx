@@ -1,19 +1,20 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import L, { latLng } from "leaflet";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 import FormInputRow from "../ui/FormInputRow";
 import FromTextareaRow from "../ui/FromTextareaRow";
 import FormSelectRow from "../ui/FromSelectRow";
 import FormCheckboxRow from "../ui/FormCheckboxRow";
-import { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import L, { latLng } from "leaflet";
-import toast from "react-hot-toast";
 import { useAminites } from "../features/Lists/aminites/useAminites";
 import { useCategories } from "../features/Lists/categories/useCategories";
 import { useCreateList } from "../features/Lists/useCreateList";
 import Spinner from "../ui/Spinner";
 import { governmentList } from "../utils/constants";
 import { useUser } from "../features/auth/useUser";
-import { useNavigate } from "react-router-dom";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -24,6 +25,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
+//handle map Click
 function ClickHandler({ onClick }) {
   useMapEvents({
     click(e) {
@@ -32,24 +34,36 @@ function ClickHandler({ onClick }) {
   });
   return null;
 }
-export default function AddList() {
-  const { error, isLoading, user } = useUser();
 
+export default function AddList() {
+  const [position, setPosition] = useState(null);
   const [images, setImages] = useState([]);
   const [errorImages, setErrorImages] = useState(null);
   const navigate = useNavigate();
 
   const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  // hooks
+  const { error, isLoading, user } = useUser();
+  const {
     amenities,
     isLoading: isAminites,
     error: errorAminites,
   } = useAminites();
-
   const {
     categories,
     error: errorCategories,
     isLoading: loadingCategories,
   } = useCategories();
+  const { createList, isPending: isCreatingList } = useCreateList();
+  // end of hooks
+
+  // handle images
   const handleFilesChange = (e) => {
     const file = Array.from(e.target.files);
     console.log(file);
@@ -67,15 +81,6 @@ export default function AddList() {
   const handleDeleteImage = (idx) => {
     setImages((prev) => prev.filter((_, i) => idx !== i));
   };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-
-  const { createList, isPending: isCreatingList } = useCreateList();
-  const [position, setPosition] = useState(null);
 
   const handleMapClick = (latlng) => {
     setPosition(latlng);
@@ -91,15 +96,6 @@ export default function AddList() {
       return;
     }
 
-    // const locationData = {
-    //   address: data.address,
-    //   coordinates: {
-    //     type: "Point",
-    //     coordinates: [latLng.lat, latLng.lng], // [longitude, latitude]
-    //   },
-    // };
-    // data.location = locationData;
-    console.log(data);
     createList(data, {
       onSuccess: () => {
         setImages([]);
@@ -110,17 +106,19 @@ export default function AddList() {
     setErrorImages("");
   };
 
+  // handle loading, errors states
   if (isAminites || loadingCategories || isLoading) return <Spinner />;
   if (errorAminites || errorCategories || error)
     return <h1>Eroor in aminties</h1>;
 
-  console.log("user", user);
+  // unautorized user
   if (!user || user?.user.role !== "host") {
     alert(
       "you must be login as a host to add a list or create new account as a host"
     );
     navigate("/login");
   }
+
   return (
     <div className="my-4">
       <h1 className="text-3xl font-semibold">Add New Listing</h1>
@@ -330,13 +328,6 @@ export default function AddList() {
         </button>
       </form>
 
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      {/* <button
-        className="btn"
-        onClick={() => document.getElementById("my_modal_5").showModal()}
-      >
-        open modal
-      </button> */}
       <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle ">
         <div className="modal-box text-sm text-gray-600 bg-gray-100 border border-gray-300">
           <h3 className="font-bold text-lg">Listing Submitted</h3>

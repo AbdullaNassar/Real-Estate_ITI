@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as YUP from "yup";
 import { useNavigate } from "react-router-dom";
 import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
+
 import Header from "../ui/Header";
-import { useDispatch } from "react-redux";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
-
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleLogin(value) {
     SetIsLoading(true);

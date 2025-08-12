@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 import { useUser } from "../features/auth/useUser";
 import EditProfileModal from "../features/profile/EditProfileModal";
-import toast from "react-hot-toast";
 import ChangePasswordModal from "../features/profile/ChangePasswordModal";
 import GuestBooking from "../features/profile/GuestBooking";
 import HostApartment from "../features/profile/HostApartment";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
-import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const { user, refetch, isLoading: loadingUser, error: errorUser } = useUser();
   const [showEditModal, setShowEditModal] = useState(false);
   const [isRefetching, setIsRefetching] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
-
   const navigate = useNavigate();
 
-  // remote states
+  const { user, refetch, isLoading: loadingUser, error: errorUser } = useUser();
 
   if (loadingUser) return <Spinner />;
   if (errorUser) return <Error message={errorUser?.message} />;

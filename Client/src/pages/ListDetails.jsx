@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { PiSwimmingPoolLight } from "react-icons/pi";
-import MyMap from "../component/Map";
-import { RiStarSFill } from "react-icons/ri";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { MdSystemUpdateAlt } from "react-icons/md";
+
+import MyMap from "../component/Map";
+import { RiStarSFill } from "react-icons/ri";
 import { useList } from "../features/Lists/useList";
 import Spinner from "../ui/Spinner";
 import { useUser } from "../features/auth/useUser";
-import { useNavigate, useParams } from "react-router-dom";
 import { useCheckoutSessionMutation } from "../features/booking/useCheckoutSession";
 import { useGuestBookings } from "../features/booking/useGeustBooking";
-import toast from "react-hot-toast";
 import Review from "../features/review/Review";
 import { useReviews } from "../features/review/useReviews";
 import { MdDelete } from "react-icons/md";
-import { MdSystemUpdateAlt } from "react-icons/md";
 import { useDeleteReview } from "../features/review/useDeleteReviews";
 
 export default function ListingDetails() {
@@ -25,16 +26,16 @@ export default function ListingDetails() {
   const { error: errorUser, isLoading: isLoadingUser, user } = useUser();
   const [reviewToEdit, setReviewToEdit] = useState(null);
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  // hooks
   const {
     fetchCheckoutSession,
     session,
     isPending,
     error: errorCheckout,
   } = useCheckoutSessionMutation();
-
   const { data: bookingsData } = useGuestBookings();
-  console.log("bookingsData", bookingsData);
-  const { id } = useParams();
   const { mutate: removeReview, isPending: isDeleting } = useDeleteReview(id);
   const {
     data: reviewForSpecificList,
@@ -42,13 +43,16 @@ export default function ListingDetails() {
     isError: reviewsError,
     error: reviewsErrorObj,
   } = useReviews(id);
+  // end of hooks
 
+  // handle loading and error states
   if (isLoading || isLoadingUser) return <Spinner />;
   if (error || errorUser) return <h2>{error?.message}error???</h2>;
+
+  // preprocess data
   const bookedDates = list?.data?.bookedDates?.map((item) => {
     return { start: item.checkInDate, end: item.checkOutDate };
   });
-  console.log(bookedDates);
 
   const data = list?.data;
   const days = (endDate - startDate) / (1000 * 60 * 60 * 24);
@@ -58,7 +62,6 @@ export default function ListingDetails() {
       String(b.listing?._id ?? b.listing) === String(data._id) &&
       new Date(b.checkOut) < new Date()
   );
-  console.log(data);
 
   function handleBook() {
     if (!user || user?.user.role !== "guest") {
@@ -84,7 +87,6 @@ export default function ListingDetails() {
         },
       }
     );
-    console.log("booked");
   }
 
   function handleDate(dates) {

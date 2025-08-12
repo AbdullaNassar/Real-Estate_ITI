@@ -1,17 +1,18 @@
-import React, { useState} from "react";
-import OtpInput from "../ui/OtpInput";
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import OtpInput from "../ui/OtpInput";
 import Header from "../ui/Header";
 
 export default function VerifyOtp() {
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
   const { state } = useLocation();
   const navigate = useNavigate();
   const { email, type } = state || {};
-  console.log(email);
-  const [otp, setOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
 
   const isForgetPassword = type === "forgot";
 

@@ -5,14 +5,15 @@ import * as YUP from "yup";
 import { useNavigate } from "react-router-dom";
 import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
+
 import Header from "../ui/Header";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate();
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleRegister(value) {
     SetIsLoading(true);

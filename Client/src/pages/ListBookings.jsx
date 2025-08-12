@@ -1,10 +1,4 @@
-import React from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import { useListBookings } from "../features/booking/useListBookings";
-import Spinner from "../ui/Spinner";
-import Error from "../ui/Error";
-import { formatDate, formatPrice } from "../utils/helper";
-import Empty from "../ui/Empty";
+import { useParams } from "react-router-dom";
 import {
   User,
   Mail,
@@ -21,14 +15,22 @@ import {
   BookOpen,
 } from "lucide-react";
 
+import { useListBookings } from "../features/booking/useListBookings";
+import Spinner from "../ui/Spinner";
+import Error from "../ui/Error";
+import { formatDate, formatPrice } from "../utils/helper";
+
 export default function ListBookings() {
   const { id } = useParams();
   const { data, error, isLoading } = useListBookings(id);
+
+  // handel loading and error states
   if (isLoading) return <Spinner />;
   if (error) return <Error message={error.message} />;
-  // console.log(bookings);
+
+  // handle empty state
   if (!data.results) return <NoBookings />;
-  console.log(id);
+
   return (
     <div className="mt-8 space-y-12">
       <h2 className="text-xl font-semibold">

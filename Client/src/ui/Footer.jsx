@@ -1,8 +1,6 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
-  const navigate = useNavigate();
   return (
     <footer className=" bg-gray-200  shadow-md mx-4 md:mx-24 text-gray-700 p-8   text-center">
       <ul className="flex justify-around mb-8  underline">

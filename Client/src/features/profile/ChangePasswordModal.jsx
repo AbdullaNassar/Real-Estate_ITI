@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
-import { axiosInstance } from "../../services/axiosInstance";
-import * as YUP from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import * as YUP from "yup";
+
+import { axiosInstance } from "../../services/axiosInstance";
 
 export default function ChangePasswordModal({ onClose, onSuccess }) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);

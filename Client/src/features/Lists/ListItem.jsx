@@ -1,4 +1,3 @@
-import React from "react";
 import { RiStarSFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 

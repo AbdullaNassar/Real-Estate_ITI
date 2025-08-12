@@ -1,11 +1,9 @@
-import React from "react";
 import { CiUser } from "react-icons/ci";
 import { MdOutlineRoom } from "react-icons/md";
 import { RiStarSFill } from "react-icons/ri";
 import { IoPricetagOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 export default function ListItemCard({ list }) {
-  console.log(list);
   const navigate = useNavigate();
   return (
     <div className="h-full flex flex-col border border-primarry shadow-xl text-center">

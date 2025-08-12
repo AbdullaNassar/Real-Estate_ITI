@@ -1,4 +1,3 @@
-import React from "react";
 import ListItemCard from "./ListItemCard";
 
 export default function ListsBox({ govern, heading }) {

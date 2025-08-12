@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
-import { axiosInstance } from "../../services/axiosInstance";
 import toast from "react-hot-toast";
+
+import { axiosInstance } from "../../services/axiosInstance";
 import { useUser } from "../auth/useUser";
 
 export default function EditProfileModal({ onClose, onSuccess }) {

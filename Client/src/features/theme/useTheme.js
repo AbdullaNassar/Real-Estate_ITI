@@ -1,4 +1,3 @@
-// src/features/theme/useTheme.js
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "./themeSlice";
 

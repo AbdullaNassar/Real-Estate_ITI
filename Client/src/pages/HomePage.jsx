@@ -1,7 +1,7 @@
-import Hero from "../component/Hero";
-import ListsContainer from "../features/Lists/ListsContainer";
 import { HiArrowSmRight } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
+import Hero from "../component/Hero";
+import ListsContainer from "../features/Lists/ListsContainer";
 
 export default function HomePage() {
   const navigate = useNavigate();
