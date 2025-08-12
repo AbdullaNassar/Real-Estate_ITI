@@ -64,7 +64,7 @@ export const signUp = async (req, res) => {
       password,
       gender,
       role,
-      // dateOfBirth,
+      dateOfBirth,
       phoneNumber,
       profilePic,
       otp,
