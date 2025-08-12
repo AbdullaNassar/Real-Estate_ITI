@@ -2,6 +2,7 @@ import React from "react";
 import ListItemCard from "./ListItemCard";
 
 export default function ListsBox({ govern, heading }) {
+  const lists = govern?.listings?.slice(0, 4);
   return (
     <div className="">
       <div className="my-4  bg-gray-100  sm:w-full">
@@ -9,14 +10,13 @@ export default function ListsBox({ govern, heading }) {
           {heading}
           {govern._id}
         </h2>
-        <div className="grid sm:grid-cols-2 gap-2 md:grid-cols-4">
-          {govern?.listings?.map((list) => {
+        <div
+          className="grid sm:grid-cols-2 md:grid-cols-4 gap-2"
+          style={{ gridAutoRows: "1fr" }}
+        >
+          {lists?.map((list) => {
             return <ListItemCard list={list} />;
           })}
-          {/* <ListItemCard />
-          <ListItemCard />
-          <ListItemCard />
-          <ListItemCard /> */}
         </div>
       </div>
     </div>

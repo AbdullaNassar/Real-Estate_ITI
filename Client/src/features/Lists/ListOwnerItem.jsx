@@ -75,7 +75,10 @@ export default function ListOwnerItem({ list }) {
               </button>
             </div>
             <div className="tooltip" data-tip="Edit">
-              <button className="bg-gray-200 p-1 text-2xl rounded-full hover:bg-gray-300 hover:cursor-pointer">
+              <button
+                onClick={() => navigate(`/editList/${list._id}`)}
+                className="bg-gray-200 p-1 text-2xl rounded-full hover:bg-gray-300 hover:cursor-pointer"
+              >
                 <CiEdit />
               </button>
             </div>

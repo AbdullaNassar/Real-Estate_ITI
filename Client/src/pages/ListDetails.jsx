@@ -27,8 +27,7 @@ export default function ListingDetails() {
     error: errorCheckout,
   } = useCheckoutSessionMutation();
 
-  const { data: bookingsData } =
-    useGuestBookings();
+  const { data: bookingsData } = useGuestBookings();
   console.log("bookingsData", bookingsData);
 
   if (isLoading || isLoadingUser) return <Spinner />;
@@ -44,6 +43,7 @@ export default function ListingDetails() {
   const validBooking = bookingsData?.find(
     (b) => b.listing === data._id && new Date(b.checkOut) < new Date()
   );
+  console.log(data);
 
   function handleBook() {
     if (!user || user?.user.role !== "guest") {
@@ -206,7 +206,10 @@ export default function ListingDetails() {
       </div>
 
       {showReview && validBooking && (
-        <Review bookingId={validBooking._id} onClose={() => setShowReview(false)} />
+        <Review
+          bookingId={validBooking._id}
+          onClose={() => setShowReview(false)}
+        />
       )}
       {/* Host */}
 
