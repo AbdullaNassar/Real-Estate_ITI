@@ -2,38 +2,60 @@ import { useFormik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../services/axiosInstance";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUpdateReview } from "../features/review/useUpdateReview";
+import { useMutation } from "@tanstack/react-query";
 
+export default function Review({ onClose, bookingId, listingId, reviewToEdit }) {
+  const queryClient = useQueryClient();
 
-export default function Review({ onClose, bookingId }) {
-  const handleReview = async (values) => {
-    console.log("hanldeReviwe = > vaule :", values);
-    try {
-      await axiosInstance.post(`/ratings/${bookingId}`, values);
+  const isEditing = Boolean(reviewToEdit?._id);
+
+  const { mutate: updateReview, isPending: isUpdating } = useUpdateReview(listingId);
+
+  const { mutate: createReview, isPending: isCreating } = useMutation({
+    mutationFn: async (values) => {
+      const { data } = await axiosInstance.post(`/ratings/${bookingId}`, values);
+      return data;
+    },
+    onSuccess: () => {
       toast.success("Review submitted successfully");
+      queryClient.invalidateQueries({ queryKey: ["reviews", listingId] });
       onClose();
-    } catch (err) {
-      console.log("review => handleReview error msg", err);
-      toast.error("Failed to submit");
-    }
-  };
+    },
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || "Error while submitting review");
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
-      rating: 2,
-      comment: "",
+      rating: reviewToEdit?.rating || 0, 
+      comment: reviewToEdit?.comment || "",
     },
-    onSubmit: handleReview,
+    onSubmit: (values) => {
+      if (isEditing) {
+        updateReview(
+          {
+            reviewId: reviewToEdit._id,
+            updatedData: { rating: values.rating, comment: values.comment },
+          },
+          { onSuccess: () => onClose() }
+        );
+      } else {
+        createReview(values);
+      }
+    },
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-white/30 backdrop-blur-xs">
-      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md  relative">
-        {" "}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-black/30 backdrop-blur-sm">
+      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">
         <h2 className="text-xl font-semibold mb-4 text-center">
-          Leave a Review
+          {isEditing ? "Update Review" : "Leave a Review"}
         </h2>
+
         <form onSubmit={formik.handleSubmit} className="space-y-6">
-          {/* Rating */}
           <div>
             <label className="block font-medium mb-1">Rating:</label>
             <div className="rating">
@@ -64,12 +86,12 @@ export default function Review({ onClose, bookingId }) {
               value={formik.values.comment}
               onChange={formik.handleChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
-              placeholder="leave your comment"
+              placeholder="Leave your comment"
             ></textarea>
           </div>
 
-          {/* Submit */}
-          <div className="flex justify-end space-x-3 mt-6 ">
+          {/* Buttons */}
+          <div className="flex justify-end space-x-3 mt-6">
             <button
               type="button"
               onClick={onClose}
@@ -79,9 +101,16 @@ export default function Review({ onClose, bookingId }) {
             </button>
             <button
               type="submit"
+              disabled={isCreating || isUpdating}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
             >
-              Submit Review
+              {isEditing
+                ? isUpdating
+                  ? "Updating..."
+                  : "Update Review"
+                : isCreating
+                ? "Submitting..."
+                : "Submit Review"}
             </button>
           </div>
         </form>
