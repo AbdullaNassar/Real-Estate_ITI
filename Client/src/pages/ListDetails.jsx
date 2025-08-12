@@ -59,6 +59,7 @@ export default function ListingDetails() {
       String(b.listing?._id ?? b.listing) === String(data._id) &&
       new Date(b.checkOut) < new Date()
   );
+  console.log(data);
 
   function handleBook() {
     if (!user || user?.user.role !== "guest") {
@@ -240,6 +241,7 @@ export default function ListingDetails() {
         </button>
       </div>
 
+
       {showReview && (
         <Review
           bookingId={validBooking?._id}
@@ -249,6 +251,7 @@ export default function ListingDetails() {
             setShowReview(false);
             setReviewToEdit(null);
           }}
+
         />
       )}
       {/* Host */}

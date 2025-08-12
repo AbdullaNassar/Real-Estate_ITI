@@ -29,6 +29,7 @@ import PaymentSuccess from "./pages/paymentSuccess";
 import { useTranslation } from "react-i18next";
 import HostBookings from "./pages/ListBookings";
 import ListBookings from "./pages/ListBookings";
+import EditList from "./pages/EditList";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
                 <Route index element={<Navigate replace to="home" />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/ListDetails/:id" element={<ListingDetails />} />
+                <Route path="/editList/:id" element={<EditList />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/Booking" element={<Booking />} />
                 <Route path="/about" element={<About />} />

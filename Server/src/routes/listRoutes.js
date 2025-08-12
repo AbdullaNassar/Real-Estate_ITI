@@ -43,6 +43,7 @@ router
   .patch(
     userPermission("admin", "host"),
     upload.array("photos", 10),
+    processAndUploadImages("listings"),
     updateList
   )
   .delete(userPermission("admin", "host"), deleteList);
