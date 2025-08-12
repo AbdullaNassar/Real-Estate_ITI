@@ -39,7 +39,7 @@ export default function Header() {
   const isAuthPage = isLoginPage || isSignupPage || isVerifyPage;
   return (
     // <header className="bg-blue-400">header</header>
-    <header className=" flex justify-between items-center px-8 pt-8 pb-4 border-b-gray-300  border-b-2">
+    <header className=" flex justify-between items-center px-8 pt-4 pb-4 border-b-gray-300  border-b-2">
       <button
         onClick={() => navigate("/")}
         className="cursor-pointer hidden md:block md:w-48 "

@@ -84,8 +84,8 @@ export default function Signup() {
           onSubmit={registerForm.handleSubmit}
           className="w-full sm:max-w-md max-w-md bg-gray-100 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
-            Sign Up
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-12">
+            Create Your Account
           </h2>
 
           <div className="mb-4">
@@ -250,7 +250,7 @@ export default function Signup() {
             <button
               disabled={isLoading ? true : false}
               type="submit"
-              className="w-full bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 cursor-pointer"
+              className="w-full bg-primarry text-white font-semibold px-6 py-2 rounded-lg hover:bg-primarry-hover transition duration-300 cursor-pointer"
             >
               {isLoading ? (
                 <FaSpinner className="mx-auto animate-spin" />
@@ -264,7 +264,7 @@ export default function Signup() {
               Already have an account ?{" "}
               <button
                 onClick={() => navigate("/login")}
-                className="text-blue-600 hover:underline font-medium"
+                className="text-gray-600 hover:cursor-pointer hover:underline font-medium"
               >
                 Log In
               </button>

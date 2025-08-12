@@ -16,7 +16,7 @@ import RAGRouter from "./src/routes/RAGChatBootRoutes.js";
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 import cookieParser from "cookie-parser";
 import { stripeWebhookHandler } from "./src/controllers/bookingControllers.js";
-import chatRouter from './src/routes/chatRoutes.js'
+import chatRouter from "./src/routes/chatRoutes.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -65,7 +65,7 @@ app.use("/api/v1/ratings", ratingRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/amenities", amenityRouter);
 app.use("/api/v1/chat-model", RAGRouter);
-app.use("/api/v1/chat",chatRouter)
+app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/", uploadRouter);
 
 //server

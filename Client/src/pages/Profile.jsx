@@ -148,59 +148,113 @@ export default function Profile() {
         </button>
       </div>
 
-      {activeTab === "about" && (
+       {activeTab === "about" && (
         <>
           {/* confirmed info */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">
-              Confirmed Information
-            </h3>
-            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-4">
-              <div className="min-w-0">
-                <p className="text-lg font-semibold text-gray-500">
-                  Email Address
-                </p>
-                <p className="break-words">{curUser?.email}</p>
-              </div>
-              <div className="min-w-0">
-                <p className="text-lg font-semibold text-gray-500">
-                  Phone Number
-                </p>
-                <p>{curUser?.phoneNumber || "not available yet"}</p>
-              </div>
-              <div className="min-w-0">
-                <p className="text-lg font-semibold text-gray-500">
-                  Is Verified
-                </p>
-                <p>{curUser?.isVerified ? "Verified" : "Not verified"}</p>
+          <div className="mt-8">
+            <div className="flex items-center mb-6">
+              <div className="w-1 h-6 bg-gray-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-gray-900">
+                Confirmed Information
+              </h3>
+            </div>
+            <div className="bg-gray-200 rounded-xl p-6 border border-blue-100 shadow-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="group">
+                  <div className="flex items-center mb-2">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                    <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      Email Address
+                    </p>
+                  </div>
+                  <p className="text-gray-900 font-medium break-words bg-white px-3 py-2 rounded-lg border border-blue-200 group-hover:shadow-sm transition-shadow">
+                    {curUser?.email}
+                  </p>
+                </div>
+                
+                <div className="group">
+                  <div className="flex items-center mb-2">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                    <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      Phone Number
+                    </p>
+                  </div>
+                  <p className="text-gray-900 font-medium bg-white px-3 py-2 rounded-lg border border-blue-200 group-hover:shadow-sm transition-shadow">
+                    {curUser?.phoneNumber || (
+                      <span className="text-gray-500 italic">Not available yet</span>
+                    )}
+                  </p>
+                </div>
+                
+                <div className="group">
+                  <div className="flex items-center mb-2">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                    <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      Verification Status
+                    </p>
+                  </div>
+                  <div className="bg-white px-3 py-2 rounded-lg border border-blue-200 group-hover:shadow-sm transition-shadow">
+                    {curUser?.isVerified ? (
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                        <span className="text-green-700 font-semibold">Verified</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        <div className="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
+                        <span className="text-amber-700 font-semibold">Not verified</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* about section */}
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold mb-2">About</h3>
-            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-              <div className="min-w-0">
-                <p className="text-lg font-semibold text-gray-500">Gender</p>
-                <p>{curUser?.gender || "Not selected yet"}</p>
-              </div>
-              <div className="min-w-0">
-                <p className="text-lg font-semibold text-gray-500">
-                  Birth Date
-                </p>
-                <p className="text-gray-800 mt-1">
-                  {curUser?.dateOfBirth
-                    ? new Date(curUser.dateOfBirth).toLocaleDateString(
-                        "en-GB",
-                        {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        }
-                      )
-                    : "Not selected yet"}
-                </p>
+          <div className="mt-8">
+            <div className="flex items-center mb-6">
+              <div className="w-1 h-6 bg-gray-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-gray-900">Personal Information</h3>
+            </div>
+            <div className="bg-gray-200 rounded-xl p-6 border border-purple-100 shadow-sm">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="group">
+                  <div className="flex items-center mb-2">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                    <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      Gender
+                    </p>
+                  </div>
+                  <p className="text-gray-900 font-medium bg-white px-3 py-2 rounded-lg border border-purple-200 group-hover:shadow-sm transition-shadow">
+                    {curUser?.gender || (
+                      <span className="text-gray-500 italic">Not selected yet</span>
+                    )}
+                  </p>
+                </div>
+                
+                <div className="group">
+                  <div className="flex items-center mb-2">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                    <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+                      Date of Birth
+                    </p>
+                  </div>
+                  <p className="text-gray-900 font-medium bg-white px-3 py-2 rounded-lg border border-purple-200 group-hover:shadow-sm transition-shadow">
+                    {curUser?.dateOfBirth
+                      ? new Date(curUser.dateOfBirth).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )
+                      : (
+                        <span className="text-gray-500 italic">Not selected yet</span>
+                      )}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

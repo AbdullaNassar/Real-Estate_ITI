@@ -96,8 +96,17 @@ export default function ListingDetails() {
   }
   return (
     <div className="flex flex-col gap-8 ">
+      <div className="carousel rounded-box space-x-3.5 bg-gray-50 p-3">
+        {data.photos.map((item) => {
+          return (
+            <div className="carousel-item">
+              <img className="h-92" src={item} alt="Burger" />
+            </div>
+          );
+        })}
+      </div>
       {/* gallery */}
-      <div className="grid grid-cols-[1fr_1fr_.5fr] gap-4 bg-gray-50 p-4 mt-1 grid-rows-[10rem_5rem_5rem_5rem] min-h-[60vh] ">
+      {/* <div className="grid grid-cols-[1fr_1fr_.5fr] gap-4 bg-gray-50 p-4 mt-1 grid-rows-[10rem_5rem_5rem_5rem] min-h-[60vh] ">
         <div className="bg-red-300 col-span-1 row-span-1 ">
           <img className="h-full w-full" src={data.photos[0]} alt="" />
         </div>
@@ -113,7 +122,7 @@ export default function ListingDetails() {
         <div className="bg-amber-200 row-span-2">
           <img className="w-full h-full" src={data.photos[4]} alt="" />
         </div>
-      </div>
+      </div> */}
 
       {/* heading */}
       <div>

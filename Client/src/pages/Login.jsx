@@ -77,14 +77,17 @@ export default function Login() {
   return (
     <div className="bg-gray-100">
       <Header />
-      <div className="flex justify-center items-center min-h-screen p-4 bg-gray-100">
+      <div className=" min-h-[85vh] flex justify-center items-center  p-4 bg-gray-100">
         <form
           onSubmit={loginForm.handleSubmit}
           className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-gray-150 shadow-2xl rounded-2xl p-8 sm:px-10 sm:py-10"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
-            Log In
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800">
+            Welcome Back
           </h2>
+          <p className="mt-2 mb-6  text-gray-600 text-center">
+            Sign in to your account{" "}
+          </p>
 
           <div className="mb-4">
             <label
@@ -146,7 +149,7 @@ export default function Login() {
             <button
               type="button"
               onClick={handleForgotPassword}
-              className="text-sm sm:text-base  text-blue-600 hover:underline"
+              className="text-sm sm:text-base hover:cursor-pointer text-gray-900 hover:underline"
             >
               Forgot Password?
             </button>
@@ -155,7 +158,7 @@ export default function Login() {
             <button
               disabled={isLoading ? true : false}
               type="submit"
-              className="w-full bg-blue-600 text-white font-semibold px-6 py-2 sm:py-2.5  rounded-lg hover:bg-blue-700 transition duration-300 cursor-pointer text-base"
+              className="w-full bg-primarry text-white font-semibold px-6 py-2 sm:py-2.5  rounded-lg hover:bg-primarry-hover transition duration-300 cursor-pointer text-base"
             >
               {isLoading ? (
                 <FaSpinner className="mx-auto animate-spin" />
@@ -169,7 +172,7 @@ export default function Login() {
               Don't have an account?{" "}
               <button
                 onClick={() => navigate("/signup")}
-                className="text-blue-600 hover:underline font-medium"
+                className="text-gray-600 hover:cursor-pointer hover:underline font-medium"
               >
                 SignUp
               </button>

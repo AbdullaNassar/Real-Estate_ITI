@@ -150,7 +150,7 @@ export default function Chatbot() {
         // Floating icon
         <button
           onClick={() => setIsOpen(true)}
-          className="p-4 rounded-full shadow-lg hover:opacity-90 transition"
+          className="p-4 rounded-full shadow-lg hover:cursor-pointer hover:opacity-90 transition"
           style={{ backgroundColor: "#C69963", color: "white" }}
         >
           <TbMessageChatbot size={28} />
