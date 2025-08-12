@@ -8,7 +8,7 @@ export default function ListItem({ list }) {
     <div className=" space-y-4 flex-col md:flex-row flex justify-between items-center pb-4 border-b  border-gray-300">
       <div className="space-y-1">
         <h3 className="text-gray-500">
-          {list.categoryId.name} - {list.governorate}, Egypt
+          {list.categoryId?.name} - {list.governorate}, Egypt
         </h3>
         <h3 className="font-semibold">{list.title}</h3>
         <h3 className="text-gray-500">

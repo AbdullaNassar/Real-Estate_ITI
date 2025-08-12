@@ -272,6 +272,7 @@ export const updateList = async (req, res) => {
       latitude,
       amenitiesId,
       maxGustes,
+      photos,
     } = req.body;
 
     const updateData = {
@@ -283,7 +284,10 @@ export const updateList = async (req, res) => {
       ...(amenitiesId && { amenitiesId }),
       ...(maxGustes && { maxGustes }),
     };
-
+    if (photos) {
+      console.log("yes");
+      updateData.photos = photos;
+    }
     if (address && longitude && latitude) {
       updateData.location = {
         address,
@@ -294,9 +298,9 @@ export const updateList = async (req, res) => {
       };
     }
 
-    if (req.files?.length > 0) {
-      updateData.photos = req.files.map((file) => file.path); // or cloudinary URLs
-    }
+    // if (req.files?.length > 0) {
+    //   updateData.photos = req.files.map((file) => file.path); // or cloudinary URLs
+    // }
 
     await listModel.findByIdAndUpdate(id, updateData, {
       new: true,
@@ -308,6 +312,7 @@ export const updateList = async (req, res) => {
       message: "Listing Updated Successfuly",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       status: "Failed",
       message: "Internal Server Error",

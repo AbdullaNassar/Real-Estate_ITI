@@ -117,3 +117,35 @@ export async function deleteList(id) {
     throw new Error("Error while deleting List");
   }
 }
+
+export async function updateList({ id, data }) {
+  try {
+    const formData = new FormData();
+
+    // Append fields to formData
+    for (const key in data) {
+      if (key === "photos") {
+        // photos is an array of File objects
+        data.photos.forEach((file) => {
+          formData.append("photos", file);
+        });
+      } else if (Array.isArray(data[key])) {
+        // If array (like amenitiesId), append each separately or stringify
+        data[key].forEach((item) => formData.append(key, item));
+      } else {
+        formData.append(key, data[key]);
+      }
+    }
+    const response = await axiosInstance.patch(`lists/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (err) {
+    const message = err.response?.data?.message || err.message;
+    if (message) throw new Error(message);
+    throw new Error("Error while updating LIst");
+  }
+}
