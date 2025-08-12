@@ -768,6 +768,19 @@ const swaggerDefinition = {
       },
     },
     // ------------------- RATINGS -------------------
+    "/ratings": {
+      get: {
+        summary: "Get all ratings submitted by the current user",
+        security: [{ bearerAuth: [] }],
+        tags: ["Ratings"],
+        parameters: [],
+        responses: {
+          200: { description: "List of ratings for the user" },
+          404: { description: "User has no ratings" },
+          500: { description: "Internal server error" },
+        },
+      },
+    },
     "/ratings/{bookingId}": {
       post: {
         summary: "Submit a rating for a booking (guest only, after checkout)",
@@ -798,15 +811,16 @@ const swaggerDefinition = {
         },
         responses: {
           201: { description: "Rating submitted successfully" },
-          400: { description: "Already rated or not checked out" },
+          400: { description: "Already rated, missing fields, or not checked out" },
           403: { description: "Unauthorized or booking not found" },
+          404: { description: "Booking not found" },
           500: { description: "Internal server error" },
         },
       },
     },
-    "/ratings/listings/{listingId}": {
+    "/ratings/listing/{listingId}": {
       get: {
-        summary: "Get all ratings for a specific listing (admin and host)",
+        summary: "Get all ratings for a specific listing",
         security: [{ bearerAuth: [] }],
         tags: ["Ratings"],
         parameters: [
@@ -819,6 +833,62 @@ const swaggerDefinition = {
         ],
         responses: {
           200: { description: "List of ratings for the listing" },
+          400: { description: "Missing listingId" },
+          404: { description: "Listing not found or no ratings" },
+          500: { description: "Internal server error" },
+        },
+      },
+    },
+    "/ratings/{ratingId}": {
+      patch: {
+        summary: "Edit an existing rating",
+        security: [{ bearerAuth: [] }],
+        tags: ["Ratings"],
+        parameters: [
+          {
+            name: "ratingId",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  rating: { type: "number", minimum: 1, maximum: 5 },
+                  comment: { type: "string" },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          200: { description: "Rating updated successfully" },
+          400: { description: "Missing ratingId or no update data" },
+          500: { description: "Internal server error" },
+        },
+      },
+
+      delete: {
+        summary: "Delete an existing rating",
+        security: [{ bearerAuth: [] }],
+        tags: ["Ratings"],
+        parameters: [
+          {
+            name: "ratingId",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: { description: "Rating deleted successfully" },
+          400: { description: "Missing ratingId" },
+          404: { description: "Rating or listing not found" },
           500: { description: "Internal server error" },
         },
       },
@@ -910,7 +980,6 @@ const swaggerDefinition = {
         },
       },
     },
-
     // ------------------- Booking -------------------
     "/bookings/{id}": {
       post: {
