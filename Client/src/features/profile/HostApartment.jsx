@@ -1,9 +1,8 @@
 import React from "react";
-import { useHostLists } from "../features/Lists/useHostLists";
-import Spinner from "../ui/Spinner";
-import Error from "../ui/Error";
-import Empty from "../ui/Empty";
-import ListOwnerItem from "../features/Lists/ListOwnerItem";
+import { useHostLists } from "../Lists/useHostLists";
+import Spinner from "../../ui/Spinner";
+import Error from "../../ui/Error";
+import ListOwnerItem from "./ListOwnerItem";
 
 export default function HostApartment() {
   const { data: hostLists, error, isLoading } = useHostLists();

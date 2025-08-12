@@ -1,9 +1,9 @@
 import React from "react";
-import ListItemCard from "./ListItemCard";
+import ListItemCard from "../Lists/ListItemCard";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../ui/Spinner";
-import Error from "../ui/Error";
-import { useGuestBookings } from "../features/booking/useGeustBooking";
+import Spinner from "../../ui/Spinner";
+import Error from "../../ui/Error";
+import { useGuestBookings } from "../booking/useGeustBooking";
 import {
   Calendar,
   CalendarCheck,

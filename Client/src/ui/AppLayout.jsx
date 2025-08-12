@@ -1,8 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import ChatBot from "../component/chatbot";
-
+import Chatbot from "../features/chatBot/ChatBot";
 
 export default function AppLayout() {
   return (
@@ -12,7 +11,7 @@ export default function AppLayout() {
         <Outlet />
       </main>
       <Footer />
-      <ChatBot />
+      <Chatbot />
     </div>
   );
 }

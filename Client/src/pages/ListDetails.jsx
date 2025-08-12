@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import pic1 from "/imgs/list1.jpg";
+import { useState } from "react";
 import { PiSwimmingPoolLight } from "react-icons/pi";
 import MyMap from "../component/Map";
 import { RiStarSFill } from "react-icons/ri";
@@ -12,7 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCheckoutSessionMutation } from "../features/booking/useCheckoutSession";
 import { useGuestBookings } from "../features/booking/useGeustBooking";
 import toast from "react-hot-toast";
-import Review from "../component/review";
+import Review from "../features/review/Review";
 import { useReviews } from "../features/review/useReviews";
 import { MdDelete } from "react-icons/md";
 import { MdSystemUpdateAlt } from "react-icons/md";
@@ -214,7 +213,7 @@ export default function ListingDetails() {
                             title="Update review"
                             onClick={() => {
                               setShowReview(true);
-                              setReviewToEdit(review); 
+                              setReviewToEdit(review);
                             }}
                           >
                             <MdSystemUpdateAlt size={24} />
@@ -241,17 +240,15 @@ export default function ListingDetails() {
         </button>
       </div>
 
-
       {showReview && (
         <Review
           bookingId={validBooking?._id}
           listingId={id}
-          reviewToEdit={reviewToEdit} 
+          reviewToEdit={reviewToEdit}
           onClose={() => {
             setShowReview(false);
             setReviewToEdit(null);
           }}
-
         />
       )}
       {/* Host */}

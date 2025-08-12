@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useUser } from "../features/auth/useUser";
-import EditProfileModal from "../component/EditProfileModal";
+import EditProfileModal from "../features/profile/EditProfileModal";
 import toast from "react-hot-toast";
-import ChangePasswordModal from "../component/ChangePasswordModal";
-import GuestBooking from "../component/GuestBooking";
-import HostApartment from "../component/HostApartment";
+import ChangePasswordModal from "../features/profile/ChangePasswordModal";
+import GuestBooking from "../features/profile/GuestBooking";
+import HostApartment from "../features/profile/HostApartment";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import { useNavigate } from "react-router-dom";

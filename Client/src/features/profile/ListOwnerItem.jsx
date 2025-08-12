@@ -4,7 +4,7 @@ import { MdCircle, MdDeleteOutline } from "react-icons/md";
 import { RiStarSFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { LuFolderOpen } from "react-icons/lu";
-import { useDeleteList } from "./useDeleteList";
+import { useDeleteList } from "../Lists/useDeleteList";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { BsCalendar2Check } from "react-icons/bs";
 import { ConfirmationModal } from "../../ui/Modal";

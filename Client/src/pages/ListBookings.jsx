@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useListBookings } from "../features/booking/useListBookings";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
+import { formatDate, formatPrice } from "../utils/helper";
 import Empty from "../ui/Empty";
 import {
   User,
@@ -61,24 +62,6 @@ const TotalBookingsMinimal = ({ data }) => {
   );
 };
 function ListItem({ list }) {
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  // Format price function
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
-
   const getPaymentStatusStyle = (status) => {
     switch (status?.toLowerCase()) {
       case "paid":
@@ -109,6 +92,7 @@ function ListItem({ list }) {
         };
     }
   };
+
   const paymentStyle = getPaymentStatusStyle(list.paymentStatus);
   const PaymentIcon = paymentStyle.icon;
   return (

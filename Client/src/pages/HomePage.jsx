@@ -1,5 +1,5 @@
 import Hero from "../component/Hero";
-import ListsContainer from "../component/ListsContainer";
+import ListsContainer from "../features/Lists/ListsContainer";
 import { HiArrowSmRight } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 

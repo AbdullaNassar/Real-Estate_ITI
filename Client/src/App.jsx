@@ -8,7 +8,6 @@ import NotFound from "./pages/NotFound";
 import HomePage from "./pages/HomePage";
 import ListingDetails from "./pages/ListDetails";
 import Profile from "./pages/Profile";
-import Booking from "./pages/Booking";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import About from "./pages/About";
@@ -19,7 +18,7 @@ import VerifyOtp from "./pages/VerifyOtp";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import "./i18n";
-import EditProfileModal from "./component/EditProfileModal";
+import EditProfileModal from "./features/profile/EditProfileModal";
 
 import { ScrollToTop } from "./component/ScrollToTop";
 import AddList from "./pages/AddList";
@@ -49,7 +48,6 @@ function App() {
                 <Route path="/ListDetails/:id" element={<ListingDetails />} />
                 <Route path="/editList/:id" element={<EditList />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/Booking" element={<Booking />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/terms" element={<Terms />} />

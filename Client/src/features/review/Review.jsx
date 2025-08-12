@@ -1,21 +1,30 @@
 import { useFormik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
-import { axiosInstance } from "../services/axiosInstance";
+import { axiosInstance } from "../../services/axiosInstance";
 import { useQueryClient } from "@tanstack/react-query";
-import { useUpdateReview } from "../features/review/useUpdateReview";
+import { useUpdateReview } from "./useUpdateReview";
 import { useMutation } from "@tanstack/react-query";
 
-export default function Review({ onClose, bookingId, listingId, reviewToEdit }) {
+export default function Review({
+  onClose,
+  bookingId,
+  listingId,
+  reviewToEdit,
+}) {
   const queryClient = useQueryClient();
 
   const isEditing = Boolean(reviewToEdit?._id);
 
-  const { mutate: updateReview, isPending: isUpdating } = useUpdateReview(listingId);
+  const { mutate: updateReview, isPending: isUpdating } =
+    useUpdateReview(listingId);
 
   const { mutate: createReview, isPending: isCreating } = useMutation({
     mutationFn: async (values) => {
-      const { data } = await axiosInstance.post(`/ratings/${bookingId}`, values);
+      const { data } = await axiosInstance.post(
+        `/ratings/${bookingId}`,
+        values
+      );
       return data;
     },
     onSuccess: () => {
@@ -24,13 +33,15 @@ export default function Review({ onClose, bookingId, listingId, reviewToEdit }) 
       onClose();
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.message || "Error while submitting review");
+      toast.error(
+        err?.response?.data?.message || "Error while submitting review"
+      );
     },
   });
 
   const formik = useFormik({
     initialValues: {
-      rating: reviewToEdit?.rating || 0, 
+      rating: reviewToEdit?.rating || 0,
       comment: reviewToEdit?.comment || "",
     },
     onSubmit: (values) => {

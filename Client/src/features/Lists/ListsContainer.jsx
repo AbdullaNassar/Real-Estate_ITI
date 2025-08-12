@@ -1,7 +1,7 @@
 import React from "react";
 import ListsBox from "./ListsBox";
-import { useListsByGovern } from "../features/Lists/useListsByGovern";
-import Spinner from "../ui/Spinner";
+import { useListsByGovern } from "./useListsByGovern";
+import Spinner from "../../ui/Spinner";
 import { data } from "react-router-dom";
 const listHeading = [
   "Popular homes in ",
