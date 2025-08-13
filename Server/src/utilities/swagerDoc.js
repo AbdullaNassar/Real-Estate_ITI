@@ -468,6 +468,71 @@ const swaggerDefinition = {
         },
       },
     },
+    "/users/toggle/{listingId}": {
+      post: {
+        summary: "Toggle favorite for a listing",
+        tags: ["Favorites"],
+        security: [{ bearerAuth: [] }],
+        parameters: [
+          {
+            in: "path",
+            name: "listingId",
+            required: true,
+            schema: { type: "string", example: "66a8fbb83b62c40356a55c92" },
+            description: "The ID of the listing to add or remove from favorites",
+          },
+        ],
+        responses: {
+          200: {
+            description: "Successfully toggled favorite",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    favorites: {
+                      type: "array",
+                      items: { $ref: "#/components/schemas/Listing" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          401: { description: "Unauthorized / Not logged in" },
+          403: { description: "Forbidden / Insufficient permissions" },
+          404: { description: "Listing not found" },
+        },
+      },
+    },
+    "/users/favorites": {
+      get: {
+        summary: "Get all user favorites",
+        tags: ["Favorites"],
+        security: [{ bearerAuth: [] }],
+        responses: {
+          200: {
+            description: "List of user's favorite listings",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    favorites: {
+                      type: "array",
+                      items: { $ref: "#/components/schemas/Listing" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          401: { description: "Unauthorized / Not logged in" },
+          403: { description: "Forbidden / Insufficient permissions" },
+          404: { description: "No favorites found" },
+        },
+      },
+    },
     // ------------------- LISTS -------------------
     "/lists": {
       "get": {

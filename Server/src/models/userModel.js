@@ -68,6 +68,7 @@ const userSchema = new Schema(
     phoneNumber: {
       type: String,
     },
+    favorites:[{ type: mongoose.Schema.Types.ObjectId, ref: "List" }],
     otp: String,
     otpExpiresAt: Date,
     resetPasswordOTP: String,

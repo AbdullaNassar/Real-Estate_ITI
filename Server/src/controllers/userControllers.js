@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import listModel from "../models/listModel.js"
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 import bcrypt from "bcryptjs";
 import Crypto from "crypto-js";
@@ -322,4 +323,38 @@ export const getUserInfo = asyncHandler(async (req, res) => {
       createdAt,
     },
   });
+});
+
+export const toggleFavorite = asyncHandler(async (req,res)=>{
+
+    const { listingId } = req.params;
+    const userId = req.user._id;
+
+    const listing = await listModel.findById(listingId);
+    if (!listing) throw new AppError('Listing not found',404);
+
+    const user = await userModel.findById(userId);
+
+    const index = user.favorites.indexOf(listingId);
+    if (index > -1) {
+      // Listing already favorited, remove it
+      user.favorites.splice(index, 1);
+    } else {
+      // Add to favorites
+      user.favorites.push(listingId);
+    }
+
+    await user.save();
+    res.status(200).json({ favorites: user.favorites });
+})
+
+export const getUserFavorites = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const user = await userModel.findById(userId).populate("favorites");
+
+  if (!user.favorites || user.favorites.length === 0) {
+    throw new AppError('User does not have any favorites');
+  }
+
+  res.status(200).json({ favorites: user.favorites });
 });
