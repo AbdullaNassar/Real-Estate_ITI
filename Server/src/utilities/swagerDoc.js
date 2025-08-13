@@ -470,108 +470,75 @@ const swaggerDefinition = {
     },
     // ------------------- LISTS -------------------
     "/lists": {
-      "post": {
-        "summary": "Create a new listing (host only)",
-        "security": [{ "bearerAuth": [] }],
-        "tags": ["Lists"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "title": { "type": "string" },
-                  "descrption": { "type": "string" },
-                  "pricePerNight": { "type": "number" },
-                  "categoryId": { "type": "string" },
-                  "locationType": { "type": "string" },
-                  "address": {
-                    "type": "string",
-                    "description": "Street address or general location"
-                  },
-                  "longitude": {
-                    "type": "number",
-                    "format": "float",
-                    "description": "Longitude coordinate"
-                  },
-                  "latitude": {
-                    "type": "number",
-                    "format": "float",
-                    "description": "Latitude coordinate"
-                  },
-                  "maxGustes": {
-                    "type": "integer",
-                    "description": "Maximum number of guests"
-                  },
-                  "amenitiesId": {
-                    "type": "array",
-                    "items": { "type": "string" },
-                    "description": "Array of amenity IDs"
-                  },
-                  "photos": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "List of images to upload"
-                  },
-                  "width": {
-                    "type": "integer",
-                    "example": 800,
-                    "description": "Image resize width"
-                  },
-                  "height": {
-                    "type": "integer",
-                    "example": 600,
-                    "description": "Image resize height"
-                  },
-                  "quality": {
-                    "type": "integer",
-                    "example": 80,
-                    "description": "Image quality (1-100)"
-                  }
-                },
-                "required": [
-                  "title",
-                  "descrption",
-                  "pricePerNight",
-                  "categoryId",
-                  "address",
-                  "longitude",
-                  "latitude",
-                  "maxGustes",
-                  "photos"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "List created successfully"
-          },
-          "400": {
-            "description": "Missing or invalid input"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      },
       "get": {
-        "summary": "Get all approved lists with filtering",
+        "summary": "Get listings with filters",
         "tags": ["Lists"],
         "parameters": [
-          { "name": "sort", "in": "query", "schema": { "type": "string" } },
-          { "name": "page", "in": "query", "schema": { "type": "integer" } },
-          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
-          { "name": "field", "in": "query", "schema": { "type": "string" } }
+          {
+            "name": "listings",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["approved", "notApproved"],
+              "example": "approved"
+            },
+            "description": "Filter by approval status. If omitted, returns all listings."
+          },
+          {
+            "name": "governorate",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Filter by governorate"
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Filter by category ID"
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "schema": { "type": "number" },
+            "description": "Maximum price per night"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter listings available from this date"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter listings available until this date"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Sort fields (e.g., 'pricePerNight,-createdAt')"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "description": "Page number for pagination"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "description": "Number of results per page"
+          }
         ],
         "responses": {
           "200": {
-            "description": "List of approved listings"
+            "description": "List of filtered listings"
+          },
+          "400": {
+            "description": "Invalid filter or date format"
           },
           "500": {
             "description": "Internal server error"

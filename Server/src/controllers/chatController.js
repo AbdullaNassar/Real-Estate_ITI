@@ -1,43 +1,43 @@
 import {v4 as uuidv4} from 'uuid'
 import roomModel from '../models/chatRoomModel.js';
 import messageModel from '../models/chatMessageModel.js';
+import { asyncHandler } from '../middlewares/asyncHandlerError.middleware.js';
+import AppError from '../utilities/appError.js';
 
-export const createRoom = async(req,res)=>{
-    try {
-        const userId = req.user._id;
-        const roomId = uuidv4();
+export const createRoom = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
 
-        const newRoom = await roomModel.create({userId,roomId});
-
-        return res.status(201).json({
-            status:"Success",
-            message:"Room Created",
-            newRoom
-        })
-    } catch (error) {
-        return res.status(500).json({
-            status:"Failed",
-            message:"Internal Server Error",
-            error:error.message
-        })
+    if (!userId) {
+        throw new AppError("User not authenticated", 401);
     }
-}
 
-export const getMessage = async(req,res)=>{
-    try {
-        const {roomId} = req.params;
+    const roomId = uuidv4();
 
-        const message = await messageModel.find({roomId}).sort({createdAt: 1});
+    const newRoom = await roomModel.create({ userId, roomId });
 
-        return res.status(200).json({
-            status:"Success",
-            message
-        })
-    } catch (error) {
-        return res.status(500).json({
-            status:"Failed",
-            message:"Internal Server Error",
-            error:error.message
-        })
+    res.status(201).json({
+        status: "Success",
+        message: "Room Created",
+        data: newRoom,
+    });
+});
+
+export const getMessage = asyncHandler(async (req, res) => {
+    const { roomId } = req.params;
+
+    if (!roomId) {
+        throw new AppError("Room ID is required", 400);
     }
-}
+
+    const messages = await messageModel.find({ roomId }).sort({ createdAt: 1 });
+
+    if (!messages || messages.length === 0) {
+        throw new AppError("No messages found for this room", 404);
+    }
+
+    res.status(200).json({
+        status: "Success",
+        results: messages.length,
+        data: messages,
+    });
+});
