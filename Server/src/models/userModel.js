@@ -44,12 +44,6 @@ const userSchema = new Schema(
         100,
         "[password must be at Most 100 Characters and you Put {VALUE} characters",
       ],
-      // validate:{
-      //     validator: (value)=>{
-      //         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/.test(value);
-      //     },
-      //     message:"password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number"
-      // }
     },
     profilePic: {
       type: String,
@@ -74,6 +68,7 @@ const userSchema = new Schema(
     phoneNumber: {
       type: String,
     },
+    favorites:[{ type: mongoose.Schema.Types.ObjectId, ref: "List" }],
     otp: String,
     otpExpiresAt: Date,
     resetPasswordOTP: String,

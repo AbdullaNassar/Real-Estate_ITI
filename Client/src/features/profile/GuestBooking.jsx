@@ -1,9 +1,4 @@
-import React from "react";
-import ListItemCard from "./ListItemCard";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../ui/Spinner";
-import Error from "../ui/Error";
-import { useGuestBookings } from "../features/booking/useGeustBooking";
 import {
   Calendar,
   CalendarCheck,
@@ -14,13 +9,19 @@ import {
   User,
 } from "lucide-react";
 
+import Spinner from "../../ui/Spinner";
+import Error from "../../ui/Error";
+import { useGuestBookings } from "../booking/useGeustBooking";
+
 export default function GuestBooking() {
   const { data, error, isLoading } = useGuestBookings();
   const navigate = useNavigate();
 
+  // handle loading, error states
   if (isLoading) return <Spinner />;
   if (error) return <Error message={error.message} />;
-  console.log(data);
+
+  // handle empty state
   if (!data.results)
     return (
       <div className="flex flex-col items-center justify-center text-center py-12 px-4 bg-gray-50 rounded-xl shadow-md">
@@ -35,8 +36,8 @@ export default function GuestBooking() {
         </button>
       </div>
     );
-  const bookings = data.data;
 
+  const bookings = data.data;
   return (
     <div className="space-y-10 mt-10">
       <TotalBookingsMinimal data={data.results} />

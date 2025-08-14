@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TbMessageChatbot } from "react-icons/tb";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { useFormik } from "formik";
-import { axiosInstance } from "../services/axiosInstance"; 
+import { axiosInstance } from "../../services/axiosInstance";
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
@@ -78,7 +78,10 @@ export default function Chatbot() {
                     size={22}
                     style={{ color: "#C69963" }}
                   />
-                  <div className="px-4 py-2 rounded-lg max-w-[80%] shadow-sm" style={{ backgroundColor: "#F3E9DF", color: "#333" }}>
+                  <div
+                    className="px-4 py-2 rounded-lg max-w-[80%] shadow-sm"
+                    style={{ backgroundColor: "#F3E9DF", color: "#333" }}
+                  >
                     {msg.text}
                   </div>
                 </div>
@@ -100,8 +103,11 @@ export default function Chatbot() {
                   size={22}
                   style={{ color: "#C69963" }}
                 />
-                <div className="px-4 py-2 rounded-lg max-w-[80%] shadow-sm italic" style={{ backgroundColor: "#F3E9DF", color: "#333" }}>
-                 Thinking...
+                <div
+                  className="px-4 py-2 rounded-lg max-w-[80%] shadow-sm italic"
+                  style={{ backgroundColor: "#F3E9DF", color: "#333" }}
+                >
+                  Thinking...
                 </div>
               </div>
             )}
@@ -125,9 +131,7 @@ export default function Chatbot() {
               style={{
                 boxShadow: `0 0 0 2px transparent`,
               }}
-              onFocus={(e) =>
-                (e.target.style.boxShadow = `0 0 0 2px #C69963`)
-              }
+              onFocus={(e) => (e.target.style.boxShadow = `0 0 0 2px #C69963`)}
               onBlur={(e) =>
                 (e.target.style.boxShadow = `0 0 0 2px transparent`)
               }
@@ -146,7 +150,7 @@ export default function Chatbot() {
         // Floating icon
         <button
           onClick={() => setIsOpen(true)}
-          className="p-4 rounded-full shadow-lg hover:opacity-90 transition"
+          className="p-4 rounded-full shadow-lg hover:cursor-pointer hover:opacity-90 transition"
           style={{ backgroundColor: "#C69963", color: "white" }}
         >
           <TbMessageChatbot size={28} />

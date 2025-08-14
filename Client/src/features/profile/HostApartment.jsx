@@ -1,16 +1,16 @@
-import React from "react";
-import { useHostLists } from "../features/Lists/useHostLists";
-import Spinner from "../ui/Spinner";
-import Error from "../ui/Error";
-import Empty from "../ui/Empty";
-import ListOwnerItem from "../features/Lists/ListOwnerItem";
+import { useHostLists } from "../Lists/useHostLists";
+import Spinner from "../../ui/Spinner";
+import Error from "../../ui/Error";
+import ListOwnerItem from "./ListOwnerItem";
 
 export default function HostApartment() {
   const { data: hostLists, error, isLoading } = useHostLists();
 
+  // handle error, loading states
   if (isLoading) return <Spinner />;
   if (error) return <Error message={error.message} />;
 
+  // handle empty state
   if (!hostLists.results) {
     return (
       <div className="flex flex-col items-center justify-center text-center py-12 px-4 bg-gray-50 rounded-xl shadow-md">
@@ -23,6 +23,7 @@ export default function HostApartment() {
       </div>
     );
   }
+
   return (
     <div className="space-y-2 divide-y-2">
       {hostLists.lists.map((list) => {

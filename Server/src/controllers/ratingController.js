@@ -1,259 +1,161 @@
+import { asyncHandler } from "../middlewares/asyncHandlerError.middleware.js";
 import bookingModel from "../models/bookingModel.js";
 import listModel from "../models/listModel.js";
 import ratingModel from "../models/ratingModel.js";
+import AppError from "../utilities/appError.js";
 
-export const addRating = async (req, res) => {
-  try {
-    const { bookingId } = req.params;
+export const addRating = asyncHandler(async (req, res) => {
+  const { bookingId } = req.params;
 
-    if (!bookingId) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Booking Id Is Required",
-      });
-    }
-
-    const booking = await bookingModel.findById(bookingId);
-
-    if (!booking) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "Booking Not Found",
-      });
-    }
-
-    const { rating, comment } = req.body;
-
-    if (!rating) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Rating Is Required",
-      });
-    }
-
-    if (booking.guest.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        status: "Failed",
-        message: "Unauthorized or booking not found",
-      });
-    }
-
-    if (booking.checkOut > new Date()) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "You can only rate after checkout",
-      });
-    }
-
-    const existingRating = await ratingModel.findOne({
-      bookingId: booking._id
-    });
-
-    if (existingRating) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "You already rated this booking",
-      });
-    }
-
-    const newRating = await ratingModel.create({
-      bookingId: booking._id,
-      listingId: booking.listing,
-      guestId: req.user._id,
-      rating,
-      comment,
-    });
-
-    const listing = await listModel.findById(booking.listing);
-    listing.reviews.push(newRating);
-    await listing.save();
-
-
-    return res.status(201).json({
-      status: "Success",
-      message: "Rating submitted Successfuly",
-      user:{
-        userName: req.user.userName,
-        profilePicture: req.user.profilePic
-      },
-      rating: newRating,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server error",
-    });
+  if (!bookingId) {
+    throw new AppError("Booking Id is required", 400);
   }
-};
 
-export const getRatingsForListing = async (req, res) => {
-  try {
-    const  listingId = req.params.listingId;
-
-    if (!listingId) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Listing Id Is Required",
-      });
-    }
-
-    const listing = await listModel.findOne({ _id: listingId });
-
-    if (!listing) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "Listing Not Found",
-      });
-    }
-
-    const ratings = await ratingModel.find({ listingId }).populate('guestId');
-
-    if (!ratings) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "This Listing Not Have Any Ratings",
-      });
-    }
-
-    return res.status(200).json({
-      status: "Success",
-      ratings,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-    });
+  const booking = await bookingModel.findById(bookingId);
+  if (!booking) {
+    throw new AppError("Booking not found", 404);
   }
-};
 
-export const getRatingsForUser = async (req, res) => {
-  try {
-
-    const ratings = await ratingModel.find({ guestId: req.user._id });
-
-    if (!ratings !== (ratings.length==0)) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "This User Not Have Any Ratings"
-      });
-    }
-
-    return res.status(200).json({
-      status: "Success",
-      ratings,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-    });
+  const { rating, comment } = req.body;
+  if (!rating) {
+    throw new AppError("Rating is required", 400);
   }
-};
 
-export const editExistingRating = async (req, res) => {
-  try {
-
-    const {ratingId} = req.params;
-
-    if (!ratingId) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "ratingId Is Required"
-      });
-    }
-
-    const rate = await ratingModel.findById(ratingId);
-
-    if(!rate){
-      return res.status(400).json({
-        status: "Failed",
-        message: "rate Is Not Found"
-      });
-    }
-
-    const {rating , comment} = req.body;
-
-    if (!rating && !comment) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "New rating Data Is Required"
-      });
-    }
-
-    if (rate.guestId.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        status: "Failed",
-        message: "Unauthorized or Rating not found",
-      });
-    }
-
-    const existingrate = await ratingModel.findByIdAndUpdate({_id:ratingId},{rating , comment},{new:true,runValidators:true})
-
-    return res.status(200).json({
-      status: "Success",
-      existingrate
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-    });
+  if (booking.guest.toString() !== req.user._id.toString()) {
+    throw new AppError("Unauthorized or booking not found", 403);
   }
-};
 
-export const removeExistingRating = async (req,res)=>{
-  try {
-
-    const { ratingId } = req.params;
-
-    if (!ratingId) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Rating Id Is Required",
-      });
-    }
-
-    const rating = await ratingModel.findById(ratingId);
-
-    if (!rating) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "Rating Not Found",
-      });
-    }
-
-    const listing = await listModel.findById(rating.listingId);
-
-    if(!listing){
-      return res.status(404).json({
-        status: "Failed",
-        message: "Listing Not Found",
-      })
-    }
-
-    if (rating.guestId.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        status: "Failed",
-        message: "Unauthorized or Rating not found"
-      });
-    }
-
-    listing.reviews = listing.reviews.filter((r)=> r._id.toString() !== ratingId.toString() );
-    await listing.save();
-
-    await ratingModel.deleteOne({_id:ratingId});
-
-    return res.status(200).json({
-      status:"Success",
-      message:"Rating Deleted"
-    })
-
-  } catch (error) {
-    return res.status(500).json({
-      status:"Failed",
-      message:"Internal Server Error",
-      error:error.message
-    })
+  if (booking.checkOut > new Date()) {
+    throw new AppError("You can only rate after checkout", 400);
   }
-}
+
+  const existingRating = await ratingModel.findOne({ bookingId: booking._id });
+  if (existingRating) {
+    throw new AppError("You already rated this booking", 400);
+  }
+
+  const newRating = await ratingModel.create({
+    bookingId: booking._id,
+    listingId: booking.listing,
+    guestId: req.user._id,
+    rating,
+    comment,
+  });
+
+  const listing = await listModel.findById(booking.listing);
+  listing.reviews.push(newRating);
+  await listing.save();
+
+  res.status(201).json({
+    status: "Success",
+    message: "Rating submitted successfully",
+    user: {
+      userName: req.user.userName,
+      profilePicture: req.user.profilePic,
+    },
+    rating: newRating,
+  });
+});
+
+export const getRatingsForListing = asyncHandler(async (req, res) => {
+  const { listingId } = req.params;
+
+  if (!listingId) {
+    throw new AppError("Listing Id is required", 400);
+  }
+
+  const listing = await listModel.findById(listingId);
+  if (!listing) {
+    throw new AppError("Listing not found", 404);
+  }
+
+  const ratings = await ratingModel.find({ listingId });
+  if (!ratings.length) {
+    throw new AppError("This listing does not have any ratings", 404);
+  }
+
+  res.status(200).json({
+    status: "Success",
+    ratings,
+  });
+});
+
+export const getRatingsForUser = asyncHandler(async (req, res) => {
+  const ratings = await ratingModel.find({ guestId: req.user._id });
+
+  if (!ratings.length) {
+    throw new AppError("This user does not have any ratings", 404);
+  }
+
+  res.status(200).json({
+    status: "Success",
+    ratings,
+  });
+});
+
+export const editExistingRating = asyncHandler(async (req, res) => {
+  const { ratingId } = req.params;
+
+  if (!ratingId) {
+    throw new AppError("Rating ID is required", 400);
+  }
+
+  const rate = await ratingModel.findById(ratingId);
+  if (!rate) {
+    throw new AppError("Rating not found", 404);
+  }
+
+  const { rating, comment } = req.body;
+  if (!rating && !comment) {
+    throw new AppError("New rating data is required", 400);
+  }
+
+  if (rate.guestId.toString() !== req.user._id.toString()) {
+    throw new AppError("Unauthorized or rating not found", 403);
+  }
+
+  const updatedRating = await ratingModel.findByIdAndUpdate(
+    ratingId,
+    { rating, comment },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    status: "Success",
+    updatedRating,
+  });
+});
+
+export const removeExistingRating = asyncHandler(async (req, res) => {
+  const { ratingId } = req.params;
+
+  if (!ratingId) {
+    throw new AppError("Rating ID is required", 400);
+  }
+
+  const rating = await ratingModel.findById(ratingId);
+  if (!rating) {
+    throw new AppError("Rating not found", 404);
+  }
+
+  const listing = await listModel.findById(rating.listingId);
+  if (!listing) {
+    throw new AppError("Listing not found", 404);
+  }
+
+  if (rating.guestId.toString() !== req.user._id.toString()) {
+    throw new AppError("Unauthorized to delete this rating", 403);
+  }
+
+  listing.reviews = listing.reviews.filter(
+    (r) => r._id.toString() !== ratingId.toString()
+  );
+  await listing.save();
+
+  await ratingModel.deleteOne({ _id: ratingId });
+
+  res.status(200).json({
+    status: "Success",
+    message: "Rating deleted successfully",
+  });
+});

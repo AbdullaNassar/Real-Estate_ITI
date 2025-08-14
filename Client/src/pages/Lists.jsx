@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { useState } from "react";
 import { CiFilter } from "react-icons/ci";
+import { FaArrowRight } from "react-icons/fa";
+
 import { useLists } from "../features/Lists/useLists";
 import Spinner from "../ui/Spinner";
 import ListItem from "../features/Lists/ListItem";
@@ -10,7 +12,7 @@ import { governmentList, PAGE_SIZE } from "../utils/constants";
 import { useCategories } from "../features/Lists/categories/useCategories";
 import Empty from "../ui/Empty";
 import Error from "../ui/Error";
-import { FaArrowRight } from "react-icons/fa";
+
 export default function Lists() {
   const [searchQuery, setSearchQuery] = useState(null);
   const [searchParam, setSearchParams] = useSearchParams();
@@ -20,27 +22,26 @@ export default function Lists() {
   const [endDate, setEndDate] = useState(null);
   const [price, setPrice] = useState(null);
   const [filter, setFilter] = useState({});
+  const [govern, setGovern] = useState("Government");
+  const [category, setCategory] = useState("List Type");
 
+  // hooks
   const { lists, error, isLoading, refetch } = useLists({
     page,
     filter,
     price,
   });
-
-  const [govern, setGovern] = useState("Government");
-  const [category, setCategory] = useState("List Type");
-
   const {
     categories,
     error: errorCategories,
     isLoading: isLoadingCategories,
   } = useCategories();
 
+  // handle loading and error states
   if (isLoading || isLoadingCategories) return <Spinner />;
   if (error || errorCategories)
     return <Error message={errorCategories?.message || error?.message} />;
 
-  console.log(lists);
   const handleNext = () => {
     searchParam.set("page", page + 1);
     setSearchParams(searchParam);

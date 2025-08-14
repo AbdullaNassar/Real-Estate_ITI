@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { MdCircle, MdDeleteOutline } from "react-icons/md";
 import { RiStarSFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { LuFolderOpen } from "react-icons/lu";
-import { useDeleteList } from "./useDeleteList";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { BsCalendar2Check } from "react-icons/bs";
+
+import { useDeleteList } from "../Lists/useDeleteList";
 import { ConfirmationModal } from "../../ui/Modal";
+
 export default function ListOwnerItem({ list }) {
   const [deleteModal, setDeleteModal] = useState(false);
+  const navigate = useNavigate();
+
   const { isPending, deleteList } = useDeleteList();
+
   function handleDeleteList(id) {
     deleteList(id, {
       onSettled: () => {
@@ -19,7 +24,6 @@ export default function ListOwnerItem({ list }) {
     });
   }
 
-  const navigate = useNavigate();
   return (
     <>
       <div className=" space-y-4 flex-col md:flex-row flex justify-between items-center pb-4 border-gray-300">

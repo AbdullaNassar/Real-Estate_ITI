@@ -1,6 +1,4 @@
-// src/components/MyMap.tsx
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { LatLngExpression } from "leaflet";
 
 export default function MyMap({ lat = 30.0444, lng = 31.2357 }) {
   const center = [lat, lng]; // Cairo

@@ -16,6 +16,10 @@ import RAGRouter from "./src/routes/RAGChatBootRoutes.js";
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
 import cookieParser from "cookie-parser";
 import { stripeWebhookHandler } from "./src/controllers/bookingControllers.js";
+import chatRouter from "./src/routes/chatRoutes.js";
+import { notFound } from "./src/middlewares/notFoundError.middleware.js";
+import { errorConverter } from "./src/middlewares/errorConverter.middleware.js";
+import { errorHandler } from "./src/middlewares/errorHandler.middleware.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
@@ -25,8 +29,8 @@ const DB_LOCAL = process.env.DB_LOCAL;
 const DB_ATLAS = process.env.DB_ATLAS;
 const DB = process.env.DB;
 mongoose
-  .connect(DB_LOCAL)
-  // .connect(DB_ATLAS)
+  // .connect(DB_LOCAL)
+  .connect(DB_ATLAS)
   // .connect(DB)
   .then(() => {
     console.log("DB Connected Successfully");
@@ -64,9 +68,14 @@ app.use("/api/v1/ratings", ratingRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/amenities", amenityRouter);
 app.use("/api/v1/chat-model", RAGRouter);
+app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/", uploadRouter);
 
 //server
+
+app.use(notFound)
+app.use(errorConverter)
+app.use(errorHandler)
 
 const PORT = process.env.PORT;
 app

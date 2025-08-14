@@ -10,6 +10,8 @@ import {
   updateUser,
   verifyOTP,
   getUserInfo,
+  toggleFavorite,
+  getUserFavorites,
 } from "../controllers/userControllers.js";
 import { login, logout, signUp } from "../controllers/authControllers.js";
 import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
@@ -43,7 +45,6 @@ router.route("/me").get(isUserLoggedIn, getUserInfo);
 
 router
   .route("/")
-
   .patch(
     isUserLoggedIn,
     upload.single("profilePic"),
@@ -54,4 +55,12 @@ router
 
 router.route("/change-password").patch(isUserLoggedIn, changePassword);
 
+router 
+  .route('/toggle/:listingId')
+  .post(isUserLoggedIn,userPermission('guest'),toggleFavorite)
+
+router
+  .route('/favorites')
+  .get(isUserLoggedIn,userPermission('admin','guest'),getUserFavorites);
+  
 export default router;

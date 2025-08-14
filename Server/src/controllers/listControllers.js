@@ -1,459 +1,355 @@
+import { asyncHandler } from "../middlewares/asyncHandlerError.middleware.js";
 import listModel from "../models/listModel.js";
+import AppError from "../utilities/appError.js";
 
-export const createList = async (req, res) => {
-  try {
-    const {
-      title,
-      descrption,
-      pricePerNight,
-      categoryId,
-      locationType,
+export const createList = asyncHandler(async (req, res) => {
+  const {
+    title,
+    descrption,
+    pricePerNight,
+    categoryId,
+    locationType,
+    address,
+    longitude,
+    latitude,
+    governorate,
+    amenitiesId,
+    maxGustes,
+    photos,
+  } = req.body;
+
+  // Validate required fields
+  if (
+    !title ||
+    !descrption ||
+    !pricePerNight ||
+    !longitude ||
+    !latitude ||
+    !address ||
+    !maxGustes ||
+    !photos ||
+    !governorate
+  ) {
+    throw new AppError("All required fields must be provided", 400);
+  }
+
+  // Validate photo count
+  if (photos.length !== 5) {
+    throw new AppError(
+      `Listing must have exactly 5 images, you uploaded ${photos.length}`,
+      400
+    );
+  }
+
+  const list = await listModel.create({
+    host: req.user._id,
+    title,
+    descrption,
+    pricePerNight,
+    categoryId,
+    locationType,
+    location: {
       address,
-      longitude,
-      latitude,
-      governorate,
-      amenitiesId,
-      maxGustes,
-      photos,
-    } = req.body;
+      coordinates: {
+        coordinates: [parseFloat(longitude), parseFloat(latitude)],
+      },
+    },
+    governorate,
+    amenitiesId,
+    maxGustes,
+    photos,
+  });
 
-    if (
-      !title ||
-      !descrption ||
-      !pricePerNight ||
-      !longitude ||
-      !latitude ||
-      !address ||
-      !maxGustes ||
-      !photos ||
-      !governorate
-    ) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Provide All Fields",
-      });
+  res.status(201).json({
+    status: "success",
+    message: "Listing created successfully",
+    data: list,
+  });
+});
+
+export const readLists = asyncHandler(async (req, res) => {
+  const { sort } = req.query;
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+
+  const allowedFilters = ["governorate", "categoryId"];
+  const filters = {};
+
+  allowedFilters.forEach((key) => {
+    if (req.query[key]) filters[key] = req.query[key];
+  });
+
+  const queryBody = {
+    ...filters,
+  };
+
+  // Search logic
+  if (req.query.listings && req.query.listings == 'approved') {
+    queryBody.isApproved = true;
+
+  } else if(req.query.listings && req.query.listings == 'notApproved') {
+    queryBody.isApproved = false;
+  }
+
+  // Price filter
+  if (req.query.price && !isNaN(req.query.price)) {
+    queryBody.pricePerNight = { $lte: +req.query.price };
+  }
+
+  // Date range filter
+  if (req.query.startDate && req.query.endDate) {
+    const startDate = new Date(req.query.startDate);
+    const endDate = new Date(req.query.endDate);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      throw new AppError("Invalid date format for startDate or endDate", 400);
     }
 
-    if (photos.length !== 5) {
-      return res.status(400).json({
-        status: "Failed",
-        message: `Listing Must have 5 Images you Exactly upload ${photos.length}`,
-      });
-    }
-
-    const list = await listModel.create({
-      host: req.user._id,
-      title,
-      descrption,
-      pricePerNight,
-      categoryId,
-      locationType,
-      location: {
-        address,
-        coordinates: {
-          coordinates: [parseFloat(longitude), parseFloat(latitude)],
+    queryBody.bookedDates = {
+      $not: {
+        $elemMatch: {
+          checkInDate: { $lte: endDate },
+          checkOutDate: { $gte: startDate },
         },
       },
-      governorate,
-      amenitiesId,
-      maxGustes,
-      photos,
-    });
-
-    res.status(201).json({
-      status: "Success",
-      message: "List Created",
-      data: list,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
-  }
-};
-
-export const readLists = async (req, res) => {
-  try {
-    const { sort } = req?.query;
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-
-    const allowedFilters = ["governorate", "categoryId"];
-    const filters = {};
-
-    allowedFilters.forEach((key) => {
-      if (req.query[key]) filters[key] = req.query[key];
-    });
-
-    const queryBody = {
-      isApproved: true,
-      ...filters,
     };
-
-    if (req.query.price && !isNaN(req.query.price)) {
-      queryBody.pricePerNight = { $lte: +req.query.price };
-    }
-
-    if (req.query.query) {
-      const searchRegex = new RegExp(req.query.query, "i");
-      queryBody.$or = [
-        { title: { $regex: searchRegex } },
-        { description: { $regex: searchRegex } },
-        { governorate: { $regex: searchRegex } },
-      ];
-    }
-
-    const startDateStr = req.query.startDate;
-    const endDateStr = req.query.endDate;
-
-    if (startDateStr && endDateStr) {
-      const startDate = new Date(startDateStr);
-      const endDate = new Date(endDateStr);
-
-      queryBody.bookedDates = {
-        $not: {
-          $elemMatch: {
-            checkInDate: { $lte: endDate },
-            checkOutDate: { $gte: startDate },
-          },
-        },
-      };
-    }
-
-    const totalDocs = await listModel.countDocuments(queryBody);
-
-    let query = listModel.find(queryBody).populate("categoryId amenitiesId");
-
-    if (sort) {
-      query = query.sort(sort.split(",").join(" "));
-    }
-
-    const skip = (page - 1) * limit;
-    query = query.skip(skip).limit(limit);
-
-    const listings = await query;
-
-    res.status(200).json({
-      status: "Success",
-      total: totalDocs,
-      results: listings.length,
-      data: listings,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
   }
-};
 
-export const getListById = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const totalDocs = await listModel.countDocuments(queryBody);
 
-    if (!id) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Listing Id Is required",
-      });
-    }
+  let query = listModel.find(queryBody).populate("categoryId amenitiesId");
+
+  if (sort) {
+    query = query.sort(sort.split(",").join(" "));
+  }
+
+  const skip = (page - 1) * limit;
+  query = query.skip(skip).limit(limit);
+
+  const listings = await query;
+
+  res.status(200).json({
+    status: "success",
+    total: totalDocs,
+    results: listings.length,
+    data: listings,
+  });
+});
+
+export const getListById =asyncHandler(async (req, res) => {
+
+  const { id } = req.params;
+
+    if (!id) throw new AppError('Listing Id Is Required',400)
 
     const list = await listModel
       .findOne({ _id: id })
       .populate("host categoryId amenitiesId");
-    if (!list) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "List Not Found",
-      });
-    }
+
+    if (!list) throw new AppError('Listing Not Found',404);
 
     return res.status(200).json({
       status: "Success",
       data: list,
     });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
+});
+
+export const getListingsByGovernorate = asyncHandler(async (req, res, next) => {
+  const listings = await listModel.aggregate([
+    { $match: { isApproved: true } },
+    {
+      $group: {
+        _id: "$governorate",
+        count: { $sum: 1 },
+        listings: { $push: "$$ROOT" },
+      },
+    },
+    { $sort: { _id: 1 } } // Sort alphabetically by governorate
+  ]);
+
+  if (!listings || listings.length === 0) {
+    return next(new AppError("No Listings Found", 404));
   }
-};
 
-export const getListingsByGovernorate = async (req, res) => {
-  try {
-    const listings = await listModel.aggregate([
-      {
-        $match: {
-          isApproved: true,
-        },
-      },
-      {
-        $group: {
-          _id: "$governorate",
-          count: { $sum: 1 },
-          listings: { $push: "$$ROOT" },
-        },
-      },
-      {
-        $sort: { _id: 1 }, // sort alphabetically by governorate
-      },
-    ]);
+  res.status(200).json({
+    status: "success",
+    results: listings.length,
+    data: listings,
+  });
+});
 
-    if (!listings) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "No Listings Found",
-      });
-    }
+export const updateList = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
 
-    return res.status(200).json({
-      status: "Success",
-      data: listings,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
+  if (!id) {
+    return next(new AppError("Listing ID is required", 400));
   }
-};
 
-export const updateList = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const host = req.user._id;
 
-    if (!id) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Listing Id Is required",
-      });
-    }
+  const list = await listModel.findById(id);
 
-    const host = req.user._id;
+  if (!list) {
+    return next(new AppError("List not found", 404));
+  }
 
-    const list = await listModel.findOne({ _id: id });
+  if (list.host.toString() !== host.toString()) {
+    return next(new AppError("You are not authorized to update this list", 403));
+  }
 
-    if (!list) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "List Not Found",
-      });
-    }
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return next(new AppError("Request body is empty", 400));
+  }
 
-    if (list.host.toString() !== host.toString()) {
-      return res.status(403).json({
-        status: "Failed",
-        message: "Can not to Update this List",
-      });
-    }
+  const {
+    title,
+    descrption,
+    pricePerNight,
+    categoryId,
+    locationType,
+    address,
+    longitude,
+    latitude,
+    amenitiesId,
+    maxGustes,
+    photos,
+  } = req.body;
 
-    if (!req.body) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Body Is Empty",
-      });
-    }
+  const updateData = {
+    ...(title && { title }),
+    ...(descrption && { descrption }),
+    ...(pricePerNight && { pricePerNight }),
+    ...(categoryId && { categoryId }),
+    ...(locationType && { locationType }),
+    ...(amenitiesId && { amenitiesId }),
+    ...(maxGustes && { maxGustes }),
+  };
 
-    const {
-      title,
-      descrption,
-      pricePerNight,
-      categoryId,
-      locationType,
+  if (photos) {
+    updateData.photos = photos;
+  }
+
+  if (address && longitude && latitude) {
+    updateData.location = {
       address,
-      longitude,
-      latitude,
-      amenitiesId,
-      maxGustes,
-      photos,
-    } = req.body;
-
-    const updateData = {
-      ...(title && { title }),
-      ...(descrption && { descrption }),
-      ...(pricePerNight && { pricePerNight }),
-      ...(categoryId && { categoryId }),
-      ...(locationType && { locationType }),
-      ...(amenitiesId && { amenitiesId }),
-      ...(maxGustes && { maxGustes }),
+      coordinates: {
+        type: "Point",
+        coordinates: [parseFloat(longitude), parseFloat(latitude)],
+      },
     };
-    if (photos) {
-      console.log("yes");
-      updateData.photos = photos;
-    }
-    if (address && longitude && latitude) {
-      updateData.location = {
-        address,
-        coordinates: {
-          type: "Point",
-          coordinates: [parseFloat(longitude), parseFloat(latitude)],
-        },
-      };
-    }
-
-    // if (req.files?.length > 0) {
-    //   updateData.photos = req.files.map((file) => file.path); // or cloudinary URLs
-    // }
-
-    await listModel.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
-
-    res.status(200).json({
-      status: "Success",
-      message: "Listing Updated Successfuly",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
   }
-};
 
-export const deleteList = async (req, res) => {
-  try {
-    const { id } = req.params;
+  await listModel.findByIdAndUpdate(id, updateData, {
+    new: true,
+    runValidators: true,
+  });
 
-    if (!id) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Listing Id Is required",
-      });
-    }
+  res.status(200).json({
+    status: "success",
+    message: "Listing updated successfully",
+  });
+});
 
-    const host = req.user._id;
+export const deleteList = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
 
-    const list = await listModel.findOne({ _id: id });
-
-    if (!list) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "List Not Found",
-      });
-    }
-
-    if (list.host.toString() !== host.toString()) {
-      return res.status(403).json({
-        status: "Failed",
-        message: "Can not to Delete This List",
-      });
-    }
-
-    await listModel.deleteOne({ _id: id });
-
-    return res.status(200).json({
-      status: "Success",
-      message: "List Deleted",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
+  if (!id) {
+    return next(new AppError("Listing ID is required", 400));
   }
-};
 
-export const searchLists = async (req, res) => {
-  try {
-    const keyword = req.query.query?.trim();
-    if (!keyword || keyword.length < 3) {
-      return res.status(400).json({
-        status: "failed",
-        message: "You must enter at least 3 characters",
-      });
-    }
+  const host = req.user._id;
 
-    const searchRegex = new RegExp(keyword, "i");
-    console.log(searchRegex);
+  const list = await listModel.findById(id);
 
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
-    const totalDocs = await listModel.countDocuments({
-      isApproved: true,
-      $or: [
-        { title: { $regex: searchRegex } },
-        { description: { $regex: searchRegex } },
-        { governorate: { $regex: searchRegex } },
-      ],
-    });
-
-    const lists = await listModel.find({
-      isApproved: true,
-      $or: [
-        { title: { $regex: searchRegex } },
-        { description: { $regex: searchRegex } },
-        { governorate: { $regex: searchRegex } },
-      ],
-    });
-
-    res.status(200).json({
-      status: "Success",
-      results: totalDocs,
-      lists: lists,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
+  if (!list) {
+    return next(new AppError("List not found", 404));
   }
-};
 
-export const approvedListing = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    if (!id) {
-      return res.status(400).json({
-        status: "Failed",
-        message: "Listing Id Is required",
-      });
-    }
-
-    const listing = await listModel.findByIdAndUpdate(
-      id,
-      { isApproved: true },
-      { new: true, runValidators: true }
-    );
-
-    return res.status(200).json({
-      status: "Success",
-      message: "Listing Approved Successfuly",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Internal Server Error",
-      error: error.message,
-    });
+  if (list.host.toString() !== host.toString()) {
+    return next(new AppError("You are not authorized to delete this list", 403));
   }
-};
 
-export const HostLists = async (req, res) => {
-  try {
-    const lists = await listModel
-      .find({ host: req.user._id })
-      .populate("categoryId");
-    return res.status(200).json({
-      status: "Success",
-      results: lists.length,
-      lists,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json({ status: "failed", message: err.message });
+  await listModel.deleteOne({ _id: id });
+
+  res.status(200).json({
+    status: "success",
+    message: "List deleted successfully",
+  });
+});
+
+export const searchLists = asyncHandler(async (req, res, next) => {
+  const keyword = req.query.query?.trim();
+
+  if (!keyword || keyword.length < 3) {
+    return next(new AppError("You must enter at least 3 characters", 400));
   }
-};
+
+  const searchRegex = new RegExp(keyword, "i");
+
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+
+  const filter = {
+    isApproved: true,
+    $or: [
+      { title: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+      { governorate: { $regex: searchRegex } },
+    ],
+  };
+
+  const totalDocs = await listModel.countDocuments(filter);
+
+  const lists = await listModel
+    .find(filter)
+    .skip((page - 1) * limit)
+    .limit(limit);
+
+  res.status(200).json({
+    status: "success",
+    results: totalDocs,
+    page,
+    limit,
+    data: lists,
+  });
+});
+
+export const approvedListing = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return next(new AppError("Listing ID is required", 400));
+  }
+
+  const listing = await listModel.findByIdAndUpdate(
+    id,
+    { isApproved: true },
+    { new: true, runValidators: true }
+  );
+
+  if (!listing) {
+    return next(new AppError("Listing not found", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Listing approved successfully",
+    data: listing,
+  });
+});
+
+export const HostLists = asyncHandler(async (req, res, next) => {
+  const lists = await listModel
+    .find({ host: req.user._id })
+    .populate("categoryId");
+
+  if (!lists || lists.length === 0) {
+    return next(new AppError("No listings found for this host", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    results: lists.length,
+    lists,
+  });
+});

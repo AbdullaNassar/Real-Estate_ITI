@@ -20,27 +20,27 @@ async function handleUploadData(req, res) {
     // Drop existing database
     await mongoose.connection.dropDatabase();
 
-    // 1️⃣ Upload Users
+    //  Upload Users
     for (const user of users) {
       const createdUser = await userModel.create(user); // will trigger pre('save') and hash password
     }
 
-    // 2️⃣ Upload Amenities
+    // 2 Upload Amenities
     const uploadedAmenities = await amenityModel.insertMany(amenities);
 
-    // 3️⃣ Upload Categories
+    // 3 Upload Categories
     const uploadedCategories = await categoryModel.insertMany(categories);
 
-    // 4️⃣ Upload Listings
+    // 4 Upload Listings
     const uploadedListings = await listModel.insertMany(lists);
 
-    // 5️⃣ Upload Bookings
+    // 5 Upload Bookings
     const uploadedBookings = await bookingModel.insertMany(bookings);
 
-    // 6️⃣ Upload Ratings
+    // 6 Upload Ratings
     const uploadedRatings = await ratingModel.insertMany(ratings);
 
-    console.log("🎉 All sample data uploaded successfully!");
+    console.log(" All sample data uploaded successfully!");
 
     res.status(201).json({
       success: true,
