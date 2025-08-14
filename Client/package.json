@@ -17,6 +17,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
+    "emailjs-com": "^3.2.0",
     "formik": "^2.4.6",
     "gsap": "^3.13.0",
     "i18next": "^25.3.2",
