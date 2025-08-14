@@ -69,7 +69,7 @@ export const getRatingsForListing = asyncHandler(async (req, res) => {
     throw new AppError("Listing not found", 404);
   }
 
-  const ratings = await ratingModel.find({ listingId });
+  const ratings = await ratingModel.find({ listingId }).populate('guestId');
   if (!ratings.length) {
     throw new AppError("This listing does not have any ratings", 404);
   }

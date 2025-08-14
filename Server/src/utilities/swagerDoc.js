@@ -471,7 +471,7 @@ const swaggerDefinition = {
     "/users/toggle/{listingId}": {
       post: {
         summary: "Toggle favorite for a listing",
-        tags: ["Favorites"],
+        tags: ["Users"],
         security: [{ bearerAuth: [] }],
         parameters: [
           {
@@ -508,7 +508,7 @@ const swaggerDefinition = {
     "/users/favorites": {
       get: {
         summary: "Get all user favorites",
-        tags: ["Favorites"],
+        tags: ["Users"],
         security: [{ bearerAuth: [] }],
         responses: {
           200: {
@@ -520,7 +520,7 @@ const swaggerDefinition = {
                   properties: {
                     favorites: {
                       type: "array",
-                      items: { $ref: "#/components/schemas/Listing" },
+                      items: { $ref: "#/components/schemas/List" },
                     },
                   },
                 },
@@ -1247,7 +1247,7 @@ const swaggerDefinition = {
       },
     },
     // ------------------- RAG Chatbot -------------------
-    "/rag/upload": {
+    "/chat-model/upload": {
       post: {
         summary: "Upload documents for embedding and storage",
         tags: ["RAG Chatbot"],
@@ -1278,8 +1278,7 @@ const swaggerDefinition = {
         }
       }
     },
-
-    "/rag/query": {
+    "/chat-model/query": {
       post: {
         summary: "Ask a question using the RAG assistant",
         tags: ["RAG Chatbot"],
@@ -1319,7 +1318,6 @@ const swaggerDefinition = {
         }
       }
     }
-
   },
 };
 
