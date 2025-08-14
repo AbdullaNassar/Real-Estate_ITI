@@ -88,7 +88,7 @@ export const addRating = async (req, res) => {
 
 export const getRatingsForListing = async (req, res) => {
   try {
-    const { listingId } = req.params.listingId;
+    const  listingId = req.params.listingId;
 
     if (!listingId) {
       return res.status(400).json({
@@ -106,7 +106,7 @@ export const getRatingsForListing = async (req, res) => {
       });
     }
 
-    const ratings = await ratingModel.find({ listingId });
+    const ratings = await ratingModel.find({ listingId }).populate('guestId');
 
     if (!ratings) {
       return res.status(404).json({
