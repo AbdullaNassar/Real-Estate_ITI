@@ -19,7 +19,7 @@ export default function ListsContainer() {
   return (
     <div className="mt-16 flex flex-col gap-4">
       <div className="text-center mb-16">
-        <h2 className="text-5xl font-bold text-gray-800 mb-4">
+        <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
           <Counter
             from={0}
             to={100}

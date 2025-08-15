@@ -27,9 +27,9 @@ export default function ListOwnerItem({ list }) {
 
   return (
     <>
-      <div className=" space-y-4 flex-col md:flex-row flex justify-between items-center pb-4 border-gray-300">
-        <div className="space-y-1">
-          <h3 className="text-gray-500 space-x-4 flex gap-8 bg-red">
+      <div className=" space-y-4 flex-col md:flex-row flex md:justify-between items-center pb-4 border-gray-300">
+        <div className="space-y-1 flex flex-col items-center md:block">
+          <h3 className="text-gray-500 space-x-4 flex flex-wrap justify-between gap-2 bg-red">
             <span>
               {list.categoryId.name} - {list.governorate}, Egypt
             </span>

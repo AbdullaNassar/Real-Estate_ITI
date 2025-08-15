@@ -1,12 +1,13 @@
 import { RiStarSFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import Animation from "../../ui/animated/Animation";
+import { formatPrice } from "../../utils/helper";
 
 export default function ListItem({ list }) {
   const navigate = useNavigate();
   return (
     // <Animation>
-    <div className="space-y-4 flex-col md:flex-row flex justify-between items-center pb-4 border-b   border-gray-300">
+    <div className="space-y-4 flex-col lg:flex-row flex justify-between items-center pb-4 border-b   border-gray-300">
       <div className="space-y-1">
         <h3 className="text-gray-500">
           {list.categoryId?.name} - {list.governorate}, Egypt
@@ -24,7 +25,7 @@ export default function ListItem({ list }) {
             </span>
           </span>
           <span className="p-1 rounded-sm bg-gray-200">
-            ${list.pricePerNight}/night
+            {formatPrice(list.pricePerNight)}/night
           </span>
           <button
             onClick={() => navigate(`/listDetails/${list._id}`)}

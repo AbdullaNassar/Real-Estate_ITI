@@ -25,12 +25,12 @@ import AddList from "./pages/AddList";
 import Lists from "./pages/Lists";
 import Settings from "./pages/Settings";
 import PaymentSuccess from "./pages/paymentSuccess";
-import { useTranslation } from "react-i18next";
-import HostBookings from "./pages/ListBookings";
 import ListBookings from "./pages/ListBookings";
 import EditList from "./pages/EditList";
+import useLanguageStyles from "./hooks/useLanguageStyles";
 const queryClient = new QueryClient();
 function App() {
+  useLanguageStyles();
   return (
     <>
       <Provider store={store}>

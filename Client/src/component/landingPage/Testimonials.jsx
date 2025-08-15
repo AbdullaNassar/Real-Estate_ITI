@@ -33,10 +33,16 @@ export default function Testimonials() {
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
-                  <Users className="w-6 h-6 text-gray-100" />
+                  <img
+                    src="/imgs/face2.jpg"
+                    className="w-full h-full rounded-full"
+                    alt=""
+                  />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">Sarah Ahmed</h4>
+                  <h4 className="font-semibold text-gray-800">
+                    Enzo Hernandiz
+                  </h4>
                   <p className="text-gray-500 text-sm">Traveler from Germany</p>
                 </div>
               </div>
@@ -58,10 +64,14 @@ export default function Testimonials() {
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
-                  <Users className="w-6 h-6 text-gray-100" />
+                  <img
+                    src="/imgs/face3.jpg"
+                    className="w-full h-full rounded-full"
+                    alt=""
+                  />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">Mohamed Farid</h4>
+                  <h4 className="font-semibold text-gray-800">Layla Hassan</h4>
                   <p className="text-gray-500 text-sm">Host in Alexandria</p>
                 </div>
               </div>
@@ -83,10 +93,14 @@ export default function Testimonials() {
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
-                  <Users className="w-6 h-6 text-gray-100" />
+                  <img
+                    src="/imgs/face1.jpg"
+                    className="w-full h-full rounded-full"
+                    alt=""
+                  />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">Layla Hassan</h4>
+                  <h4 className="font-semibold text-gray-800">Mohamed Farid</h4>
                   <p className="text-gray-500 text-sm">Local Traveler</p>
                 </div>
               </div>

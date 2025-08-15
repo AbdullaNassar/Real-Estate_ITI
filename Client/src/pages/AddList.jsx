@@ -323,7 +323,7 @@ export default function AddList() {
             <p></p>
           </div>
         </div>
-        <button className="bg-primarry py-2 text-stone-100 px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primarry-hover hover:cursor-pointer transition-all text-lg font-semibold">
+        <button className="bg-primarry py-2 text-stone-100 px-16 sm:px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primarry-hover hover:cursor-pointer transition-all sm:text-lg font-semibold">
           Save Listing
         </button>
       </form>

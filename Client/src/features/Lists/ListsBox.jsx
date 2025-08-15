@@ -8,7 +8,7 @@ export default function ListsBox({ govern, heading }) {
     <Animation>
       <div className="">
         <div className="my-4  bg-gray-100  sm:w-full">
-          <h2 className="text-2xl font-semibold mb-4">
+          <h2 className="text-center lg:text-start text-2xl font-semibold mb-4">
             {heading}
             {govern._id}
           </h2>

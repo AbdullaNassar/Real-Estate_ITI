@@ -12,6 +12,7 @@ import { governmentList, PAGE_SIZE } from "../utils/constants";
 import { useCategories } from "../features/Lists/categories/useCategories";
 import Empty from "../ui/Empty";
 import Error from "../ui/Error";
+import { IoSearch } from "react-icons/io5";
 
 export default function Lists() {
   const [searchQuery, setSearchQuery] = useState(null);
@@ -150,8 +151,8 @@ export default function Lists() {
   const totalPages = Math.ceil(lists.total / PAGE_SIZE);
 
   return (
-    <div className="md:flex gap-6 my-6 space-y-4 ">
-      <div className=" w-72 shadow pl-4 pt-2 ">
+    <div className="md:flex gap-6 my-6 space-y-4 justify-self-center md:justify-self-auto">
+      <div className="items-center  w-72 shadow pl-4 pt-2 ">
         <div className="flex gap-1 items-center mb-4 text-2xl">
           <span>
             <CiFilter />
@@ -218,18 +219,18 @@ export default function Lists() {
                 <label htmlFor="">${price}</label>
               </div>
             </div>
-            <div className="flex justify-between ">
+            <div className="flex gap-1 ">
               <button
                 onClick={handleReset}
                 className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-gray-400 hover:text-gray-100 transition-all mt-4 mb-2"
               >
-                clear Filters
+                clear
               </button>
               <button
                 onClick={handleApplyFilters}
                 className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-stone-800 hover:text-stone-100 transition-all mt-4 mb-2 bg-stone-700 text-stone-100"
               >
-                Apply Filters
+                Apply
               </button>
             </div>
           </div>
@@ -238,7 +239,7 @@ export default function Lists() {
       <div className=" grow space-y-6 flex flex-col">
         <div className="flex-col-reverse items-start md:flex-row gap-4 md:gap-0 flex md:justify-between md:items-center ">
           <h2 className="text-xl font-bold">{lists.total} Results</h2>
-          <div className="flex">
+          <div className="flex gap-1">
             <input
               value={searchQuery}
               onChange={handleSearch}
@@ -250,8 +251,7 @@ export default function Lists() {
               onClick={handleApplyFilters}
               className="bg-primarry rounded-r-full p-2 hover:cursor-pointer text-stone-200 hover:bg-primarry-hover"
             >
-              <FaArrowRight />
-              {/* <IoSearch /> */}
+              <IoSearch />
             </button>
           </div>
         </div>
@@ -269,19 +269,18 @@ export default function Lists() {
             <button
               disabled={page == 1}
               onClick={handlePrev}
-              className="flex  items-center transition gap-.5 disabled:bg-gray-400 hover:bg-gray-300 bg-gray-200 p-2 font-semibold hover:cursor-pointer"
+              className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
             >
               <span>
                 <GrFormPrevious />
               </span>
-              <span>Prev</span>
+              {/* <span>Prev</span> */}
             </button>
             <button
               disabled={totalPages === page}
               onClick={handleNext}
-              className="flex disabled:bg-gray-400 items-center transition gap-.5 hover:bg-gray-300 bg-gray-200 p-2 font-semibold hover:cursor-pointer"
+              className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
             >
-              <span>Next</span>
               <span>
                 <GrFormNext />
               </span>

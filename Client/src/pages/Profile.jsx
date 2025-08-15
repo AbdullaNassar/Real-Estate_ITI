@@ -127,7 +127,7 @@ export default function Profile() {
       {/* tabs */}
       <div className="mt-6 flex flex-wrap  gap-2">
         <button
-          className={` cursor-pointer px-4 py-2 font-semibold text-2xl ${
+          className={` cursor-pointer px-4 py-2 font-semibold sm:text-2xl ${
             activeTab === "about"
               ? "border-b-3 border-b-primarry"
               : "text-gray-600 hover:text-gray-900"
@@ -137,7 +137,7 @@ export default function Profile() {
           About
         </button>
         <button
-          className={` cursor-pointer text-2xl px-4 py-2 font-semibold ${
+          className={` cursor-pointer sm:text-2xl px-4 py-2 font-semibold ${
             activeTab === "booking"
               ? " border-b-3 border-b-primarry"
               : "text-gray-600 hover:text-gray-900"

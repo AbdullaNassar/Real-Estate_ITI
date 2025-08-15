@@ -17,6 +17,7 @@ import Review from "../features/review/Review";
 import { useReviews } from "../features/review/useReviews";
 import { MdDelete } from "react-icons/md";
 import { useDeleteReview } from "../features/review/useDeleteReviews";
+import { formatPrice } from "../utils/helper";
 
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(null);
@@ -136,10 +137,10 @@ export default function ListingDetails() {
       {/* aminites */}
       <div>
         <h2 className="font-semibold text-3xl mb-3">Aminites</h2>
-        <div className="flex gap-3 flex-wrap    ">
+        <div className="flex gap-3 flex-wrap">
           {data?.amenitiesId.map((item) => {
             return (
-              <div className="flex items-center gap-2 p-3 rounded-sm font-semibold border border-gray-300">
+              <div className="w-full sm:w-fit flex items-center gap-2 p-3 rounded-sm font-semibold border border-gray-300">
                 <img src={item.icon} alt="aminity icon" className="size-8" />
                 {/* <span className="text-3xl">
                   <PiSwimmingPoolLight />
@@ -314,23 +315,27 @@ export default function ListingDetails() {
       {/* Price */}
       <div>
         <h2 className="font-semibold text-3xl mb-3">Price Details</h2>
-        <div className="flex flex-col gap-3 max-w-1/3">
+        <div className="flex flex-col gap-3 sm:max-w-1/3 justify-between">
           <div className="flex justify-between">
             <span className="text-gray-500">Nighly rate</span>
-            <span className="font-semibold ">${data?.pricePerNight}</span>
+            <span className="font-semibold ">
+              {formatPrice(data?.pricePerNight)}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Cleaning Fee</span>
-            <span className="font-semibold">$0</span>
+            <span className="font-semibold text-gray-500">Free</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Service Fee</span>
-            <span className="font-semibold">$0</span>
+            <span className="font-semibold text-gray-500">Free</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Total</span>
             <span className="font-semibold">
-              ${Math.round(days * data.pricePerNight)}
+              {startDate && endDate
+                ? formatPrice(Math.round(days * data.pricePerNight))
+                : "0 EGP"}
             </span>
           </div>
           <button

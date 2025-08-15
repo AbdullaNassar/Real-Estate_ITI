@@ -21,7 +21,6 @@ export default function Login() {
         withCredentials: true,
       })
       .then((res) => {
-        toast.success("login successful");
         navigate("/");
       })
       .catch((err) => {

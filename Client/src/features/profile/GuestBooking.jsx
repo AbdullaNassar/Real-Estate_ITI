@@ -12,6 +12,7 @@ import {
 import Spinner from "../../ui/Spinner";
 import Error from "../../ui/Error";
 import { useGuestBookings } from "../booking/useGeustBooking";
+import { formatPrice } from "../../utils/helper";
 
 export default function GuestBooking() {
   const { data, error, isLoading } = useGuestBookings();
@@ -81,12 +82,6 @@ function BookingItem({ booking }) {
   };
 
   // Format price function
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  };
 
   // Get payment status styling
   const getPaymentStatusStyle = (status) => {

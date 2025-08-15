@@ -154,7 +154,7 @@ export default function Header() {
             {/* <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
               <img className="w-3/4" src="/imgs/user.svg" alt="" />
             </div> */}
-            <div className="dropdown dropdown-end">
+            <div className="dropdown dropdown-end ">
               <div
                 tabIndex={0}
                 role="button"
@@ -166,7 +166,7 @@ export default function Header() {
               </div>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content text-stone-100 bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+                className="menu menu-sm dropdown-content text-stone-100 bg-stone-800 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <li>
                   <Link to="/profile" className="justify-between">
