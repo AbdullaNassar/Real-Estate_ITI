@@ -35,7 +35,7 @@ async function handleUploadData(req, res) {
     const uploadedListings = await listModel.insertMany(lists);
 
     // 5 Upload Bookings
-    const uploadedBookings = await bookingModel.insertMany(bookings);
+    // const uploadedBookings = await bookingModel.insertMany(bookings);
 
     // 6 Upload Ratings
     const uploadedRatings = await ratingModel.insertMany(ratings);

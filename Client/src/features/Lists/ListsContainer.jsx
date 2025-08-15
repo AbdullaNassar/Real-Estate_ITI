@@ -55,7 +55,7 @@ export default function ListsContainer() {
 
       {/* Call to Action */}
       <div className="mt-4 mb-12 text-center">
-        <div className="bg-gray-50/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl max-w-4xl mx-auto border border-white/20">
+        <div className="bg-gray/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl max-w-4xl mx-auto border border-white/20">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
             Ready to Find Your Dream Home?
           </h3>

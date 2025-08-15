@@ -15,10 +15,10 @@ export default function Cta() {
             Egyptian experiences.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gray-100 hover:cursor-pointer text-stone-300  px-8 py-4 rounded-xl hover:bg-gray-50 transition-all hover:scale-105 font-semibold">
+            <button className="bg-gray-100 hover:cursor-pointer text-gray-800 px-8 py-4 rounded-xl hover:bg-gray-50 transition-all hover:scale-105 font-semibold">
               Find Your Stay
             </button>
-            <button className="border-2 hover:cursor-pointer border-white text-gray-50 px-8 py-4 rounded-xl hover:bg-gray-100 hover:text-stone-300 transition-all hover:scale-105 font-semibold">
+            <button className="border-2 hover:cursor-pointer border-white text-gray-50 px-8 py-4 rounded-xl hover:bg-gray-100 hover:text-gray-800 transition-all hover:scale-105 font-semibold">
               Become a Host
             </button>
           </div>

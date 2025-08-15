@@ -47,7 +47,8 @@ const userSchema = new Schema(
     },
     profilePic: {
       type: String,
-      default: "",
+      default:
+        "https://res.cloudinary.com/deuxt0stn/image/upload/v1754918464/download_vggpl3.png",
     },
     gender: {
       type: String,
@@ -68,12 +69,12 @@ const userSchema = new Schema(
     phoneNumber: {
       type: String,
     },
-    favorites:[{ type: mongoose.Schema.Types.ObjectId, ref: "List" }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "List" }],
     otp: String,
     otpExpiresAt: Date,
     resetPasswordOTP: String,
     resetPasswordOTPExpires: Date,
-    passwordChangedAt:Date
+    passwordChangedAt: Date,
   },
   { timestamps: true }
 );

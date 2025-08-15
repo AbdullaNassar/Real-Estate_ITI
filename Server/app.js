@@ -29,8 +29,8 @@ const DB_LOCAL = process.env.DB_LOCAL;
 const DB_ATLAS = process.env.DB_ATLAS;
 const DB = process.env.DB;
 mongoose
-  .connect(DB_LOCAL)
-  // .connect(DB_ATLAS)
+  // .connect(DB_LOCAL)
+  .connect(DB_ATLAS)
   // .connect(DB)
   .then(() => {
     console.log("DB Connected Successfully");
@@ -73,9 +73,9 @@ app.use("/api/v1/", uploadRouter);
 
 //server
 
-app.use(notFound)
-app.use(errorConverter)
-app.use(errorHandler)
+app.use(notFound);
+app.use(errorConverter);
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app

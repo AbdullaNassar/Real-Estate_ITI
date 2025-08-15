@@ -35,10 +35,10 @@ function App() {
     <>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          {/* <ReactQueryDevtools
+          <ReactQueryDevtools
             initialIsOpen={false}
             buttonPosition="bottom-left"
-          /> */}
+          />
           <BrowserRouter>
             <ScrollToTop />
             <Routes>

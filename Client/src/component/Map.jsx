@@ -5,7 +5,7 @@ export default function MyMap({ lat = 30.0444, lng = 31.2357 }) {
   return (
     <MapContainer
       center={center}
-      zoom={13}
+      zoom={7}
       scrollWheelZoom={true}
       style={{ height: "400px", width: "100%" }}
     >

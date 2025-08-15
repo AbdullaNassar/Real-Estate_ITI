@@ -23,6 +23,7 @@ export default function ListOwnerItem({ list }) {
       },
     });
   }
+  console.log(list);
 
   return (
     <>

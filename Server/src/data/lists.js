@@ -47,7 +47,7 @@ export const lists = [
       "Magnificent villa overlooking the Nile in Aswan with traditional Nubian architecture. Close to Philae Temple and High Dam. Perfect for cultural tours and relaxation.",
     roomNumbers: 3,
     pricePerNight: 1200,
-    categoryId: "66b8b4d8f92c9a001f3b0002",
+    categoryId: "66b8c4d8f92c9a001f1e1002",
     locationType: "city",
     location: {
       address: "Corniche Al Nil, Aswan",
@@ -87,7 +87,7 @@ export const lists = [
       "Laid-back beachfront chalet in Dahab with direct access to coral reefs. Perfect for diving, windsurfing, and relaxation. Bohemian atmosphere with modern comfort.",
     roomNumbers: 2,
     pricePerNight: 900,
-    categoryId: "66b8b4d8f92c9a001f3b0006",
+    categoryId: "66b8c4d8f92c9a001f1e1003",
     locationType: "seaside",
     location: {
       address: "Lighthouse Beach, Dahab",
@@ -169,7 +169,7 @@ export const lists = [
       "Comfortable private room in Mansoura city center. Close to Mansoura University and local attractions. Perfect for students and budget travelers.",
     roomNumbers: 1,
     pricePerNight: 200,
-    categoryId: "66b8b4d8f92c9a001f3b0008",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "El Gomhoreya Street, Mansoura",
@@ -206,7 +206,7 @@ export const lists = [
       "Luxury villa in Taba Heights resort with stunning views of Saudi Arabia mountains across the Gulf of Aqaba. Premium resort amenities and private beach access.",
     roomNumbers: 4,
     pricePerNight: 4000,
-    categoryId: "66b8b4d8f92c9a001f3b0002",
+    categoryId: "66b8c4d8f92c9a001f1e1002",
     locationType: "seaside",
     location: {
       address: "Taba Heights Resort",
@@ -280,7 +280,6 @@ export const lists = [
     reviews: [],
     isApproved: true,
   },
-
   {
     _id: "66b8b4d8f92c9a001f4c0003",
     host: "66b8b4d8f92c9a001f1e0002",
@@ -289,7 +288,7 @@ export const lists = [
       "Stunning beachfront chalet in Marina, North Coast. Direct beach access, fully furnished with modern amenities. Perfect for summer vacations and weekend getaways. Enjoy crystal clear waters and beautiful sunsets.",
     roomNumbers: 2,
     pricePerNight: 1800,
-    categoryId: "66b8b4d8f92c9a001f3b0006",
+    categoryId: "66b8c4d8f92c9a001f1e1003",
     locationType: "seaside",
     location: {
       address: "Marina, North Coast",
@@ -329,7 +328,7 @@ export const lists = [
       "Modern studio apartment in Dokki, perfect for young professionals. Close to universities and metro stations. Fully equipped with modern amenities and high-speed internet.",
     roomNumbers: 1,
     pricePerNight: 450,
-    categoryId: "66b8b4d8f92c9a001f3b0003",
+    categoryId: "66b8c4d8f92c9a001f1e1004",
     locationType: "city",
     location: {
       address: "El Tahrir Street, Dokki, Giza",
@@ -367,7 +366,7 @@ export const lists = [
       "Exclusive villa in El Gouna with lagoon views and private pool. Premium resort location with golf course access. Perfect for luxury vacation and water sports.",
     roomNumbers: 4,
     pricePerNight: 3500,
-    categoryId: "66b8b4d8f92c9a001f3b0002",
+    categoryId: "66b8c4d8f92c9a001f1e1002",
     locationType: "seaside",
     location: {
       address: "El Gouna, Red Sea",
@@ -447,7 +446,7 @@ export const lists = [
       "Ultra-modern penthouse in Egypt's New Administrative Capital. State-of-the-art amenities and panoramic views. Perfect for executives and government officials.",
     roomNumbers: 3,
     pricePerNight: 2800,
-    categoryId: "66b8b4d8f92c9a001f3b0004",
+    categoryId: "66b8c4d8f92c9a001f1e1005",
     locationType: "city",
     location: {
       address: "Government District, New Administrative Capital",
@@ -490,7 +489,7 @@ export const lists = [
       "Stunning beachside villa in Ain Sokhna with private beach access. Perfect for weekend getaways from Cairo. Features pool, garden, and direct sea views.",
     roomNumbers: 3,
     pricePerNight: 1900,
-    categoryId: "66b8b4d8f92c9a001f3b0002",
+    categoryId: "66b8c4d8f92c9a001f1e1002",
     locationType: "seaside",
     location: {
       address: "Ain Sokhna Resort Area",
@@ -531,7 +530,7 @@ export const lists = [
       "Spacious duplex in the heart of Mohandessin with modern furnishings. Close to shopping centers and restaurants. Perfect for families and business travelers.",
     roomNumbers: 3,
     pricePerNight: 1100,
-    categoryId: "66b8b4d8f92c9a001f3b0005",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "Gameat Al Dowal Street, Mohandessin, Giza",
@@ -610,7 +609,7 @@ export const lists = [
       "Affordable private room in Agouza area. Clean and comfortable with shared facilities. Perfect for budget travelers and students. Close to Nile and public transport.",
     roomNumbers: 1,
     pricePerNight: 250,
-    categoryId: "66b8b4d8f92c9a001f3b0008",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "Mohi El Din Abu El Ezz Street, Agouza, Giza",
@@ -647,7 +646,7 @@ export const lists = [
       "Premium townhouse in Fifth Settlement with private garden and modern amenities. Gated community with security. Perfect for families seeking luxury living.",
     roomNumbers: 4,
     pricePerNight: 2200,
-    categoryId: "66b8b4d8f92c9a001f3b0007",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "Fifth Settlement, New Cairo",
@@ -690,7 +689,7 @@ export const lists = [
       "Cozy studio with stunning Nile views in upscale Maadi district. Modern amenities and peaceful environment. Perfect for professionals and couples.",
     roomNumbers: 1,
     pricePerNight: 550,
-    categoryId: "66b8b4d8f92c9a001f3b0003",
+    categoryId: "66b8c4d8f92c9a001f1e1004",
     locationType: "city",
     location: {
       address: "Corniche El Nil, Maadi, Cairo",
@@ -758,7 +757,6 @@ export const lists = [
     reviews: [],
     isApproved: true,
   },
-
   {
     _id: "66b8b4d8f92c9a001f4c0004",
     host: "66b8b4d8f92c9a001f1e0002",
@@ -767,7 +765,7 @@ export const lists = [
       "Charming studio apartment in the heart of Alexandria, just minutes from the Mediterranean Sea. Features a kitchenette, comfortable living space, and traditional Alexandrian architecture. Perfect for solo travelers or couples.",
     roomNumbers: 1,
     pricePerNight: 600,
-    categoryId: "66b8b4d8f92c9a001f3b0003",
+    categoryId: "66b8c4d8f92c9a001f1e1004",
     locationType: "seaside",
     location: {
       address: "Saad Zaghloul Street, Alexandria",
@@ -805,7 +803,7 @@ export const lists = [
       "Exclusive penthouse in Baron Empain Palace area, Heliopolis. Features panoramic city views, private terrace, and premium finishes throughout. Perfect for executives and luxury seekers.",
     roomNumbers: 4,
     pricePerNight: 2000,
-    categoryId: "66b8b4d8f92c9a001f3b0004",
+    categoryId: "66b8c4d8f92c9a001f1e1005",
     locationType: "city",
     location: {
       address: "Baron Empain Palace Street, Heliopolis, Cairo",
@@ -846,7 +844,7 @@ export const lists = [
       "Historic duplex apartment in the heart of Islamic Cairo, near Al-Azhar Mosque. Features traditional Islamic architecture with modern amenities. Perfect for culture enthusiasts and history lovers.",
     roomNumbers: 3,
     pricePerNight: 900,
-    categoryId: "66b8b4d8f92c9a001f3b0005",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "Al-Muizz Street, Islamic Cairo",
@@ -883,7 +881,7 @@ export const lists = [
       "Magnificent 4-bedroom villa in Hurghada with private beach access. Features a private pool, garden, and direct Red Sea views. Perfect for diving enthusiasts and beach lovers seeking luxury.",
     roomNumbers: 4,
     pricePerNight: 3000,
-    categoryId: "66b8b4d8f92c9a001f3b0002",
+    categoryId: "66b8c4d8f92c9a001f1e1002",
     locationType: "seaside",
     location: {
       address: "Sahl Hasheesh, Hurghada",
@@ -925,7 +923,7 @@ export const lists = [
       "Contemporary 3-bedroom townhouse in the upscale Sheikh Zayed City. Features modern amenities, private garden, and community facilities. Perfect for families and long-term stays.",
     roomNumbers: 3,
     pricePerNight: 1500,
-    categoryId: "66b8b4d8f92c9a001f3b0007",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "Beverly Hills, Sheikh Zayed City",
@@ -966,7 +964,7 @@ export const lists = [
       "Private room in a quiet residential building in Maadi. Perfect for budget travelers and students. Shared common areas, safe neighborhood, close to metro station.",
     roomNumbers: 1,
     pricePerNight: 300,
-    categoryId: "66b8b4d8f92c9a001f3b0008",
+    categoryId: "66b8b4d8f92c9a001f3b0001",
     locationType: "city",
     location: {
       address: "Road 9, Maadi, Cairo",
@@ -1033,7 +1031,6 @@ export const lists = [
     reviews: [],
     isApproved: true,
   },
-  // Additional 20 listings to make it 30 total
   {
     _id: "66b8b4d8f92c9a001f4c0011",
     host: "66b8b4d8f92c9a001f1e0001",

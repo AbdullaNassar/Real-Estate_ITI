@@ -139,10 +139,11 @@ export default function ListingDetails() {
         <div className="flex gap-3 flex-wrap    ">
           {data?.amenitiesId.map((item) => {
             return (
-              <div className="flex items-center gap-2 p-3 rounded-sm  justify-center   font-semibold border border-gray-300 w-42">
-                <span className="text-3xl">
+              <div className="flex items-center gap-2 p-3 rounded-sm font-semibold border border-gray-300">
+                <img src={item.icon} alt="aminity icon" className="size-8" />
+                {/* <span className="text-3xl">
                   <PiSwimmingPoolLight />
-                </span>
+                </span> */}
                 {item?.name}
               </div>
             );

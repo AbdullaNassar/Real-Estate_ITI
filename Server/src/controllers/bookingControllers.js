@@ -48,13 +48,13 @@ export const prepareCheckOut = asyncHandler(async (req, res, next) => {
   }
 
   if (checkOutDate <= checkInDate) {
-    return next(new AppError("Check-out date must be after check-in date", 400));
+    return next(
+      new AppError("Check-out date must be after check-in date", 400)
+    );
   }
 
   // Days calculation
-  const days = Math.ceil(
-    (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
-  );
+  const days = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
 
   const totalPrice = list.pricePerNight * days;
 
@@ -163,12 +163,16 @@ export const getCheckout = asyncHandler(async (req, res) => {
   if (!list) throw new AppError("Listing not found", 404);
 
   if (!req.booking) throw new AppError("Booking details are missing", 400);
-  if (!req.booking.checkIn || !req.booking.checkOut || !req.booking.totalPrice) {
+  if (
+    !req.booking.checkIn ||
+    !req.booking.checkOut ||
+    !req.booking.totalPrice
+  ) {
     throw new AppError("Incomplete booking details", 400);
   }
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     success_url: `${process.env.CLIENT_URL}/payment-success`,
@@ -268,12 +272,12 @@ export const createBooking = asyncHandler(async (req, res, next) => {
   }
 
   if (checkOutDate <= checkInDate) {
-    return next(new AppError("Check-out date must be after check-in date", 400));
+    return next(
+      new AppError("Check-out date must be after check-in date", 400)
+    );
   }
 
-  const days = Math.ceil(
-    (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
-  );
+  const days = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
   const totalPrice = listing.pricePerNight * days;
 
   const requestedDates = [];
@@ -310,7 +314,9 @@ export const createBooking = asyncHandler(async (req, res, next) => {
     });
 
     if (hasConflict) {
-      return next(new AppError("These dates are not available for booking", 400));
+      return next(
+        new AppError("These dates are not available for booking", 400)
+      );
     }
   }
 
@@ -358,7 +364,9 @@ export const updateBooking = asyncHandler(async (req, res, next) => {
   }
 
   if (booking.guest.toString() !== req.user._id.toString()) {
-    return next(new AppError("You are not allowed to update this booking", 403));
+    return next(
+      new AppError("You are not allowed to update this booking", 403)
+    );
   }
 
   const { checkIn, checkOut, paymentMethod } = req.body;
@@ -443,7 +451,9 @@ export const deleteBooking = asyncHandler(async (req, res, next) => {
   }
 
   if (booking.guest.toString() !== req.user._id.toString()) {
-    return next(new AppError("You are not allowed to delete this booking", 403));
+    return next(
+      new AppError("You are not allowed to delete this booking", 403)
+    );
   }
 
   // Step 1: Remove related bookedDates from the listing
@@ -468,9 +478,9 @@ export const getAllGuestBooking = asyncHandler(async (req, res, next) => {
     .populate("listing")
     .sort({ createdAt: -1 });
 
-  if (!bookings.length) {
-    return next(new AppError("No bookings found for this guest", 404));
-  }
+  // if (!bookings.length) {
+  //   return next(new AppError("No bookings found for this guest", 404));
+  // }
 
   res.status(200).json({
     status: "Success",
@@ -482,9 +492,9 @@ export const getAllGuestBooking = asyncHandler(async (req, res, next) => {
 export const getAllHostListingBooked = asyncHandler(async (req, res, next) => {
   const listings = await listModel.find({ host: req.user._id });
 
-  if (!listings.length) {
-    return next(new AppError("Host does not have any listings", 404));
-  }
+  // if (!listings.length) {
+  //   return next(new AppError("Host does not have any listings", 404));
+  // }
 
   const listingIds = listings.map((l) => l._id);
 
@@ -519,7 +529,9 @@ export const getBookingById = asyncHandler(async (req, res, next) => {
   }
 
   if (booking.guest.toString() !== req.user._id.toString()) {
-    return next(new AppError("You are not allowed to access this booking", 403));
+    return next(
+      new AppError("You are not allowed to access this booking", 403)
+    );
   }
 
   res.status(200).json({
