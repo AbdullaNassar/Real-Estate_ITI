@@ -14,7 +14,7 @@ export default function About() {
 
         <div className="space-y-6 text-sm leading-relaxed">
           {/* Our Story */}
-          <section className="bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
+          <section className="bg-gray-50 shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
             <h2 className="text-lg font-semibold text-[#C69963] mb-3">
               Our Story
             </h2>
@@ -29,7 +29,7 @@ export default function About() {
           </section>
 
           {/* What We Do */}
-          <section className="bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
+          <section className="bg-gray-50 shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
             <h2 className="text-lg font-semibold text-[#C69963] mb-3">
               What We Do
             </h2>
@@ -49,7 +49,7 @@ export default function About() {
           </section>
 
           {/* Why Choose Us */}
-          <section className="bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
+          <section className="bg-gray-50 shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
             <h2 className="text-lg font-semibold text-[#C69963] mb-3">
               Why Choose Maskan?
             </h2>
@@ -70,7 +70,7 @@ export default function About() {
           </section>
 
           {/* Our Vision */}
-          <section className="bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
+          <section className="bg-gray-50 shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
             <h2 className="text-lg font-semibold text-[#C69963] mb-3">
               Our Vision
             </h2>
@@ -83,7 +83,7 @@ export default function About() {
           </section>
 
           {/* Contact */}
-          <section className="bg-white shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
+          <section className="bg-gray-50 shadow-md rounded-xl p-5 hover:shadow-lg transition-shadow duration-300">
             <h2 className="text-lg font-semibold text-[#C69963] mb-3">
               Get in Touch
             </h2>

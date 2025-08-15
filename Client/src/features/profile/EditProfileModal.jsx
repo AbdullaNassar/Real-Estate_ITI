@@ -61,10 +61,10 @@ export default function EditProfileModal({ onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4  bg-white/30 backdrop-blur-xs">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4  bg-gray-50/30 backdrop-blur-xs">
       <form
         onSubmit={formik.handleSubmit}
-        className="w-full max-w-lg bg-white shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[90vh]"
+        className="w-full max-w-lg bg-gray-50 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[90vh]"
       >
         <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
           Edit Profile
@@ -186,14 +186,14 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="px-6 py-2 border rounded-md transition disabled:opacity-50 bg-red-400 text-white hover:bg-red-500"
+            className="bg-transparent border-gray-700 border hover:bg-gray-500 hover:cursor-pointer transition hover:text-gray-50 text-gray-800 px-4 py-2 rounded-md"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2 border rounded-md transition disabled:opacity-50 flex items-center bg-blue-600 text-white hover:bg-blue-700"
+            className="bg-primarry hover:bg-primarry-hover hover:cursor-pointer transition text-white px-4 py-2 rounded-md"
           >
             {isSubmitting ? (
               <span className="animate-spin h-4 w-4 mr-2 border-2 border-t-transparent rounded-full" />

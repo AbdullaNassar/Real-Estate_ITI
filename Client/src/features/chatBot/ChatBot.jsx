@@ -61,7 +61,7 @@ export default function Chatbot() {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="h-8 w-8 flex items-center justify-center rounded-full bg-white hover:opacity-80 transition"
+              className="h-8 w-8 flex items-center justify-center rounded-full hover:cursor-pointer bg-white hover:opacity-80 transition"
               style={{ color: "#C69963" }}
             >
               <MdKeyboardArrowDown size={20} />
@@ -127,7 +127,7 @@ export default function Chatbot() {
                   formik.handleSubmit();
                 }
               }}
-              className="flex-1 p-2 text-sm border border-gray-300 rounded-full focus:outline-none"
+              className="flex-1 p-2 text-sm border text-gray-50 pl-4 border-gray-300 rounded-full focus:outline-none"
               style={{
                 boxShadow: `0 0 0 2px transparent`,
               }}
@@ -139,7 +139,7 @@ export default function Chatbot() {
             <button
               type="button"
               onClick={formik.handleSubmit}
-              className="h-9 w-9 flex items-center justify-center rounded-full text-white hover:opacity-90 transition"
+              className="h-9 w-9 flex items-center justify-center rounded-full hover:cursor-pointer text-white hover:opacity-90 transition"
               style={{ backgroundColor: "#C69963" }}
             >
               <MdKeyboardArrowUp size={20} />

@@ -245,9 +245,9 @@ export default function ListingDetails() {
       <div className="flex justify-start">
         <button
           onClick={() => setShowReview(!showReview)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer"
+          className="bg-blue-700 text-gray-50 px-4 py-2 rounded-md hover:scale-105 transition cursor-pointer"
         >
-          make a review
+          write a review
         </button>
       </div>
 
@@ -282,12 +282,12 @@ export default function ListingDetails() {
               </h3>
             </div>
           </div>
-
+          {/* 
           <div>
             <button className="bg-gray-200 text-center py-2 px-8 rounded-full font-semibold hover:cursor-pointer transition-all hover:bg-gray-300">
               Message Host
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 

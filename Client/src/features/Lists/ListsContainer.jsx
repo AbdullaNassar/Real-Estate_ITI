@@ -19,21 +19,21 @@ export default function ListsContainer() {
   return (
     <div className="mt-16 flex flex-col gap-4">
       <div className="text-center mb-16">
-        <h2 className="text-5xl font-bold text-stone-800 mb-4">
+        <h2 className="text-5xl font-bold text-gray-800 mb-4">
           <Counter
             from={0}
             to={100}
             separator=","
             direction="up"
             duration={1}
-            className="count-up-text"
+            className="count-up-text text-gray-800"
           />
           + Premium Apartments
         </h2>
         {/* <h2 className="text-4xl font-bold text-stone-800 mb-4">
           Find Your Perfect Stay in Egypt
         </h2> */}
-        <p className="text-2xl font-semibold text-stone-600">
+        <p className="text-2xl font-semibold text-gray-600">
           Find Your Perfect Stay in Egypt
         </p>
         {/* Decorative line */}
@@ -55,7 +55,7 @@ export default function ListsContainer() {
 
       {/* Call to Action */}
       <div className="mt-4 mb-12 text-center">
-        <div className="bg-white/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl max-w-4xl mx-auto border border-white/20">
+        <div className="bg-gray-50/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl max-w-4xl mx-auto border border-white/20">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
             Ready to Find Your Dream Home?
           </h3>

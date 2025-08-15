@@ -60,8 +60,8 @@ export default function Review({
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-black/30 backdrop-blur-sm">
-      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md relative">
+    <div className="fixed inset-0 z-1000 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-black/30 backdrop-blur-sm">
+      <div className="bg-gray-50 p-6 rounded-lg shadow-xl w-full max-w-md relative">
         <h2 className="text-xl font-semibold mb-4 text-center">
           {isEditing ? "Update Review" : "Leave a Review"}
         </h2>
@@ -106,14 +106,14 @@ export default function Review({
             <button
               type="button"
               onClick={onClose}
-              className="bg-red-400 hover:bg-red-500 text-black px-4 py-2 rounded-md"
+              className="bg-transparent border-gray-700 border hover:bg-gray-500 hover:cursor-pointer transition hover:text-gray-50 text-gray-800 px-4 py-2 rounded-md"
             >
               Close
             </button>
             <button
               type="submit"
               disabled={isCreating || isUpdating}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+              className="bg-primarry hover:bg-primarry-hover hover:cursor-pointer transition text-white px-4 py-2 rounded-md"
             >
               {isEditing
                 ? isUpdating
