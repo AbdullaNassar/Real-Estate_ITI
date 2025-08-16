@@ -84,16 +84,25 @@ export const readLists = asyncHandler(async (req, res) => {
   };
 
   // Search logic
-  if (req.query.listings && req.query.listings == 'approved') {
+  if (req.query.listings && req.query.listings == "approved") {
     queryBody.isApproved = true;
-
-  } else if(req.query.listings && req.query.listings == 'notApproved') {
+  } else if (req.query.listings && req.query.listings == "notApproved") {
     queryBody.isApproved = false;
   }
 
   // Price filter
   if (req.query.price && !isNaN(req.query.price)) {
     queryBody.pricePerNight = { $lte: +req.query.price };
+  }
+
+  //search
+  if (req.query.query) {
+    const searchRegex = new RegExp(req.query.query, "i");
+    queryBody.$or = [
+      { title: { $regex: searchRegex } },
+      { description: { $regex: searchRegex } },
+      { governorate: { $regex: searchRegex } },
+    ];
   }
 
   // Date range filter
@@ -136,22 +145,21 @@ export const readLists = asyncHandler(async (req, res) => {
   });
 });
 
-export const getListById =asyncHandler(async (req, res) => {
-
+export const getListById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-    if (!id) throw new AppError('Listing Id Is Required',400)
+  if (!id) throw new AppError("Listing Id Is Required", 400);
 
-    const list = await listModel
-      .findOne({ _id: id })
-      .populate("host categoryId amenitiesId");
+  const list = await listModel
+    .findOne({ _id: id })
+    .populate("host categoryId amenitiesId");
 
-    if (!list) throw new AppError('Listing Not Found',404);
+  if (!list) throw new AppError("Listing Not Found", 404);
 
-    return res.status(200).json({
-      status: "Success",
-      data: list,
-    });
+  return res.status(200).json({
+    status: "Success",
+    data: list,
+  });
 });
 
 export const getListingsByGovernorate = asyncHandler(async (req, res, next) => {
@@ -164,7 +172,7 @@ export const getListingsByGovernorate = asyncHandler(async (req, res, next) => {
         listings: { $push: "$$ROOT" },
       },
     },
-    { $sort: { _id: 1 } } // Sort alphabetically by governorate
+    { $sort: { _id: 1 } }, // Sort alphabetically by governorate
   ]);
 
   if (!listings || listings.length === 0) {
@@ -194,7 +202,9 @@ export const updateList = asyncHandler(async (req, res, next) => {
   }
 
   if (list.host.toString() !== host.toString()) {
-    return next(new AppError("You are not authorized to update this list", 403));
+    return next(
+      new AppError("You are not authorized to update this list", 403)
+    );
   }
 
   if (!req.body || Object.keys(req.body).length === 0) {
@@ -266,7 +276,9 @@ export const deleteList = asyncHandler(async (req, res, next) => {
   }
 
   if (list.host.toString() !== host.toString()) {
-    return next(new AppError("You are not authorized to delete this list", 403));
+    return next(
+      new AppError("You are not authorized to delete this list", 403)
+    );
   }
 
   await listModel.deleteOne({ _id: id });

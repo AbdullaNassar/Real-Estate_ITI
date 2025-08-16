@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import hero from "/imgs/hero.jpg";
 import TextType from "../../ui/TextType";
 import AnimatedContent from "../../ui/AnimatedContent";
 import FadeContent from "../../ui/FadeContent";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 export default function Hero() {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+  function handleClickSearch() {
+    if (!query) {
+      toast.error("Please enter search query first");
+      return;
+    }
+    navigate(`/listings?query=${query}`);
+  }
   return (
     <div className="shadow-2xl relative bg-[url('imgs/hero.jpg')] bg-center bg-cover min-h-[80vh] w-full text-center">
       <div className="absolute inset-0 bg-black/50 bg-opacity-50"></div>
@@ -33,9 +44,14 @@ export default function Hero() {
             <input
               type="text"
               placeholder="Where to?"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               className="flex-1 px-4 py-2 rounded-md sm:rounded-r-none border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primarry"
             />
-            <button className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm sm:rounded-none sm:rounded-r-md hover:bg-primarry-hover hover:cursor-pointer transition-all">
+            <button
+              onClick={handleClickSearch}
+              className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm sm:rounded-none sm:rounded-r-md hover:bg-primarry-hover hover:cursor-pointer transition-all"
+            >
               Search
             </button>
           </div>

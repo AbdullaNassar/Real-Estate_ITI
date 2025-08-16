@@ -1,7 +1,7 @@
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiFilter } from "react-icons/ci";
 import { FaArrowRight } from "react-icons/fa";
 
@@ -15,7 +15,6 @@ import Error from "../ui/Error";
 import { IoSearch } from "react-icons/io5";
 
 export default function Lists() {
-  const [searchQuery, setSearchQuery] = useState(null);
   const [searchParam, setSearchParams] = useSearchParams();
   const page = searchParam.get("page") ? Number(searchParam.get("page")) : 1;
   const navigate = useNavigate();
@@ -23,6 +22,7 @@ export default function Lists() {
   const [endDate, setEndDate] = useState(null);
   const [price, setPrice] = useState(null);
   const [filter, setFilter] = useState({});
+  const [searchQuery, setSearchQuery] = useState();
   const [govern, setGovern] = useState("Government");
   const [category, setCategory] = useState("List Type");
 
@@ -38,6 +38,13 @@ export default function Lists() {
     isLoading: isLoadingCategories,
   } = useCategories();
 
+  useEffect(() => {
+    const query = searchParam.get("query");
+    if (query) {
+      setFilter({ query });
+      setSearchQuery(query);
+    }
+  }, []);
   // handle loading and error states
   if (isLoading || isLoadingCategories) return <Spinner />;
   if (error || errorCategories)
@@ -102,9 +109,9 @@ export default function Lists() {
       searchParam.set("query", e.target.value);
     } else {
       if (searchParam.get("query")) {
-        handleApplyFilters();
+        searchParam.delete("query");
       }
-      searchParam.delete("query");
+      handleApplyFilters();
     }
     setSearchQuery(e.target.value);
     setSearchParams(searchParam);
