@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
+import session from "express-session";
 
 import userRouter from "./src/routes/userRoutes.js";
 import listRouter from "./src/routes/listRoutes.js";
@@ -67,6 +68,20 @@ app.use(
       }
     },
     credentials: true,
+  })
+);
+
+// Session setup
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true, // only HTTPS in prod
+      httpOnly: true,
+      sameSite: "none", // allow cross-site cookies
+    },
   })
 );
 
