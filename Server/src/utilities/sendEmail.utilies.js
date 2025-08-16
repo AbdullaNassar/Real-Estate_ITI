@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { otpTemplate } from "./otpTemplate.js";
 
 export const sendOTPEmail = async (userEmail, otp) => {
   const transporter = nodemailer.createTransport({
@@ -13,9 +14,7 @@ export const sendOTPEmail = async (userEmail, otp) => {
     from: "Airbnb",
     to: userEmail,
     subject: "Your OTP Verification Code",
-    html: `<h2>OTP Verification</h2>
-            <p>Your verification code is: <b>${otp}</b></p>
-            <p>This code is valid for 10 minutes.</p>`,
+    html: otpTemplate(otp),
   };
 
   await transporter.sendMail(mailOptions);
