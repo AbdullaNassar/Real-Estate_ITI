@@ -11,14 +11,14 @@ const __dirname = dirname(__filename);
 const swaggerDefinition = {
   openapi: "3.0.0",
   info: {
-    title: "Airbnb",
+    title: "Maskan",
     version: "1.0.0",
-    description: "API documentation for Airbnb project",
+    description: "API documentation for Maskan project",
   },
   servers: [
     {
       url: process.env.SWAGGER_URL,
-      description: "Development server",
+      description: "Deployment server",
     },
   ],
   components: {
@@ -32,27 +32,44 @@ const swaggerDefinition = {
   },
   tags: [
     {
-      name: "Users",
-      description: "User management (authentication, profile, and security)",
+      "name": "Auth",
+      "description": "User management including authentication, profile, and security operations"
     },
-    { name: "Lists", description: "Manage property listings (houses/rooms)" },
-    { name: "Ratings", description: "Rate and review bookings/listings" },
     {
-      name: "Categories",
-      description: "Manage property categories (admin only)",
+      "name": "Users",
+      "description": "Operations related to user accounts and profiles"
     },
-    { name: "Amenities", description: "Manage amenities (admin only)" },
     {
-      name: "Bookings",
-      description: "Create, update, and manage guest bookings",
+      "name": "Lists",
+      "description": "Manage property listings including creation, update, and approval"
     },
+    {
+      "name": "Ratings",
+      "description": "Submit, edit, and view ratings and reviews for bookings and listings"
+    },
+    {
+      "name": "Categories",
+      "description": "Manage property categories (admin only)"
+    },
+    {
+      "name": "Amenities",
+      "description": "Manage amenities available for listings (admin only)"
+    },
+    {
+      "name": "Bookings",
+      "description": "Create, update, and manage guest bookings for listings"
+    },
+    {
+      "name": "RAG Chatbot",
+      "description": "Upload documents and query the AI-powered RAG assistant"
+    }
   ],
   paths: {
-    // ------------------- USERS -------------------
+    //-------------------- AUTH --------------------
     "/users/signup": {
       post: {
         summary: "Sign up a new user",
-        tags: ["Users"],
+        tags: ["Auth"],
         requestBody: {
           required: true,
           content: {
@@ -86,7 +103,7 @@ const swaggerDefinition = {
     "/users/login": {
       post: {
         summary: "Log in a user",
-        tags: ["Users"],
+        tags: ["Auth"],
         description: "Logs in a registered and verified user. Sets a token cookie and returns user data.",
         requestBody: {
           required: true,
@@ -193,7 +210,7 @@ const swaggerDefinition = {
     "/users/logout": {
       get: {
         summary: "Log out a user",
-        tags: ["Users"],
+        tags: ["Auth"],
         description: "Clears the authentication token cookie and logs out the user.",
         responses: {
           200: {
@@ -227,6 +244,7 @@ const swaggerDefinition = {
         }
       }
     },
+    // ------------------- USERS -------------------
     "/users/all": {
       get: {
         summary: "Get all users (admin only)",
