@@ -13,7 +13,7 @@ export const uploadDocument = asyncHandler(async (req, res) => {
 
     res.status(200).json({
         status: "Success",
-        message: "Documents uploaded and indexed",
+        message: `${documents.length} Documents uploaded and indexed`,
     });
 });
 
