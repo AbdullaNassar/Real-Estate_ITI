@@ -5,7 +5,9 @@ import AppError from "../utilities/appError.js";
 export const createList = asyncHandler(async (req, res) => {
   const {
     title,
+    arTitle,
     descrption,
+    arDescrption,
     pricePerNight,
     categoryId,
     locationType,
@@ -21,7 +23,9 @@ export const createList = asyncHandler(async (req, res) => {
   // Validate required fields
   if (
     !title ||
+    !arTitle||
     !descrption ||
+    !arDescrption||
     !pricePerNight ||
     !longitude ||
     !latitude ||
@@ -44,7 +48,9 @@ export const createList = asyncHandler(async (req, res) => {
   const list = await listModel.create({
     host: req.user._id,
     title,
+    arTitle,
     descrption,
+    arDescrption,
     pricePerNight,
     categoryId,
     locationType,
