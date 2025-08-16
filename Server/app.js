@@ -56,7 +56,7 @@ app.use(morgan("dev"));
 app.use(
   cors({
     origin: "*", // ✅ your frontend origin
-    // credentials: true,
+    credentials: true,
   })
 );
 
