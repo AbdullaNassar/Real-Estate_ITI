@@ -53,9 +53,15 @@ app.post(
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://maskn.netlify.app/", // your production frontend
+];
+
 app.use(
   cors({
-    origin: "*", // ✅ your frontend origin
+    origin: allowedOrigins,
     credentials: true,
   })
 );
