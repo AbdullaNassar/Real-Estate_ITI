@@ -54,14 +54,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://maskn.netlify.app/", // your production frontend
-];
+const allowedOrigins = ["http://localhost:5173", "https://maskn.netlify.app"];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // allow requests with no origin like mobile apps or curl
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
