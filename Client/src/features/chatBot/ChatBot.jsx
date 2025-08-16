@@ -46,7 +46,7 @@ export default function Chatbot() {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {isOpen ? (
-        <div className="chatbot-popup flex flex-col bg-white w-[350px] max-w-full shadow-2xl rounded-lg overflow-hidden border border-gray-200">
+        <div className=" chatbot-popup flex flex-col bg-white w-[250px] sm:w-[350px] max-w-full shadow-2xl rounded-lg overflow-hidden border border-gray-200">
           {/* Header */}
           <div
             className="chat-header flex justify-between items-center p-4 text-white"
@@ -139,7 +139,7 @@ export default function Chatbot() {
             <button
               type="button"
               onClick={formik.handleSubmit}
-              className="h-9 w-9 flex items-center justify-center rounded-full hover:cursor-pointer text-white hover:opacity-90 transition"
+              className="sm:size-9 flex items-center justify-center rounded-full hover:cursor-pointer text-white hover:opacity-90 transition"
               style={{ backgroundColor: "#C69963" }}
             >
               <MdKeyboardArrowUp size={20} />

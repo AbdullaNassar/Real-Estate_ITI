@@ -7,6 +7,7 @@ import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 import Header from "../ui/Header";
+import { axiosInstance } from "../services/axiosInstance";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,8 +20,8 @@ export default function Signup() {
     SetIsLoading(true);
     const { terms, ...payload } = value;
     console.log(payload);
-    axios
-      .post("http://localhost:8000/api/v1/users/signup", payload)
+    axiosInstance
+      .post("/users/signup", payload)
       .then((res) => {
         console.log("signup success", res);
         toast.success("Signup successful");

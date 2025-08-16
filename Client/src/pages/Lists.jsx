@@ -53,11 +53,13 @@ export default function Lists() {
   const handleNext = () => {
     searchParam.set("page", page + 1);
     setSearchParams(searchParam);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePrev = () => {
     searchParam.set("page", page - 1);
     setSearchParams(searchParam);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   function handleGovern(e) {
@@ -158,143 +160,145 @@ export default function Lists() {
   const totalPages = Math.ceil(lists.total / PAGE_SIZE);
 
   return (
-    <div className="md:flex gap-6 my-6 space-y-4 justify-self-center md:justify-self-auto">
-      <div className="items-center  w-72 shadow pl-4 pt-2 ">
-        <div className="flex gap-1 items-center mb-4 text-2xl">
-          <span>
-            <CiFilter />
-          </span>
-          <h2 className=" font-semibold ">Filters</h2>
-        </div>
+    <>
+      <div className="md:flex gap-6 my-6 space-y-4 justify-self-center md:justify-self-auto">
+        <div className="items-center  w-72 shadow pl-4 pt-2 ">
+          <div className="flex gap-1 items-center mb-4 text-2xl">
+            <span>
+              <CiFilter />
+            </span>
+            <h2 className=" font-semibold ">Filters</h2>
+          </div>
 
-        <div>
-          <div className="flex flex-col space-y-2 w-3/4 gap-4">
-            <select
-              onChange={(e) => handleGovern(e)}
-              value={govern}
-              className="p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
-            >
-              <option value="all">Government</option>
-              {governmentList.map((item) => {
-                return (
-                  <option key={item._id} value={item._id}>
-                    {item.name}
-                  </option>
-                );
-              })}
-            </select>
-            <select
-              onChange={(e) => handleCategory(e)}
-              value={category}
-              className="p-2 rounded-sm border focus:ring bg-gray-100 focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
-            >
-              <option value="all">List Type</option>
-              {categories.data.map((item) => {
-                return (
-                  <option key={item._id} value={item._id}>
-                    {item.name}
-                  </option>
-                );
-              })}
-            </select>
+          <div>
+            <div className="flex flex-col space-y-2 w-3/4 gap-4">
+              <select
+                onChange={(e) => handleGovern(e)}
+                value={govern}
+                className="p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
+              >
+                <option value="all">Government</option>
+                {governmentList.map((item) => {
+                  return (
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </select>
+              <select
+                onChange={(e) => handleCategory(e)}
+                value={category}
+                className="p-2 rounded-sm border focus:ring bg-gray-100 focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
+              >
+                <option value="all">List Type</option>
+                {categories.data.map((item) => {
+                  return (
+                    <option key={item._id} value={item._id}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </select>
 
-            <div className="space-y-2">
-              <h3 className="font-semibold">Available Date</h3>
-              <DatePicker
-                selectsRange={true}
-                startDate={startDate}
-                endDate={endDate}
-                onChange={handleDate}
-                isClearable={true}
-                minDate={new Date()}
-                placeholderText="Select a date range"
-                className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
-              />
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-semibold">Price</h3>
-              <div className="flex gap-4 items-center ">
-                <input
-                  type="range"
-                  min={10}
-                  max={1000}
-                  step={10}
-                  value={price}
-                  onChange={(e) => handlePrice(e)}
-                  className="accent-primarry flex-1 hover:cursor-pointer"
+              <div className="space-y-2">
+                <h3 className="font-semibold">Available Date</h3>
+                <DatePicker
+                  selectsRange={true}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={handleDate}
+                  isClearable={true}
+                  minDate={new Date()}
+                  placeholderText="Select a date range"
+                  className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
                 />
-                <label htmlFor="">${price}</label>
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-semibold">Price</h3>
+                <div className="flex gap-4 items-center ">
+                  <input
+                    type="range"
+                    min={10}
+                    max={1000}
+                    step={10}
+                    value={price}
+                    onChange={(e) => handlePrice(e)}
+                    className="accent-primarry flex-1 hover:cursor-pointer"
+                  />
+                  <label htmlFor="">${price}</label>
+                </div>
+              </div>
+              <div className="flex gap-1 ">
+                <button
+                  onClick={handleReset}
+                  className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-gray-400 hover:text-gray-100 transition-all mt-4 mb-2"
+                >
+                  clear
+                </button>
+                <button
+                  onClick={handleApplyFilters}
+                  className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-stone-800 hover:text-stone-100 transition-all mt-4 mb-2 bg-stone-700 text-stone-100"
+                >
+                  Apply
+                </button>
               </div>
             </div>
-            <div className="flex gap-1 ">
-              <button
-                onClick={handleReset}
-                className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-gray-400 hover:text-gray-100 transition-all mt-4 mb-2"
-              >
-                clear
-              </button>
+          </div>
+        </div>
+        <div className=" grow space-y-6 flex flex-col">
+          <div className="flex-col-reverse items-start md:flex-row gap-4 md:gap-0 flex md:justify-between md:items-center ">
+            <h2 className="text-xl font-bold">{lists.total} Results</h2>
+            <div className="flex gap-1">
+              <input
+                value={searchQuery}
+                onChange={handleSearch}
+                type="search"
+                className=" bg-gray-200 w-[70%] sm:w-auto  rounded-full rounded-r-none p-2 sm:pl-4 grow focus:!outline-none focus:!isolation-auto focus:!z-0 focus:!outline-offset-0"
+                placeholder="Search"
+              />
               <button
                 onClick={handleApplyFilters}
-                className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-stone-800 hover:text-stone-100 transition-all mt-4 mb-2 bg-stone-700 text-stone-100"
+                className="bg-primarry rounded-r-full p-2 hover:cursor-pointer text-stone-200 hover:bg-primarry-hover"
               >
-                Apply
+                <IoSearch />
               </button>
             </div>
           </div>
+          <hr className="text-gray-500" />
+
+          {lists.data.map((list) => {
+            return <ListItem list={list} />;
+          })}
+
+          {!lists.data.length && <Empty resourceName="lists" />}
+
+          {/* pagination */}
+          {totalPages > 1 && (
+            <div className="flex gap-4 self-center mt-8">
+              <button
+                disabled={page == 1}
+                onClick={handlePrev}
+                className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
+              >
+                <span>
+                  <GrFormPrevious />
+                </span>
+                {/* <span>Prev</span> */}
+              </button>
+              <button
+                disabled={totalPages === page}
+                onClick={handleNext}
+                className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
+              >
+                <span>
+                  <GrFormNext />
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      <div className=" grow space-y-6 flex flex-col">
-        <div className="flex-col-reverse items-start md:flex-row gap-4 md:gap-0 flex md:justify-between md:items-center ">
-          <h2 className="text-xl font-bold">{lists.total} Results</h2>
-          <div className="flex gap-1">
-            <input
-              value={searchQuery}
-              onChange={handleSearch}
-              type="search"
-              className=" bg-gray-200 rounded-full rounded-r-none p-2 pl-4 grow focus:!outline-none focus:!isolation-auto focus:!z-0 focus:!outline-offset-0"
-              placeholder="Search"
-            />
-            <button
-              onClick={handleApplyFilters}
-              className="bg-primarry rounded-r-full p-2 hover:cursor-pointer text-stone-200 hover:bg-primarry-hover"
-            >
-              <IoSearch />
-            </button>
-          </div>
-        </div>
-        <hr className="text-gray-500" />
-
-        {lists.data.map((list) => {
-          return <ListItem list={list} />;
-        })}
-
-        {!lists.data.length && <Empty resourceName="lists" />}
-
-        {/* pagination */}
-        {totalPages > 1 && (
-          <div className="flex gap-4 self-center mt-8">
-            <button
-              disabled={page == 1}
-              onClick={handlePrev}
-              className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
-            >
-              <span>
-                <GrFormPrevious />
-              </span>
-              {/* <span>Prev</span> */}
-            </button>
-            <button
-              disabled={totalPages === page}
-              onClick={handleNext}
-              className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
-            >
-              <span>
-                <GrFormNext />
-              </span>
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
+    </>
   );
 }

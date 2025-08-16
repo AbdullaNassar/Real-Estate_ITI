@@ -16,7 +16,7 @@ export default function Hero() {
     navigate(`/listings?query=${query}`);
   }
   return (
-    <div className="shadow-2xl relative bg-[url('imgs/hero.jpg')] bg-center bg-cover min-h-[80vh] w-full text-center">
+    <div className="shadow-2xl relative bg-[url('/imgs/hero.jpg')] bg-center bg-cover min-h-[80vh] w-full text-center">
       <div className="absolute inset-0 bg-black/50 bg-opacity-50"></div>
       <div className="absolute inset-0 flex items-center justify-center z-10 flex-col gap-6 md:p-8  p-4 lg:p-36">
         <TextType
@@ -46,7 +46,7 @@ export default function Hero() {
               placeholder="Where to?"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 px-4 py-2 rounded-md sm:rounded-r-none border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primarry"
+              className="flex-1 w-[90%] self-center sm:w-auto px-4 py-2 rounded-md sm:rounded-r-none border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primarry"
             />
             <button
               onClick={handleClickSearch}

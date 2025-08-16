@@ -7,6 +7,7 @@ import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 import Header from "../ui/Header";
+import { axiosInstance } from "../services/axiosInstance";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,8 +17,8 @@ export default function Login() {
 
   function handleLogin(value) {
     SetIsLoading(true);
-    axios
-      .post("http://localhost:8000/api/v1/users/login", value, {
+    axiosInstance
+      .post("/users/login", value, {
         withCredentials: true,
       })
       .then((res) => {

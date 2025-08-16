@@ -3,15 +3,38 @@ import logoBlack from "/imgs/logoBlack.svg";
 import logo from "/imgs/logo.svg";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useTheme } from "../features/theme/useTheme";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { IoHomeOutline } from "react-icons/io5";
+import { MdOutlineDashboardCustomize } from "react-icons/md";
+import { HiOutlineHomeModern } from "react-icons/hi2";
+import { IoIosInformationCircleOutline } from "react-icons/io";
+import { LuMessageSquareShare } from "react-icons/lu";
+import { useUser } from "../features/auth/useUser";
+import Spinner from "./Spinner";
+import Error from "./Error";
+import { CiLogout } from "react-icons/ci";
+import { FiUser } from "react-icons/fi";
+import { useLogout } from "../features/auth/useLogout";
 export function SidebarModal({ isOpen, onCancel }) {
   const { theme } = useTheme();
+  const { user, isLoading, error } = useUser();
+  const { isPending: isLogout, logout } = useLogout();
+  const navigate = useNavigate();
   if (!isOpen) {
     return null;
   }
+  if (isLoading) return <Spinner />;
+  if (error) return <Error message={error.message} />;
+  console.log(user);
 
+  function handleLog() {
+    navigate("/login");
+    if (!user) {
+      onCancel();
+    } else logout();
+  }
   return ReactDOM.createPortal(
     <div className=" fixed top-0 left-0 w-full h-full bg-black/70 flex justify-center items-center z-50  ">
       <div className="bg-gray-100 rounded-md absolute top-0 left-0 h-full w-3/4 sm:w-1/2 text-stone-600 ">
@@ -22,25 +45,37 @@ export function SidebarModal({ isOpen, onCancel }) {
           >
             &times;
           </button>
-          <div className="mt-4 p-4 ">
+          <div
+            onClick={() => {
+              navigate("/home");
+              onCancel();
+            }}
+            role="button"
+            className="mt-4 p-4 "
+          >
             <img
               src={theme === "light" ? logo : logoBlack}
               alt="Maskn Logo"
               className="w-36 mb-4"
             />
           </div>
-          <ul className="text-gray-900 flex flex-col gap-4 pl-6 font-semibold">
+          <ul className="text-gray-900 flex flex-col gap-6 pl-6 mb-8">
             <li>
               <NavLink
                 onClick={onCancel}
                 className={({ isActive }) =>
-                  `text-gray-700 text-2xl md:text-3xl ${
-                    isActive ? "text-primarry" : ""
+                  `text-gray-700 text-lg md:text-3xl flex gap-1 items-center ${
+                    isActive
+                      ? "text-stone-50 bg-primarry p-1 py-1.5 rounded-sm"
+                      : ""
                   }
               }`
                 }
                 to="/home"
               >
+                <span>
+                  <MdOutlineDashboardCustomize />
+                </span>
                 Home
               </NavLink>
             </li>
@@ -48,13 +83,18 @@ export function SidebarModal({ isOpen, onCancel }) {
               <NavLink
                 onClick={onCancel}
                 className={({ isActive }) =>
-                  `text-gray-700 text-2xl md:text-3xl ${
-                    isActive ? "text-primarry" : ""
+                  `text-gray-700 text-lg md:text-3xl flex gap-1 items-center ${
+                    isActive
+                      ? "text-stone-50 bg-primarry p-1 py-1.5 rounded-sm"
+                      : ""
                   }
               }`
                 }
                 to="/listings"
               >
+                <span>
+                  <HiOutlineHomeModern />
+                </span>
                 Listings
               </NavLink>
             </li>
@@ -62,13 +102,18 @@ export function SidebarModal({ isOpen, onCancel }) {
               <NavLink
                 onClick={onCancel}
                 className={({ isActive }) =>
-                  `text-gray-700 text-2xl md:text-3xl ${
-                    isActive ? "text-primarry" : ""
+                  `text-gray-700 text-lg md:text-3xl flex gap-1 items-center ${
+                    isActive
+                      ? "text-stone-50 bg-primarry p-1 py-1.5 rounded-sm"
+                      : ""
                   }
               }`
                 }
                 to="/about"
               >
+                <span>
+                  <IoIosInformationCircleOutline />
+                </span>
                 About
               </NavLink>
             </li>
@@ -76,17 +121,44 @@ export function SidebarModal({ isOpen, onCancel }) {
               <NavLink
                 onClick={onCancel}
                 className={({ isActive }) =>
-                  `text-gray-700 text-2xl md:text-3xl ${
-                    isActive ? "text-primarry" : ""
+                  `text-gray-700 text-lg md:text-3xl flex gap-1 items-center ${
+                    isActive
+                      ? "text-stone-50 bg-primarry p-1 py-1.5 rounded-sm"
+                      : ""
                   }
               }`
                 }
                 to="/Contact"
               >
+                <span>
+                  <LuMessageSquareShare />
+                </span>
                 Contact us
               </NavLink>
             </li>
           </ul>
+          <hr className="bg-gray-100" />
+
+          <button
+            onClick={handleLog}
+            className="text-gray-700 text-lg md:text-3xl flex gap-1 items-center pl-6 mt-8"
+          >
+            {user ? (
+              <>
+                <span>
+                  <CiLogout />
+                </span>
+                Logout
+              </>
+            ) : (
+              <>
+                <span>
+                  <FiUser />
+                </span>
+                Login
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>,
@@ -116,7 +188,7 @@ export function ConfirmationModal({
         <div className="flex justify-end gap-4 mt-6">
           <button
             onClick={onCancel}
-            className="px-4 py-2 border border-gray-300 hover:cursor-pointer hover:gray-500 text-gray-700 rounded shadow hover:shadow-md transition"
+            className="px-4 py-2 border border-gray-300 hover:cursor-pointer hover:gray-500 text-gray-900 rounded shadow hover:shadow-md transition"
           >
             No
           </button>

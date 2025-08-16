@@ -180,7 +180,7 @@ const NoBookings = ({
   };
 
   return (
-    <div className="mt-8 flex flex-col items-center justify-center p-12 text-center bg-white rounded-xl border-2 border-dashed border-gray-200">
+    <div className="mt-8 flex flex-col items-center justify-center p-12 text-center bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
       {/* Icon/Illustration */}
       <div className="bg-gray-50 rounded-full p-6 mb-6">
         {illustrations[illustration]}
