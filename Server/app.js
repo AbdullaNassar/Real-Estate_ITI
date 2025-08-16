@@ -55,8 +55,8 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://localhost:5173", // ✅ your frontend origin
-    credentials: true,
+    origin: "*", // ✅ your frontend origin
+    // credentials: true,
   })
 );
 
@@ -77,7 +77,7 @@ app.use(notFound);
 app.use(errorConverter);
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 app
   .listen(PORT, () => {
     console.log(`listining to server on port ${PORT}...`);
