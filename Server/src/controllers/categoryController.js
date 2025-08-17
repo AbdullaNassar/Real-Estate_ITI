@@ -18,8 +18,6 @@ export const createCategory = asyncHandler(async (req, res) => {
 export const getAllCategories = asyncHandler(async (req, res) => {
 
   const categories = await categoryModel.find();
-  if (!categories || categories.length === 0)
-    throw new AppError("No Categories Found", 404);
 
   res.status(200).json({
     status: "Success",

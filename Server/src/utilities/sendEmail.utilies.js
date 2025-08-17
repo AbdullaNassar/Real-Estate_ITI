@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { otpTemplate } from "./otpTemplate.js";
 
 export const sendOTPEmail = async (userEmail, otp, isVerified = true) => {
   const transporter = nodemailer.createTransport({

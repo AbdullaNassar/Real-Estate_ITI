@@ -14,9 +14,18 @@ const listSchema = new Schema(
       unique: [true, "Title Must Be Unique"],
       trim: true,
     },
+    arTitle: {
+      type: String,
+      required: [true, "Listing Arabic Title is required"],
+      unique: [true, "Title Must Be Unique"],
+    },
     descrption: {
       type: String,
       required: [true, "Listing Description is required"],
+    },
+    arDescrption: {
+      type: String,
+      required: [true, "Listing Arabic Description is required"],
     },
     roomNumbers: {
       type: Number,
