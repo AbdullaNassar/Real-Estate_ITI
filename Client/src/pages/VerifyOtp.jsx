@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import OtpInput from "../ui/OtpInput";
 import Header from "../ui/Header";
+import { axiosInstance } from "../services/axiosInstance";
 
 export default function VerifyOtp() {
   const [otp, setOtp] = useState("");
@@ -50,8 +51,8 @@ export default function VerifyOtp() {
     }
   };
   const handleResendOtp = () => {
-    axios
-      .post("http://localhost:8000/api/v1/users/resend-otp", { email })
+    axiosInstance
+      .post("/users/resend-otp", { email })
       .then(() => {
         toast.success("OTP resent successfully");
       })
@@ -64,7 +65,7 @@ export default function VerifyOtp() {
     <>
       <Header />
       <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-        <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6 sm:p-8">
+        <div className="w-full max-w-md bg-gray-200 shadow-md rounded-xl p-6 sm:p-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-4">
             {isForgetPassword ? "Reset your password" : "Verify Your Email"}
           </h2>
@@ -78,7 +79,7 @@ export default function VerifyOtp() {
               <input
                 type="password"
                 placeholder="New Password"
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border-0 rounded-lg bg-gray-300 text-gray-800"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
@@ -88,7 +89,7 @@ export default function VerifyOtp() {
           <div className="mt-6 text-center">
             <button
               onClick={sendOtp}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-300"
+              className="bg-primarry hover:bg-primarry-hover hover:cursor-pointer text-white font-semibold px-6 py-2 rounded-lg transition duration-300"
             >
               {isForgetPassword ? "Reset Password" : "verify"}
             </button>
@@ -99,7 +100,7 @@ export default function VerifyOtp() {
               Didn't receive the code?{" "}
               <button
                 onClick={handleResendOtp}
-                className="text-blue-600 hover:underline font-medium"
+                className="text-gray-800 underline  hover:cursor-pointer font-medium"
               >
                 Resend OTP
               </button>

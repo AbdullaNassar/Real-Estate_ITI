@@ -1,9 +1,9 @@
 import userModel from "../models/userModel.js";
-import listModel from "../models/listModel.js"
+import listModel from "../models/listModel.js";
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 import bcrypt from "bcryptjs";
 import Crypto from "crypto-js";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { asyncHandler } from "../middlewares/asyncHandlerError.middleware.js";
 import AppError from "../utilities/appError.js";
 
@@ -27,9 +27,17 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 export const updateUser = asyncHandler(async (req, res) => {
   const id = req.user._id;
 
-  let { userName, email, phoneNumber, profilePic, gender, dateOfBirth } = req.body;
+  let { userName, email, phoneNumber, profilePic, gender, dateOfBirth } =
+    req.body;
 
-  if (!userName && !email && !phoneNumber && !profilePic && !gender && !dateOfBirth) {
+  if (
+    !userName &&
+    !email &&
+    !phoneNumber &&
+    !profilePic &&
+    !gender &&
+    !dateOfBirth
+  ) {
     throw new AppError("At least one field must be provided to update", 400);
   }
 
@@ -48,11 +56,11 @@ export const updateUser = asyncHandler(async (req, res) => {
       phoneNumber,
       profilePic,
       gender,
-      dateOfBirth
+      dateOfBirth,
     },
     {
       new: true,
-      runValidators: true
+      runValidators: true,
     }
   );
 
@@ -115,8 +123,7 @@ export const verifyOTP = asyncHandler(async (req, res) => {
     process.env.USER_OTP_KEY
   ).toString(Crypto.enc.Utf8);
 
-  const isOTPValid =
-    decryptUserOtp === otp && user.otpExpiresAt > new Date();
+  const isOTPValid = decryptUserOtp === otp && user.otpExpiresAt > new Date();
 
   if (!isOTPValid) {
     throw new AppError("Invalid or expired OTP", 400);
@@ -198,7 +205,7 @@ export const requestPasswordReset = asyncHandler(async (req, res) => {
   await user.save();
 
   // Send OTP email
-  await sendOTPEmail(user.email, otp);
+  await sendOTPEmail(user.email, otp, false);
 
   res.status(200).json({
     status: "Success",
@@ -303,9 +310,10 @@ export const getUserInfo = asyncHandler(async (req, res) => {
 
   let decryptedPhone = "";
   if (phoneNumber) {
-    decryptedPhone = Crypto.AES.decrypt(phoneNumber, process.env.USER_PHONE_KEY).toString(
-      Crypto.enc.Utf8
-    );
+    decryptedPhone = Crypto.AES.decrypt(
+      phoneNumber,
+      process.env.USER_PHONE_KEY
+    ).toString(Crypto.enc.Utf8);
   }
 
   res.status(200).json({
@@ -325,35 +333,34 @@ export const getUserInfo = asyncHandler(async (req, res) => {
   });
 });
 
-export const toggleFavorite = asyncHandler(async (req,res)=>{
+export const toggleFavorite = asyncHandler(async (req, res) => {
+  const { listingId } = req.params;
+  const userId = req.user._id;
 
-    const { listingId } = req.params;
-    const userId = req.user._id;
+  const listing = await listModel.findById(listingId);
+  if (!listing) throw new AppError("Listing not found", 404);
 
-    const listing = await listModel.findById(listingId);
-    if (!listing) throw new AppError('Listing not found',404);
+  const user = await userModel.findById(userId);
 
-    const user = await userModel.findById(userId);
+  const index = user.favorites.indexOf(listingId);
+  if (index > -1) {
+    // Listing already favorited, remove it
+    user.favorites.splice(index, 1);
+  } else {
+    // Add to favorites
+    user.favorites.push(listingId);
+  }
 
-    const index = user.favorites.indexOf(listingId);
-    if (index > -1) {
-      // Listing already favorited, remove it
-      user.favorites.splice(index, 1);
-    } else {
-      // Add to favorites
-      user.favorites.push(listingId);
-    }
-
-    await user.save();
-    res.status(200).json({ favorites: user.favorites });
-})
+  await user.save();
+  res.status(200).json({ favorites: user.favorites });
+});
 
 export const getUserFavorites = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const user = await userModel.findById(userId).populate("favorites");
 
   if (!user.favorites || user.favorites.length === 0) {
-    throw new AppError('User does not have any favorites');
+    throw new AppError("User does not have any favorites");
   }
 
   res.status(200).json({ favorites: user.favorites });

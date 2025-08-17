@@ -188,7 +188,7 @@ export const getCheckout = asyncHandler(async (req, res) => {
     line_items: [
       {
         price_data: {
-          currency: "usd",
+          currency: "egp",
           unit_amount: req.booking.totalPrice * 100, // amount in cents
           product_data: {
             name: list.title,
