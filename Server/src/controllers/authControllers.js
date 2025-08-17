@@ -28,15 +28,39 @@ export const signUp = asyncHandler(async (req, res, next) => {
   } = req.body;
 
   if (!userName || !email || !password || !confirmPassword) {
-    return next(new AppError("Please provide all required fields", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Please provide all required fields", 
+          ar: "يرجى تقديم جميع الحقول المطلوبة" 
+        },
+        400
+      )
+    );
   }
   if (password !== confirmPassword) {
-    return next(new AppError("Passwords do not match", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Passwords do not match", 
+          ar: "كلمات المرور غير متطابقة" 
+        },
+        400
+      )
+    );
   }
 
   const isUserExist = await userModel.findOne({ email });
   if (isUserExist) {
-    return next(new AppError("User already exists", 409));
+    return next(
+      new AppError(
+        { 
+          en: "User already exists", 
+          ar: "المستخدم موجود بالفعل" 
+        },
+        409
+      )
+    );
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -62,7 +86,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    message: "User created successfully",
+    message: { en: "User created successfully", ar: "تم إنشاء المستخدم بنجاح" }
   });
 });
 
@@ -70,21 +94,53 @@ export const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new AppError("Please provide email and password", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Please provide email and password", 
+          ar: "يرجى إدخال البريد الإلكتروني وكلمة المرور" 
+        },
+        400
+      )
+    );
   }
 
   const user = await userModel.findOne({ email });
   if (!user) {
-    return next(new AppError("Invalid email or password", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Invalid email or password", 
+          ar: "البريد الإلكتروني أو كلمة المرور غير صحيحة" 
+        },
+        400
+      )
+    );
   }
 
   const isPasswordMatch = await isCorrectPassword(password, user.password);
   if (!isPasswordMatch) {
-    return next(new AppError("Invalid email or password", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Invalid email or password", 
+          ar: "البريد الإلكتروني أو كلمة المرور غير صحيحة" 
+        },
+        400
+      )
+    );
   }
 
   if (!user.isVerified) {
-    return next(new AppError("Please verify your email via OTP first", 403));
+    return next(
+      new AppError(
+        { 
+          en: "Please verify your email via OTP first", 
+          ar: "يرجى التحقق من بريدك الإلكتروني عبر رمز التحقق أولاً" 
+        },
+        403
+      )
+    );
   }
 
   const token = generateToken(user._id, user.userName, user.role);
@@ -98,7 +154,7 @@ export const login = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: "User logged in successfully",
+    message: { en: "logged in successfully", ar: "تم تسجيل الدخول بنجاح" },
     token,
   });
 });
@@ -113,6 +169,6 @@ export const logout = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: "User logged out successfully",
+    message: { en: "Logged out successfully", ar: "تم تسجيل الخروج بنجاح" },
   });
 });

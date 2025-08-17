@@ -1,9 +1,14 @@
 export default class AppError extends Error {
-    constructor( message , statusCode = 500, details = null ){
-        super(message);
+    constructor(message, statusCode, details = null) {
+        super(typeof message === "string" ? message : message.en);
+
         this.statusCode = statusCode;
-        this.status = `${statusCode}`.startsWith('4') ? 'fail':'error';
+        this.status = String(statusCode).startsWith("4") ? "fail" : "error";
         this.details = details;
-        Error.captureStackTrace(this,this.constructor);
+
+        // message can be { en: "X", ar: "Y" }
+        this.messageObj = typeof message === "object"
+        ? message
+        : { en: message, ar: message }; 
     }
 }

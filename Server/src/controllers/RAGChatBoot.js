@@ -6,14 +6,23 @@ export const uploadDocument = asyncHandler(async (req, res) => {
     const { documents } = req.body;
 
     if (!Array.isArray(documents)) {
-        throw new AppError("Documents must be an array", 400);
+        throw new AppError(
+            { 
+                en: "Documents must be an array", 
+                ar: "يجب أن تكون المستندات مصفوفة" 
+            }, 
+            400
+        );
     }
 
     await addDocs(documents);
 
     res.status(200).json({
         status: "Success",
-        message: `${documents.length} Documents uploaded and indexed`,
+        message: { 
+            en: `${documents.length} documents uploaded and indexed`, 
+            ar: `تم رفع وفهرسة ${documents.length} مستندات` 
+        },
     });
 });
 
@@ -21,7 +30,13 @@ export const setQuery = asyncHandler(async (req, res) => {
     const { question } = req.body;
 
     if (!question) {
-        throw new AppError("Question is required", 400);
+        throw new AppError(
+            { 
+                en: "Question is required", 
+                ar: "السؤال مطلوب" 
+            }, 
+            400
+        );
     }
 
     const answer = await askQuestion(question);

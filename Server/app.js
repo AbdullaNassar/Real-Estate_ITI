@@ -19,7 +19,6 @@ import cookieParser from "cookie-parser";
 import { stripeWebhookHandler } from "./src/controllers/bookingControllers.js";
 import chatRouter from "./src/routes/chatRoutes.js";
 import { notFound } from "./src/middlewares/notFoundError.middleware.js";
-import { errorConverter } from "./src/middlewares/errorConverter.middleware.js";
 import { errorHandler } from "./src/middlewares/errorHandler.middleware.js";
 
 dotenv.config({ path: "./config.env" });
@@ -99,7 +98,6 @@ app.use("/api/v1/", uploadRouter);
 //server
 
 app.use(notFound);
-app.use(errorConverter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 8000;

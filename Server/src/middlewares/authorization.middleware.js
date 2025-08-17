@@ -3,7 +3,10 @@ export const userPermission = (...roles) => {
     if (!roles.includes(req.user?.role)) {
       return res.status(403).json({
         status: "Failed",
-        message: "You do not have permission to access this route",
+        message: { 
+          en: "You do not have permission to access this route", 
+          ar: "ليس لديك إذن للوصول إلى هذا المسار" 
+        },
       });
     }
     next();
