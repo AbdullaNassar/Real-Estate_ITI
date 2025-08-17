@@ -2,8 +2,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import emailjs from "emailjs-com";
+import { useTranslation } from "react-i18next";
 
 export default function Contact() {
+  const { t } = useTranslation();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -11,9 +13,9 @@ export default function Contact() {
       message: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      message: Yup.string().required("Message is required"),
+      name: Yup.string().required(t("contact.nameRequired")),
+      email: Yup.string().email(t("Contact.emailInvalid")).required(t("contact.emailRequired")),
+      message: Yup.string().required(t("contact.messageRequired")),
     }),
     onSubmit: (values, { resetForm }) => {
       const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
@@ -29,12 +31,12 @@ export default function Contact() {
       emailjs
         .send(serviceID, templateID, templateParams, publicKey)
         .then(() => {
-          toast.success("Email sent successfully!");
+          toast.success(t("contact.toastSuccess"));
           resetForm();
         })
         .catch((error) => {
           console.error(error);
-          toast.error("Failed to send email");
+          toast.error(t("contact.toastError"));
         });
     },
   });
@@ -45,13 +47,13 @@ export default function Contact() {
       className="max-w-md w-full mx-auto mt-14 mb-8 p-6 bg-gray-50 rounded-2xl shadow-2xl hover:shadow-2xl transition-shadow duration-300"
     >
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-        Contact Us
+        {t("contact.title")}
       </h2>
 
       {/* Name */}
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2 text-sm">
-          Enter Your Name
+          {t("contact.nameLabel")}
         </label>
         <input
           name="name"
@@ -69,7 +71,7 @@ export default function Contact() {
       {/* Email */}
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2 text-sm">
-          Enter Your Email
+         {t("contact.emailLabel")}
         </label>
         <input
           name="email"
@@ -83,11 +85,10 @@ export default function Contact() {
           <p className="text-red-500 text-xs mt-1">{formik.errors.email}</p>
         )}
       </div>
-
       {/* Message */}
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2 text-sm">
-          Message
+          {t("contact.messageLabel")}
         </label>
         <textarea
           name="message"
@@ -106,7 +107,7 @@ export default function Contact() {
         type="submit"
         className="w-full bg-primarry text-white py-2 rounded-md font-semibold hover:bg-primarry-hover hover:cursor-pointer transition text-sm"
       >
-        Send Message
+        {t("contact.submit")}
       </button>
     </form>
   );

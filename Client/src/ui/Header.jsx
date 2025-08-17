@@ -81,7 +81,7 @@ export default function Header() {
               }`
             }
           >
-            {t("Home")}
+            {t("header.home")}
           </NavLink>
         </li>
         <li>
@@ -92,7 +92,7 @@ export default function Header() {
               }`
             }
           >
-            {t("Listings")}
+            {t("header.listings")}
           </NavLink>
         </li>
         <li>
@@ -103,7 +103,7 @@ export default function Header() {
               }`
             }
           >
-            {t("About")}
+             {t("header.about")}
           </NavLink>
         </li>
         <li>
@@ -114,7 +114,7 @@ export default function Header() {
               }`
             }
           >
-            {t("Contact us")}
+            {t("header.contact")}
           </NavLink>
         </li>
       </ul>
@@ -138,7 +138,7 @@ export default function Header() {
             to="/signup"
             className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-stone-100 hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
-            signup
+            {t("header.signup")}
           </Link>
         )}
         {(isSignupPage || (!user && !isLoginPage)) && (
@@ -146,7 +146,7 @@ export default function Header() {
             to="/login"
             className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-stone-100  hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
-            login
+            {t("header.login")}
           </Link>
         )}
         {!isAuthPage && user && (
@@ -170,14 +170,14 @@ export default function Header() {
               >
                 <li>
                   <Link to="/profile" className="justify-between">
-                    Profile
+                    {t("header.profile")}
                   </Link>
                 </li>
                 <li>
-                  <Link to="/settings">Settings</Link>
+                  <Link to="/settings">{t("header.settings")}</Link>
                 </li>
                 <li onClick={logout}>
-                  <Link to="/login">Logout</Link>
+                  <Link to="/login">{t("header.logout")}</Link>
                 </li>
               </ul>
             </div>

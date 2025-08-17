@@ -1,16 +1,17 @@
 import { CreditCard, Heart, Search } from "lucide-react";
 import Animation from "../../ui/animated/Animation";
+import { useTranslation } from "react-i18next";
 
 export default function HowItWork() {
+   const { t } = useTranslation();
   return (
     <Animation>
       <section className="py-20 bg-gray-50 text-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">How Maskan Works</h2>
+            <h2 className="text-4xl font-bold mb-4">{t("howItWorks.title")}</h2>
             <p className="text-xl ">
-              Your journey to authentic Egyptian hospitality in three simple
-              steps
+              {t("howItWorks.subtitle")}
             </p>
           </div>
 
@@ -20,11 +21,10 @@ export default function HowItWork() {
                 <Search className="w-10 h-10 text-amber-700" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                Search Homes
+                {t("howItWorks.searchTitle")}
               </h3>
               <p className=" leading-relaxed">
-                Browse through carefully curated homes across Egypt's most
-                beautiful cities and hidden gems
+                {t("howItWorks.searchText")}
               </p>
             </div>
 
@@ -33,11 +33,10 @@ export default function HowItWork() {
                 <CreditCard className="w-10 h-10 text-amber-700" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                Book Easily
+                 {t("howItWorks.bookTitle")}
               </h3>
               <p className=" leading-relaxed">
-                Secure your perfect stay with our simple booking process and
-                transparent pricing
+                 {t("howItWorks.bookText")}
               </p>
             </div>
 
@@ -46,11 +45,10 @@ export default function HowItWork() {
                 <Heart className="w-10 h-10 text-amber-700" />
               </div>
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-                Enjoy Your Stay
+                {t("howItWorks.enjoyTitle")}
               </h3>
               <p className=" leading-relaxed">
-                Experience authentic Egyptian hospitality and create memories
-                that last a lifetime
+                {t("howItWorks.enjoyText")}
               </p>
             </div>
           </div>

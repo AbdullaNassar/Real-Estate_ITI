@@ -1,5 +1,87 @@
 {
-  "welcome": "Welcome",
-  "home": "Home",
-  "listings": "Listings"
+  "contact": {
+    "title": "Contact Us",
+    "nameLabel": "Enter Your Name",
+    "emailLabel": "Enter Your Email",
+    "messageLabel": "Message",
+    "submit": "Send Message",
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "messageRequired": "Message is required",
+    "toastSuccess": "Email sent successfully!",
+    "toastError": "Failed to send email"
+  },
+  "hero": {
+    "title": "Find your perfect rental in Egypt",
+    "subtitle": "Explore a wide range of rental properties across Egypt, from cozy apartments to luxurious villas. Discover your ideal stay with our easy-to-use search tools.",
+    "placeholder": "Where to?",
+    "searchBtn": "Search",
+    "toastError": "Please enter search query first"
+  },
+  "about": {
+    "title": "About Maskan",
+    "subtitle": "Connecting Egypt, One Home at a Time",
+    "ourStoryTitle": "Our Story",
+    "ourStoryText": "Maskan was created with a simple goal: to make it easier for people across Egypt to find comfortable and trustworthy places to stay. Inspired by the concept of community and hospitality, we built a platform that brings together hosts and guests in a safe, transparent, and convenient way.",
+    "whatWeDoTitle": "What We Do",
+    "whatWeDoList": {
+      "item1": "Connect travelers and locals with unique stays across Egypt.",
+      "item2": "Provide hosts with tools to manage listings, bookings, and payments easily.",
+      "item3": "Ensure every booking is backed by secure transactions and clear communication."
+    },
+    "whyChooseTitle": "Why Choose Maskan?",
+    "whyChooseList": {
+      "item1title": "Local Expertise:",
+      "item1": "We know Egypt and its neighborhoods inside out.",
+      "item2title": "Verified Listings:",
+      "item2": " Every property is reviewed for safety and accuracy.",
+      "item3title": "Secure Payments:",
+      "item3": "Your transactions are protected from start to finish."
+    },
+    "visionTitle": "Our Vision",
+    "visionText": "We aim to be Egypt’s most trusted platform for local travel and stays — a place where people feel at home wherever they go. Our mission is to strengthen communities, support local hosts, and help travelers experience the authentic side of Egypt.",
+    "contactTitle": "Get in Touch",
+    "contactText": "Have questions, feedback, or ideas? We’d love to hear from you.",
+    "maskan": "Maskan"
+  },
+  "header": {
+    "home": "Home",
+    "listings": "Listings",
+    "about": "About",
+    "contact": "Contact",
+    "signup": "Signup",
+    "login": "Login",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "changePasswordModal": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "currentRequired": "Current Password is required",
+    "newRequired": "New Password is required",
+    "confirmRequired": "Confirm Password is required",
+    "passwordMatch": "Passwords must match",
+    "passwordRules": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    "cancel": "Cancel",
+    "save": "Save",
+    "success": "Password changed successfully",
+    "error": "Failed to change password"
+  },
+  "howItWorks": {
+    "title": "How Maskan Works",
+    "subtitle": "Your journey to authentic Egyptian hospitality in three simple steps",
+    "searchTitle": "Search Homes",
+    "searchText": "Browse through carefully curated homes across Egypt's most beautiful cities and hidden gems",
+    "bookTitle": "Book Easily",
+    "bookText": "Secure your perfect stay with our simple booking process and transparent pricing",
+    "enjoyTitle": "Enjoy Your Stay",
+    "enjoyText": "Experience authentic Egyptian hospitality and create memories that last a lifetime"
+  }
 }
