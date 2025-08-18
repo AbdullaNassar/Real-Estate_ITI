@@ -83,5 +83,133 @@
     "bookText": "Secure your perfect stay with our simple booking process and transparent pricing",
     "enjoyTitle": "Enjoy Your Stay",
     "enjoyText": "Experience authentic Egyptian hospitality and create memories that last a lifetime"
+  },
+   "signup": {
+    "title": "Create Your Account",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "role": "Role",
+    "guest": "Guest",
+    "host": "Host",
+    "terms": "I agree to the Terms & Conditions",
+    "signupButton": "Signup",
+    "alreadyAccount": "Already have an account ?",
+    "loginButton": "Log In",
+    "validation": {
+      "userNameMin": "Name must be at least 3 characters",
+      "userNameMax": "Name must be less than 50 characters",
+      "userNameRequired": "Name is required",
+      "emailMin": "Email must be at least 3 characters",
+      "emailMax": "Email must be less than 50 characters",
+      "emailInvalid": "you enter invalid email ",
+      "emailRequired": "email is required",
+      "passwordPattern": "password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number",
+      "passwordRequired": "password is required",
+      "confirmPasswordMatch": "Passwords must match",
+      "confirmPasswordRequired": "confirm password is required",
+      "roleInvalid": "Role must be either guest or host",
+      "roleRequired": "Role is required",
+      "termsRequired": "You must agree to the Terms & Conditions"
+    }
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to your account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Log in",
+    "noAccount": "Don't have an account?",
+    "signupButton": "SignUp",
+    "validation": {
+      "emailMin": "Email must be at least 3 characters",
+      "emailMax": "Email must be less than 50 characters",
+      "emailInvalid": "you enter invalid email ",
+      "emailRequired": "email is required",
+      "passwordRequired": "password is required"
+    },
+    "errors": {
+      "enterEmail": "please enter your email",
+      "otpSent": "OTP Sent please Check Your Email"
+    }
+  },
+  "notFound": {
+    "title": "Page not found!",
+    "subtitle": "Are you sure you want to be here?",
+    "button": "Go to Home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated:",
+    "intro": "Welcome to Maskan — your trusted local platform for finding and booking apartments in Egypt. This Privacy Policy explains how we collect, use, and protect your personal information when you use our platform.",
+    "info": {
+      "title": "Information We Collect",
+      "item1": "Personal details such as name, phone number, email address, and payment information.",
+      "item2": "Booking and listing details including dates, locations, and property preferences.",
+      "item3": "Technical data like IP address, browser type, and device information."
+    },
+    "usage": {
+      "title": "How We Use Your Information",
+      "item1": "To process bookings and manage listings.",
+      "item2": "To improve our services and user experience.",
+      "item3": "To communicate important updates and offers.",
+      "item4": "To ensure platform security and prevent fraud."
+    },
+    "sharing": {
+      "title": "Sharing of Information",
+      "text": "We only share your information with hosts, guests, and service providers when necessary to complete bookings, comply with the law, or improve our services. We never sell your personal data."
+    },
+    "security": {
+      "title": "Data Security",
+      "text": "We use secure technologies and follow industry standards to protect your information. However, no method of transmission over the internet is 100% secure."
+    },
+    "rights": {
+      "title": "Your Rights",
+      "item1": "Access and update your personal information.",
+      "item2": "Request deletion of your data.",
+      "item3": "Opt out of promotional communications."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "text": "If you have questions about this Privacy Policy or your personal data, please contact us."
+    }
+  },
+"verifyOtp": {
+    "title": {
+      "reset": "Reset your password",
+      "verify": "Verify Your Email"
+    },
+    "subtitle": "We've sent a 6-digit code to your email. Enter it below to continue.",
+    "placeholder": {
+      "newPassword": "New Password"
+    },
+    "buttons": {
+      "reset": "Reset Password",
+      "verify": "Verify"
+    },
+    "resend": {
+      "prompt": "Didn't receive the code?",
+      "button": "Resend OTP"
+    },
+    "success": {
+      "reset": "Password reset successful",
+      "verify": "Account verified",
+      "resent": "OTP resent successfully"
+    },
+    "errors": {
+      "invalidOtp": "Please enter a full 6-digit code.",
+      "emptyPassword": "Please enter your new password.",
+      "resetFailed": "Password reset failed",
+      "verifyFailed": "Verification failed",
+      "resentFailed": "Failed to resend OTP"
+    }
   }
 }

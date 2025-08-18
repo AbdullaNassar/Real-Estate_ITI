@@ -8,13 +8,14 @@ import toast from "react-hot-toast";
 
 import Header from "../ui/Header";
 import { axiosInstance } from "../services/axiosInstance";
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const navigate = useNavigate();
-
+  const {t} = useTranslation()
   function handleLogin(value) {
     SetIsLoading(true);
     axiosInstance
@@ -37,7 +38,7 @@ export default function Login() {
   const handleForgotPassword = () => {
     const email = loginForm.values.email;
     if (!email) {
-      toast.error("please enter your email");
+      toast.error(t("login.errors.enterEmail"));
       return;
     }
 
@@ -46,23 +47,23 @@ export default function Login() {
         email,
       })
       .then(() => {
-        toast.success("OTP Sent please Check Your Email");
+        toast.success(t("login.errors.otpSent"));
         navigate("/verifyOtp", { state: { email, type: "forgot" } });
       });
   };
 
   const validationSchema = YUP.object().shape({
     email: YUP.string()
-      .min(3, "Email must be at least 3 characters")
-      .max(50, "Email must be less than 50 characters")
-      .email("you enter invalid email ")
-      .required("email is required"),
+      .min(3, t("login.validation.emailMin"))
+      .max(50, t("login.validation.emailMax"))
+      .email(t("login.validation.emailInvalid"))
+      .required(t("login.validation.emailRequired")),
     password: YUP.string()
       // .matches(
       //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
       //   // "password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number"
       // )
-      .required("password is required"),
+      .required(t("login.validation.passwordRequired")),
   });
 
   const loginForm = useFormik({
@@ -83,10 +84,10 @@ export default function Login() {
           className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-gray-150 shadow-2xl rounded-2xl p-8 sm:px-10 sm:py-10"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800">
-            Welcome Back
+           {t("login.title")}
           </h2>
           <p className="mt-2 mb-6  text-gray-600 text-center">
-            Sign in to your account{" "}
+            {t("login.subtitle")}{" "}
           </p>
 
           <div className="mb-4">
@@ -94,7 +95,7 @@ export default function Login() {
               htmlFor="email"
               className="block mb-1 text-base sm:text-lg font-medium text-gray-700"
             >
-              Email
+               {t("login.email")}
             </label>
             <input
               name="email"
@@ -103,7 +104,7 @@ export default function Login() {
               value={loginForm.values.email}
               type="email"
               id="email"
-              placeholder="Enter your email"
+              placeholder= {t("login.emailPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 text-sm sm-text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -119,7 +120,7 @@ export default function Login() {
               htmlFor="password"
               className="block mb-1 text-base sm:text-lg font-medium text-gray-700"
             >
-              Password
+              {t("login.password")}
             </label>
             <input
               name="password"
@@ -128,7 +129,7 @@ export default function Login() {
               value={loginForm.values.password}
               type={showPassword ? "text" : "password"}
               id="password"
-              placeholder="Enter your password"
+              placeholder= {t("login.passwordPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
             <span
@@ -151,7 +152,7 @@ export default function Login() {
               onClick={handleForgotPassword}
               className="text-sm sm:text-base hover:cursor-pointer text-gray-900 hover:underline"
             >
-              Forgot Password?
+            {t("login.forgotPassword")}
             </button>
           </div>
           <div className="flex justify-center w-full border-none">
@@ -163,18 +164,18 @@ export default function Login() {
               {isLoading ? (
                 <FaSpinner className="mx-auto animate-spin" />
               ) : (
-                "Log in"
+               t("login.loginButton")
               )}
             </button>
           </div>
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              {t("login.noAccount")}{" "}
               <button
                 onClick={() => navigate("/signup")}
                 className="text-gray-600 hover:cursor-pointer hover:underline font-medium"
               >
-                SignUp
+                {t("login.signupButton")}
               </button>
             </p>
           </div>
