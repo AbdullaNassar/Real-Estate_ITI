@@ -89,13 +89,16 @@ export default function AddList() {
 
   const submitForm = (data) => {
     data.photos = images;
+    if (!position) {
+      toast.error("Select List Location on Map");
+      return;
+    }
     data.longitude = position.lng;
     data.latitude = position.lat;
     if (images.length < 5) {
       setErrorImages("You must upload 5 images");
       return;
     }
-
     createList(data, {
       onSuccess: () => {
         setImages([]);
@@ -141,6 +144,21 @@ export default function AddList() {
           }}
           register={register}
         />
+        <FormInputRow
+          required={true}
+          id="arTitle"
+          label="Arabic Title"
+          errors={errors}
+          placeholder="e.g.,  شقه فاخره بالاقصر"
+          rules={{
+            required: { value: true, message: "Arabic title is required" },
+            minLength: {
+              value: 5,
+              message: "minumum title length is 5 charcaters",
+            },
+          }}
+          register={register}
+        />
         <FromTextareaRow
           required={true}
           register={register}
@@ -149,6 +167,20 @@ export default function AddList() {
           label="Description"
           rules={{
             required: { value: true, message: "description is required" },
+            minLength: { value: 10, message: "enter at least 10 characters" },
+          }}
+        />
+        <FromTextareaRow
+          required={true}
+          register={register}
+          id="arDescrption"
+          errors={errors}
+          label="Arabic Description"
+          rules={{
+            required: {
+              value: true,
+              message: "Arabic description is required",
+            },
             minLength: { value: 10, message: "enter at least 10 characters" },
           }}
         />
@@ -270,8 +302,6 @@ export default function AddList() {
           }}
         />
 
-        <FromTextareaRow id="rules" label="Prperty Rules" register={register} />
-
         <div>
           <h2 className="text-2xl font-semibold mb-2">Photo Gallery</h2>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
@@ -323,24 +353,61 @@ export default function AddList() {
             <p></p>
           </div>
         </div>
-        <button className="bg-primarry py-2 text-stone-100 px-16 sm:px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primarry-hover hover:cursor-pointer transition-all sm:text-lg font-semibold">
-          Save Listing
+        <button
+          disabled={isCreatingList}
+          className="bg-primarry py-2 text-stone-100 px-16 sm:px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primarry-hover hover:cursor-pointer transition-all sm:text-lg font-semibold"
+        >
+          {isCreatingList ? "Creating..." : "Save Listing"}
         </button>
+        {/* <button
+          onClick={() => document.getElementById("my_modal_5").showModal()}
+        >
+          click me{" "}
+        </button> */}
       </form>
 
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle ">
-        <div className="modal-box text-sm text-gray-600 bg-gray-100 border border-gray-300">
-          <h3 className="font-bold text-lg">Listing Submitted</h3>
-          <p className="py-4 text-md/[1.5]">
+      <dialog
+        id="my_modal_5"
+        class="modal fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 opacity-0 invisible transition-all duration-300"
+      >
+        <div class="modal-box relative bg-gray-50 rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl border border-white/20 transform scale-90 translate-y-4 transition-all duration-300">
+          <div class="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg animate-pulse-success">
+            <svg
+              class="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="3"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+          </div>
+
+          <h3 class="font-bold text-2xl text-center mb-4 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+            Listing Submitted
+          </h3>
+
+          <p class="text-gray-600 text-center leading-relaxed mb-8 px-2">
             Your listing has been successfully submitted and is pending review
             by an admin. It will appear on the website once approved.
           </p>
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn hover:bg-black bg-stone-700">Close</button>
+
+          <div class="modal-action flex justify-center">
+            <form method="dialog" class="w-full">
+              <button
+                onclick="closeModal()"
+                class="w-full bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black hover:cursor-pointer text-gray-50 font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                Close
+              </button>
             </form>
           </div>
+
+          <div class="absolute -bottom-2 -left-2 w-4 h-4 bg-gradient-to-br from-blue-400 to-indigo-400 rounded-full opacity-40"></div>
         </div>
       </dialog>
     </div>

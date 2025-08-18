@@ -76,6 +76,8 @@ export default function EditList() {
       bathrooms: "",
       maxGustes: "",
       rules: "",
+      arTitle: "",
+      arDescrption: "",
     },
   });
   // end of hooks
@@ -109,11 +111,12 @@ export default function EditList() {
         governorate: data.data.governorate || "",
         address: data.data?.location?.address || "",
         amenitiesId: data.data.amenitiesId || [],
-        categoryId: data.data.categoryId || "",
+        categoryId: data.data.categoryId._id || "",
         bedroom: data.data.bedroom || "",
         bathrooms: data.data.bathrooms || "",
         maxGustes: data.data.maxGustes || "",
-        rules: data.data.rules || "",
+        arDescrption: data.data.arDescrption || "",
+        arTitle: data.data.arTitle || "",
       });
 
       // also set position for the map if you have lat/lng
@@ -208,6 +211,21 @@ export default function EditList() {
           }}
           register={register}
         />
+        <FormInputRow
+          required={true}
+          id="arTitle"
+          label="Arabic Title"
+          errors={errors}
+          placeholder="e.g.,  شقه فاخره بالاقصر"
+          rules={{
+            required: { value: true, message: "Arabic title is required" },
+            minLength: {
+              value: 5,
+              message: "minumum title length is 5 charcaters",
+            },
+          }}
+          register={register}
+        />
         <FromTextareaRow
           required={true}
           register={register}
@@ -216,6 +234,20 @@ export default function EditList() {
           label="Description"
           rules={{
             required: { value: true, message: "description is required" },
+            minLength: { value: 10, message: "enter at least 10 characters" },
+          }}
+        />
+        <FromTextareaRow
+          required={true}
+          register={register}
+          id="arDescrption"
+          errors={errors}
+          label="Arabic Description"
+          rules={{
+            required: {
+              value: true,
+              message: "Arabic description is required",
+            },
             minLength: { value: 10, message: "enter at least 10 characters" },
           }}
         />
@@ -333,8 +365,6 @@ export default function EditList() {
           }}
         />
 
-        <FromTextareaRow id="rules" label="Prperty Rules" register={register} />
-
         <div>
           <h2 className="text-2xl font-semibold mb-2">Photo Gallery</h2>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
@@ -403,7 +433,7 @@ export default function EditList() {
           disabled={isUpdating}
           className="bg-primarry py-2 text-stone-100 px-30 rounded-full  self-center mt-8 mb-4 hover:bg-primarry-hover hover:cursor-pointer transition-all text-lg font-semibold"
         >
-          Save Listing
+          {isUpdating ? "Updating..." : "Save Listing"}
         </button>
         {isUpdating && <Spinner />}
       </form>

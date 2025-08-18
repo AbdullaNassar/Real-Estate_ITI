@@ -121,13 +121,15 @@ export default function Header() {
       <div className="flex gap-2 md:gap-4 items-center">
         <div className="flex gap-2">
           <button
-            onClick={toggleLanguage}
+            // onClick={toggleLanguage}
             className="size-8 rounded-full text-gray-600 bg-gray-200 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all "
           >
             <TbWorld />
           </button>
           <button
-            onClick={toggleTheme}
+            onClick={() => {
+              toggleTheme();
+            }}
             className="size-8 rounded-full bg-gray-200 text-gray-600  flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all "
           >
             {theme == "light" ? <CiDark /> : <CiLight />}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function About() {
   return (
@@ -88,7 +89,10 @@ export default function About() {
               Get in Touch
             </h2>
             <p>
-              Have questions, feedback, or ideas? We’d love to hear from you.
+              Have questions, feedback, or ideas? We’d love to hear from you.{" "}
+              <Link to="/contact" className="underline font-semibold ml-2">
+                Contact Us
+              </Link>
             </p>
           </section>
         </div>

@@ -16,6 +16,8 @@ export async function createList(newList) {
       amenitiesId,
       maxGustes,
       photos, // array of File objects
+      arDescrption,
+      arTitle,
     } = newList;
     const data = new FormData();
     data.append("title", title);
@@ -27,6 +29,8 @@ export async function createList(newList) {
     data.append("latitude", latitude);
     data.append("governorate", governorate);
     data.append("maxGustes", maxGustes);
+    data.append("arTitle", arTitle);
+    data.append("arDescrption", arDescrption);
     amenitiesId.forEach((id) => data.append("amenitiesId[]", id));
     photos.forEach((file) => data.append("photos", file)); // multiple files with same key
 
