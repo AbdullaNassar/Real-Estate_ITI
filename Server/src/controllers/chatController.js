@@ -8,7 +8,13 @@ export const createRoom = asyncHandler(async (req, res) => {
     const userId = req.user._id;
 
     if (!userId) {
-        throw new AppError("User not authenticated", 401);
+        throw new AppError(
+        { 
+            en: "User not authenticated", 
+            ar: "المستخدم غير مصرح له" 
+        }, 
+        401
+        );
     }
 
     const roomId = uuidv4();
@@ -17,7 +23,10 @@ export const createRoom = asyncHandler(async (req, res) => {
 
     res.status(201).json({
         status: "Success",
-        message: "Room Created",
+        message: { 
+        en: "Room Created", 
+        ar: "تم إنشاء الغرفة" 
+        },
         data: newRoom,
     });
 });
@@ -26,13 +35,25 @@ export const getMessage = asyncHandler(async (req, res) => {
     const { roomId } = req.params;
 
     if (!roomId) {
-        throw new AppError("Room ID is required", 400);
+        throw new AppError(
+        { 
+            en: "Room ID is required", 
+            ar: "معرّف الغرفة مطلوب" 
+        }, 
+        400
+        );
     }
 
     const messages = await messageModel.find({ roomId }).sort({ createdAt: 1 });
 
     if (!messages || messages.length === 0) {
-        throw new AppError("No messages found for this room", 404);
+        throw new AppError(
+        { 
+            en: "No messages found for this room", 
+            ar: "لا توجد رسائل لهذه الغرفة" 
+        }, 
+        404
+        );
     }
 
     res.status(200).json({

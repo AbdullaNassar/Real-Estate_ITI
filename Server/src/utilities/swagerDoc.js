@@ -67,38 +67,95 @@ const swaggerDefinition = {
   paths: {
     //-------------------- AUTH --------------------
     "/users/signup": {
-      post: {
-        summary: "Sign up a new user",
-        tags: ["Auth"],
-        requestBody: {
-          required: true,
-          content: {
+      "post": {
+        "summary": "Sign up a new user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
             "application/json": {
-              schema: {
-                type: "object",
-                required: ["userName", "email", "password", "confirmPassword"],
-                properties: {
-                  userName: { type: "string", example: "JohnDoe" },
-                  email: { type: "string", example: "john@example.com" },
-                  password: { type: "string", example: "Password123!" },
-                  confirmPassword: { type: "string", example: "Password123!" },
-                  role: {
-                    type: "string",
-                    enum: ["guest", "host"],
-                    example: "guest Or host",
+              "schema": {
+                "type": "object",
+                "required": ["userName", "email", "password", "confirmPassword"],
+                "properties": {
+                  "userName": { "type": "string", "example": "JohnDoe" },
+                  "email": { "type": "string", "example": "john@example.com" },
+                  "password": { "type": "string", "example": "Password123!" },
+                  "confirmPassword": { "type": "string", "example": "Password123!" },
+                  "role": {
+                    "type": "string",
+                    "enum": ["guest", "host"],
+                    "example": "guest"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": { "en": "User created successfully, OTP sent to email", "ar": "تم إنشاء المستخدم بنجاح، تم إرسال رمز التحقق إلى البريد الإلكتروني" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": {
+                    "en": "User created successfully, OTP sent to email",
+                    "ar": "تم إنشاء المستخدم بنجاح، تم إرسال رمز التحقق إلى البريد الإلكتروني"
                   },
-                },
-              },
-            },
+                  "data": {
+                    "userName": "JohnDoe",
+                    "email": "john@example.com",
+                    "role": "guest"
+                  }
+                }
+              }
+            }
           },
-        },
-        responses: {
-          201: { description: "User created successfully, OTP sent to email" },
-          400: { description: "Missing fields or password mismatch" },
-          409: { description: "User already exists" },
-          500: { description: "Internal server error" },
-        },
-      },
+          "400": {
+            "description": { "en": "Missing fields or password mismatch", "ar": "الحقول مفقودة أو كلمات المرور غير متطابقة" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": {
+                    "en": "Missing fields or password mismatch",
+                    "ar": "الحقول مفقودة أو كلمات المرور غير متطابقة"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": { "en": "User already exists", "ar": "المستخدم موجود مسبقًا" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": {
+                    "en": "User already exists",
+                    "ar": "المستخدم موجود مسبقًا"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "message": {
+                    "en": "Internal server error",
+                    "ar": "خطأ داخلي في الخادم"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "/users/login": {
       post: {
@@ -128,14 +185,23 @@ const swaggerDefinition = {
         },
         responses: {
           200: {
-            description: "User logged in successfully",
+            description: { 
+              en: "User logged in successfully", 
+              ar: "تم تسجيل دخول المستخدم بنجاح" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: { type: "string", example: "User Logged In Successfully" },
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "User logged in successfully", 
+                        ar: "تم تسجيل دخول المستخدم بنجاح" 
+                      }
+                    },
                     token: { type: "string", example: "JWT_TOKEN_HERE" }
                   }
                 }
@@ -143,30 +209,45 @@ const swaggerDefinition = {
             }
           },
           400: {
-            description: "Missing or invalid credentials",
+            description: { 
+              en: "Missing or invalid credentials", 
+              ar: "بيانات الاعتماد مفقودة أو غير صحيحة" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Failed" },
-                    message: { type: "string", example: "Invalid Email Or Password" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Invalid email or password", 
+                        ar: "البريد الإلكتروني أو كلمة المرور غير صحيحة" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           403: {
-            description: "Email not verified",
+            description: { 
+              en: "Email not verified", 
+              ar: "البريد الإلكتروني غير مُحقق" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Failed" },
-                    message: {
-                      type: "string",
-                      example: "Please verify your email via OTP first"
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Please verify your email via OTP first", 
+                        ar: "يرجى التحقق من بريدك الإلكتروني عبر رمز التحقق أولاً" 
+                      }
                     }
                   }
                 }
@@ -174,16 +255,22 @@ const swaggerDefinition = {
             }
           },
           404: {
-            description: "User not found",
+            description: { 
+              en: "User not found", 
+              ar: "المستخدم غير موجود" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
-                    status: { type: "string", example: "failed" },
-                    message: {
-                      type: "string",
-                      example: "User Must Register First"
+                    status: { type: "string", example: "Failed" },
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "User must register first", 
+                        ar: "يجب على المستخدم التسجيل أولاً" 
+                      }
                     }
                   }
                 }
@@ -191,14 +278,23 @@ const swaggerDefinition = {
             }
           },
           500: {
-            description: "Internal server error",
+            description: { 
+              en: "Internal server error", 
+              ar: "خطأ داخلي في الخادم" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
-                    status: { type: "string", example: "failed" },
-                    message: { type: "string", example: "internal Server Error" },
+                    status: { type: "string", example: "Failed" },
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Internal server error", 
+                        ar: "خطأ داخلي في الخادم" 
+                      }
+                    }
                   }
                 }
               }
@@ -214,28 +310,46 @@ const swaggerDefinition = {
         description: "Clears the authentication token cookie and logs out the user.",
         responses: {
           200: {
-            description: "User logged out successfully",
+            description: { 
+              en: "User logged out successfully", 
+              ar: "تم تسجيل خروج المستخدم بنجاح" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "success" },
-                    message: { type: "string", example: "User logged out succssfully" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "User logged out successfully", 
+                        ar: "تم تسجيل خروج المستخدم بنجاح" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { 
+              en: "Internal server error", 
+              ar: "خطأ داخلي في الخادم" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Failed" },
-                    message: { type: "string", example: "Internal Server Error" },
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Internal server error", 
+                        ar: "خطأ داخلي في الخادم" 
+                      }
+                    }
                   }
                 }
               }
@@ -252,7 +366,10 @@ const swaggerDefinition = {
         tags: ["Users"],
         responses: {
           200: {
-            description: "List of users",
+            description: { 
+              en: "List of users", 
+              ar: "قائمة المستخدمين" 
+            },
             content: {
               "application/json": {
                 schema: {
@@ -279,28 +396,46 @@ const swaggerDefinition = {
             }
           },
           404: {
-            description: "No users found",
+            description: { 
+              en: "No users found", 
+              ar: "لا يوجد مستخدمون" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "No users found" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "No users found", 
+                        ar: "لا يوجد مستخدمون" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { 
+              en: "Internal server error", 
+              ar: "خطأ داخلي في الخادم" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Internal server error", 
+                        ar: "خطأ داخلي في الخادم" 
+                      }
+                    }
                   }
                 }
               }
@@ -315,16 +450,22 @@ const swaggerDefinition = {
         tags: ["Users"],
         responses: {
           200: {
-            description: "All non-admin users deleted",
+            description: { 
+              en: "All non-admin users deleted", 
+              ar: "تم حذف جميع المستخدمين غير الإداريين" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: {
-                      type: "string",
-                      example: "5 users deleted successfully"
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "5 users deleted successfully", 
+                        ar: "تم حذف 5 مستخدمين بنجاح" 
+                      }
                     }
                   }
                 }
@@ -332,16 +473,22 @@ const swaggerDefinition = {
             }
           },
           404: {
-            description: "No non-admin users found to delete",
+            description: { 
+              en: "No non-admin users found to delete", 
+              ar: "لا يوجد مستخدمون غير إداريين للحذف" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: {
-                      type: "string",
-                      example: "No non-admin users found to delete"
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "No non-admin users found to delete", 
+                        ar: "لا يوجد مستخدمون غير إداريين للحذف" 
+                      }
                     }
                   }
                 }
@@ -349,14 +496,23 @@ const swaggerDefinition = {
             }
           },
           500: {
-            description: "Internal server error",
+            description: { 
+              en: "Internal server error", 
+              ar: "خطأ داخلي في الخادم" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Internal server error", 
+                        ar: "خطأ داخلي في الخادم" 
+                      }
+                    }
                   }
                 }
               }
@@ -372,30 +528,77 @@ const swaggerDefinition = {
           security: [{ bearerAuth: [] }],
           tags: ['Users'],
           responses: {
-              200: {
-                  description: 'User data retrieved successfully',
-                  content: {
-                      'application/json': {
-                          schema: {
-                              type: 'object',
-                              properties: {
-                                  status: { type: 'string' ,example: "Success"  },
-                                  user: {
-                                      type: 'object',
-                                      example: {
-                                          name: 'John Doe',
-                                          email: 'john@example.com'
-                                          // other user fields except password, _id, role, __v
-                                      },
-                                  },
-                              },
-                          },
-                      },
-                  },
+            200: {
+              description: { 
+                en: "User data retrieved successfully", 
+                ar: "تم استرجاع بيانات المستخدم بنجاح" 
               },
-              404: { description: 'No user found' },
-              500: { description: 'Internal server error' },
-          },
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      status: { type: "string", example: "Success" },
+                      user: {
+                        type: "object",
+                        example: {
+                          name: "John Doe",
+                          email: "john@example.com"
+                          // other user fields except password, _id, role, __v
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            404: {
+              description: { 
+                en: "No user found", 
+                ar: "المستخدم غير موجود" 
+              },
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      status: { type: "string", example: "Fail" },
+                      message: { 
+                        type: "object",
+                        example: { 
+                          en: "No user found", 
+                          ar: "المستخدم غير موجود" 
+                        }
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            500: {
+              description: { 
+                en: "Internal server error", 
+                ar: "خطأ داخلي في الخادم" 
+              },
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      status: { type: "string", example: "Error" },
+                      message: { 
+                        type: "object",
+                        example: { 
+                          en: "Internal server error", 
+                          ar: "خطأ داخلي في الخادم" 
+                        }
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          }
       },
     },
     "/users": {
@@ -423,14 +626,23 @@ const swaggerDefinition = {
         },
         responses: {
           200: {
-            description: "User updated successfully",
+            description: { 
+              en: "User updated successfully", 
+              ar: "تم تحديث بيانات المستخدم بنجاح" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: { type: "string", example: "Profile updated successfully" },
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Profile updated successfully", 
+                        ar: "تم تحديث الملف الشخصي بنجاح" 
+                      }
+                    },
                     data: {
                       type: "object",
                       properties: {
@@ -451,42 +663,69 @@ const swaggerDefinition = {
             }
           },
           400: {
-            description: "Bad Request – No fields provided for update",
+            description: { 
+              en: "Bad Request – No fields provided for update", 
+              ar: "طلب غير صالح – لم يتم تقديم أي حقول للتحديث" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "At least one field must be provided to update" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "At least one field must be provided to update", 
+                        ar: "يجب تقديم حقل واحد على الأقل للتحديث" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           404: {
-            description: "User not found",
+            description: { 
+              en: "User not found", 
+              ar: "المستخدم غير موجود" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "User not found" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "User not found", 
+                        ar: "المستخدم غير موجود" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { 
+              en: "Internal server error", 
+              ar: "خطأ داخلي في الخادم" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Internal server error", 
+                        ar: "خطأ داخلي في الخادم" 
+                      }
+                    }
                   }
                 }
               }
@@ -501,42 +740,69 @@ const swaggerDefinition = {
         tags: ["Users"],
         responses: {
           200: {
-            description: "User deleted successfully",
+            description: { 
+              en: "User deleted successfully", 
+              ar: "تم حذف المستخدم بنجاح" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: { type: "string", example: "User account deleted successfully" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "User account deleted successfully", 
+                        ar: "تم حذف حساب المستخدم بنجاح" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           404: {
-            description: "User not found",
+            description: { 
+              en: "User not found", 
+              ar: "المستخدم غير موجود" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "User not found" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "User not found", 
+                        ar: "المستخدم غير موجود" 
+                      }
+                    }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { 
+              en: "Internal server error", 
+              ar: "خطأ داخلي في الخادم" 
+            },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { 
+                      type: "object",
+                      example: { 
+                        en: "Internal server error", 
+                        ar: "خطأ داخلي في الخادم" 
+                      }
+                    }
                   }
                 }
               }
@@ -566,73 +832,79 @@ const swaggerDefinition = {
           },
           responses: {
             200: {
-              description: "Email verified successfully",
+              description: { en: "Email verified successfully", ar: "تم التحقق من البريد الإلكتروني بنجاح" },
               content: {
                 "application/json": {
                   schema: {
                     type: "object",
                     properties: {
                       status: { type: "string", example: "Success" },
-                      message: { type: "string", example: "Email verified successfully" }
+                      message: { 
+                        type: "object",
+                        example: { 
+                          en: "Email verified successfully", 
+                          ar: "تم التحقق من البريد الإلكتروني بنجاح" 
+                        }
+                      }
                     }
                   }
                 }
               }
             },
             400: {
-              description: "Bad request (Invalid / expired OTP, missing fields, or already verified)",
+              description: { 
+                en: "Bad request (Invalid / expired OTP, missing fields, or already verified)", 
+                ar: "طلب غير صالح (رمز OTP غير صالح / منتهي الصلاحية، أو الحقول مفقودة، أو تم التحقق مسبقًا)" 
+              },
               content: {
                 "application/json": {
                   schema: {
                     type: "object",
                     properties: {
                       status: { type: "string", example: "Fail" },
-                      message: {
-                        type: "string",
-                        example: "Invalid or expired OTP"
-                      }
+                      message: { type: "object", example: { en: "Invalid or expired OTP", ar: "رمز OTP غير صالح أو منتهي الصلاحية" } }
                     }
                   },
                   examples: {
                     missingFields: {
                       summary: "Missing email or otp",
-                      value: { status: "Fail", message: "Provide all fields" }
+                      value: { status: "Fail", message: { en: "Provide all fields", ar: "يرجى تقديم جميع الحقول" } }
                     },
                     alreadyVerified: {
                       summary: "User already verified",
-                      value: { status: "Fail", message: "User already verified" }
+                      value: { status: "Fail", message: { en: "User already verified", ar: "المستخدم تم التحقق منه مسبقًا" } }
                     },
                     invalidOtp: {
                       summary: "Invalid or expired OTP",
-                      value: { status: "Fail", message: "Invalid or expired OTP" }
+                      value: { status: "Fail", message: { en: "Invalid or expired OTP", ar: "رمز OTP غير صالح أو منتهي الصلاحية" } }
                     }
                   }
                 }
               }
             },
             404: {
-              description: "User not found",
+              description: { en: "User not found", ar: "المستخدم غير موجود" },
               content: {
                 "application/json": {
                   schema: {
                     type: "object",
                     properties: {
                       status: { type: "string", example: "Fail" },
-                      message: { type: "string", example: "User not found" }
+                      message: { type: "object", example: { en: "User not found", ar: "المستخدم غير موجود" } }
                     }
                   }
                 }
               }
             },
             500: {
-              description: "Internal server error",
+              description: { en: "Internal server error", ar: "خطأ داخلي في الخادم" },
               content: {
                 "application/json": {
                   schema: {
                     type: "object",
                     properties: {
                       status: { type: "string", example: "Error" },
-                      message: { type: "string", example: "Internal server error" }
+                      message: { type: "object", example: { en: "Internal server error", ar: "خطأ داخلي في الخادم" } }
                     }
                   }
                 }
@@ -661,66 +933,66 @@ const swaggerDefinition = {
         },
         responses: {
           200: {
-            description: "New OTP sent to email",
+            description: { en: "New OTP sent to email", ar: "تم إرسال رمز OTP جديد إلى البريد الإلكتروني" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: { type: "string", example: "New OTP sent to email" }
+                    message: { type: "object", example: { en: "New OTP sent to email", ar: "تم إرسال رمز OTP جديد إلى البريد الإلكتروني" } }
                   }
                 }
               }
             }
           },
           400: {
-            description: "Bad request (missing email or already verified)",
+            description: { en: "Bad request (missing email or already verified)", ar: "طلب غير صالح (البريد الإلكتروني مفقود أو المستخدم تم التحقق منه مسبقًا)" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string" }
+                    message: { type: "object" }
                   }
                 },
                 examples: {
                   missingEmail: {
                     summary: "Missing email",
-                    value: { status: "Fail", message: "Email is required" }
+                    value: { status: "Fail", message: { en: "Email is required", ar: "البريد الإلكتروني مطلوب" } }
                   },
                   alreadyVerified: {
                     summary: "User already verified",
-                    value: { status: "Fail", message: "User is already verified" }
+                    value: { status: "Fail", message: { en: "User is already verified", ar: "المستخدم تم التحقق منه مسبقًا" } }
                   }
                 }
               }
             }
           },
           404: {
-            description: "User not found",
+            description: { en: "User not found", ar: "المستخدم غير موجود" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "User not found" }
+                    message: { type: "object", example: { en: "User not found", ar: "المستخدم غير موجود" } }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { en: "Internal server error", ar: "خطأ داخلي في الخادم" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { type: "object", example: { en: "Internal server error", ar: "خطأ داخلي في الخادم" } }
                   }
                 }
               }
@@ -749,59 +1021,56 @@ const swaggerDefinition = {
         },
         responses: {
           200: {
-            description: "OTP sent for password reset",
+            description: { en: "OTP sent for password reset", ar: "تم إرسال رمز OTP لإعادة تعيين كلمة المرور" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: {
-                      type: "string",
-                      example: "OTP sent to email for password reset"
-                    }
+                    message: { type: "object", example: { en: "OTP sent to email for password reset", ar: "تم إرسال رمز OTP إلى البريد الإلكتروني لإعادة تعيين كلمة المرور" } }
                   }
                 }
               }
             }
           },
           400: {
-            description: "Bad request (missing email)",
+            description: { en: "Bad request (missing email)", ar: "طلب غير صالح (البريد الإلكتروني مفقود)" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "Email is required" }
+                    message: { type: "object", example: { en: "Email is required", ar: "البريد الإلكتروني مطلوب" } }
                   }
                 }
               }
             }
           },
           404: {
-            description: "User not found",
+            description: { en: "User not found", ar: "المستخدم غير موجود" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "User not found" }
+                    message: { type: "object", example: { en: "User not found", ar: "المستخدم غير موجود" } }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { en: "Internal server error", ar: "خطأ داخلي في الخادم" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { type: "object", example: { en: "Internal server error", ar: "خطأ داخلي في الخادم" } }
                   }
                 }
               }
@@ -832,66 +1101,66 @@ const swaggerDefinition = {
         },
         responses: {
           200: {
-            description: "Password reset successful",
+            description: { en: "Password reset successful", ar: "تم إعادة تعيين كلمة المرور بنجاح" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Success" },
-                    message: { type: "string", example: "Password reset successfully" }
+                    message: { type: "object", example: { en: "Password reset successfully", ar: "تم إعادة تعيين كلمة المرور بنجاح" } }
                   }
                 }
               }
             }
           },
           400: {
-            description: "Bad request (missing fields or invalid/expired OTP)",
+            description: { en: "Bad request (missing fields or invalid/expired OTP)", ar: "طلب غير صالح (حقول مفقودة أو OTP غير صالح/منتهي الصلاحية)" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string" }
+                    message: { type: "object" }
                   }
                 },
                 examples: {
                   missingFields: {
                     summary: "Missing fields",
-                    value: { status: "Fail", message: "Provide all fields" }
+                    value: { status: "Fail", message: { en: "Provide all fields", ar: "يرجى توفير جميع الحقول" } }
                   },
                   invalidOtp: {
                     summary: "Invalid or expired OTP",
-                    value: { status: "Fail", message: "Invalid or expired OTP" }
+                    value: { status: "Fail", message: { en: "Invalid or expired OTP", ar: "OTP غير صالح أو منتهي الصلاحية" } }
                   }
                 }
               }
             }
           },
           404: {
-            description: "User not found",
+            description: { en: "User not found", ar: "المستخدم غير موجود" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Fail" },
-                    message: { type: "string", example: "User not found" }
+                    message: { type: "object", example: { en: "User not found", ar: "المستخدم غير موجود" } }
                   }
                 }
               }
             }
           },
           500: {
-            description: "Internal server error",
+            description: { en: "Internal server error", ar: "خطأ داخلي في الخادم" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
                     status: { type: "string", example: "Error" },
-                    message: { type: "string", example: "Internal server error" }
+                    message: { type: "object", example: { en: "Internal server error", ar: "خطأ داخلي في الخادم" } }
                   }
                 }
               }
@@ -923,17 +1192,60 @@ const swaggerDefinition = {
         },
         responses: {
           200: {
-            description: "Password changed successfully, new JWT issued"
+            description: { en: "Password changed successfully, new JWT issued", ar: "تم تغيير كلمة المرور بنجاح، وتم إصدار JWT جديد" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Success" },
+                    message: { type: "object", example: { en: "Password changed successfully, new JWT issued", ar: "تم تغيير كلمة المرور بنجاح، وتم إصدار JWT جديد" } }
+                  }
+                }
+              }
+            }
           },
           400: {
-            description:
-              "Validation error (missing fields, mismatch, or incorrect current password)"
+            description: { en: "Validation error (missing fields, mismatch, or incorrect current password)", ar: "خطأ في التحقق (حقول مفقودة، عدم التطابق، أو كلمة المرور الحالية غير صحيحة)" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Validation error (missing fields, mismatch, or incorrect current password)", ar: "خطأ في التحقق (حقول مفقودة، عدم التطابق، أو كلمة المرور الحالية غير صحيحة)" } }
+                  }
+                }
+              }
+            }
           },
           404: {
-            description: "User not found"
+            description: { en: "User not found", ar: "المستخدم غير موجود" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "User not found", ar: "المستخدم غير موجود" } }
+                  }
+                }
+              }
+            }
           },
           401: {
-            description: "Unauthorized (missing or invalid JWT)"
+            description: { en: "Unauthorized (missing or invalid JWT)", ar: "غير مصرح (JWT مفقود أو غير صالح)" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Unauthorized (missing or invalid JWT)", ar: "غير مصرح (JWT مفقود أو غير صالح)" } }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -954,20 +1266,23 @@ const swaggerDefinition = {
         ],
         responses: {
           200: {
-            description: "Successfully toggled favorite",
+            description: { en: "Successfully toggled favorite", ar: "تم تبديل المفضلة بنجاح" },
             content: {
               "application/json": {
                 schema: {
                   type: "object",
                   properties: {
-                    status: { "type": "string", "example": "Success" },
-                    message: { "type": "string", "example": "Favorite toggled successfully" },
+                    status: { type: "string", example: "Success" },
+                    message: { 
+                      type: "object", 
+                      example: { en: "Favorite toggled successfully", ar: "تم تبديل المفضلة بنجاح" } 
+                    },
                     data: {
                       type: "object",
                       properties: {
                         favorites: {
                           type: "array",
-                          items: { "type": "string", "example": "66a8fbb83b62c40356a55c92" }
+                          items: { type: "string", example: "66a8fbb83b62c40356a55c92" }
                         }
                       }
                     }
@@ -976,9 +1291,48 @@ const swaggerDefinition = {
               }
             }
           },
-          401: { "description": "Unauthorized / Not logged in" },
-          403: { "description": "Forbidden / Insufficient permissions" },
-          404: { "description": "Listing not found" }
+          401: {
+            description: { en: "Unauthorized / Not logged in", ar: "غير مصرح / لم يتم تسجيل الدخول" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Unauthorized / Not logged in", ar: "غير مصرح / لم يتم تسجيل الدخول" } }
+                  }
+                }
+              }
+            }
+          },
+          403: {
+            description: { en: "Forbidden / Insufficient permissions", ar: "ممنوع / صلاحيات غير كافية" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Forbidden / Insufficient permissions", ar: "ممنوع / صلاحيات غير كافية" } }
+                  }
+                }
+              }
+            }
+          },
+          404: {
+            description: { en: "Listing not found", ar: "القائمة غير موجودة" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Listing not found", ar: "القائمة غير موجودة" } }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -989,7 +1343,7 @@ const swaggerDefinition = {
         security: [{ bearerAuth: [] }],
         responses: {
           200: {
-            description: "List of user's favorite listings",
+            description: { en: "List of user's favorite listings", ar: "قائمة الإعلانات المفضلة للمستخدم" },
             content: {
               "application/json": {
                 schema: {
@@ -999,15 +1353,58 @@ const swaggerDefinition = {
                       type: "array",
                       items: { $ref: "#/components/schemas/List" },
                     },
+                    message: { 
+                      type: "object", 
+                      example: { en: "Favorites retrieved successfully", ar: "تم استرجاع المفضلة بنجاح" } 
+                    }
                   },
                 },
               },
             },
           },
-          401: { description: "Unauthorized / Not logged in" },
-          403: { description: "Forbidden / Insufficient permissions" },
-          404: { description: "No favorites found" },
-        },
+          401: {
+            description: { en: "Unauthorized / Not logged in", ar: "غير مصرح / لم يتم تسجيل الدخول" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Unauthorized / Not logged in", ar: "غير مصرح / لم يتم تسجيل الدخول" } }
+                  }
+                }
+              }
+            }
+          },
+          403: {
+            description: { en: "Forbidden / Insufficient permissions", ar: "ممنوع / صلاحيات غير كافية" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "Forbidden / Insufficient permissions", ar: "ممنوع / صلاحيات غير كافية" } }
+                  }
+                }
+              }
+            }
+          },
+          404: {
+            description: { en: "No favorites found", ar: "لا توجد مفضلات" },
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    status: { type: "string", example: "Fail" },
+                    message: { type: "object", example: { en: "No favorites found", ar: "لا توجد مفضلات" } }
+                  }
+                }
+              }
+            }
+          }
+        }
       },
     },
     // ------------------- LISTS -------------------
@@ -1083,13 +1480,14 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "List of filtered listings",
+            "description": { "en": "List of filtered listings", "ar": "قائمة الإعلانات المفلترة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
                   "total": 50,
                   "results": 2,
+                  "message": { "en": "Filtered listings retrieved successfully", "ar": "تم استرجاع الإعلانات المفلترة بنجاح" },
                   "data": [
                     {
                       "_id": "66ab23...",
@@ -1142,23 +1540,23 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Invalid filter or date format",
+            "description": { "en": "Invalid filter or date format", "ar": "تصفية أو تنسيق تاريخ غير صالح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Invalid date format for startDate or endDate"
+                  "message": { "en": "Invalid date format for startDate or endDate", "ar": "تنسيق التاريخ للبداية أو النهاية غير صالح" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1218,12 +1616,12 @@ const swaggerDefinition = {
         },
         "responses": {
           "201": {
-            "description": "Listing created successfully",
+            "description": { "en": "Listing created successfully", "ar": "تم إنشاء الإعلان بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Listing created successfully",
+                  "message": { "en": "Listing created successfully", "ar": "تم إنشاء الإعلان بنجاح" },
                   "data": {
                     "_id": "66ab45...",
                     "host": "64c12f...",
@@ -1257,23 +1655,23 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Validation error",
+            "description": { "en": "Validation error", "ar": "خطأ في التحقق من البيانات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "All required fields must be provided"
+                  "message": { "en": "All required fields must be provided", "ar": "يجب تقديم جميع الحقول المطلوبة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1297,7 +1695,7 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Listings retrieved successfully",
+            "description": { "en": "Listings retrieved successfully", "ar": "تم استرجاع الإعلانات بنجاح" },
             "content": {
               "application/json": {
                 "schema": {
@@ -1318,7 +1716,9 @@ const swaggerDefinition = {
                     {
                       "_id": "66ab23...",
                       "title": "Cozy Apartment in Cairo",
+                      "arTitle": "شقة مريحة في القاهرة",
                       "descrption": "A nice place near the Nile River.",
+                      "arDescrption": "مكان جميل بالقرب من نهر النيل",
                       "pricePerNight": 120,
                       "governorate": "Cairo",
                       "categoryId": {
@@ -1341,7 +1741,9 @@ const swaggerDefinition = {
                     {
                       "_id": "66ab24...",
                       "title": "Modern Studio in Cairo",
+                      "arTitle": "استوديو حديث في القاهرة",
                       "descrption": "Stylish studio apartment in downtown Cairo.",
+                      "arDescrption": "استوديو أنيق في وسط القاهرة",
                       "pricePerNight": 90,
                       "governorate": "Cairo",
                       "categoryId": {
@@ -1366,23 +1768,23 @@ const swaggerDefinition = {
             }
           },
           "404": {
-            "description": "No listings found for this governorate",
+            "description": { "en": "No listings found for this governorate", "ar": "لا توجد إعلانات لهذه المحافظة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "No listings found for governorate Cairo"
+                  "message": { "en": "No listings found for governorate Cairo", "ar": "لا توجد إعلانات لمحافظة القاهرة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1404,7 +1806,7 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "List retrieved successfully",
+            "description": { "en": "List retrieved successfully", "ar": "تم استرجاع الإعلان بنجاح" },
             "content": {
               "application/json": {
                 "example": {
@@ -1412,7 +1814,9 @@ const swaggerDefinition = {
                   "data": {
                     "_id": "66ab23...",
                     "title": "Cozy Apartment in Cairo",
+                    "arTitle": "شقة مريحة في القاهرة",
                     "descrption": "A nice place near the Nile River.",
+                    "arDescrption": "مكان جميل بالقرب من نهر النيل",
                     "pricePerNight": 120,
                     "governorate": "Cairo",
                     "categoryId": {
@@ -1437,23 +1841,23 @@ const swaggerDefinition = {
             }
           },
           "404": {
-            "description": "List not found",
+            "description": { "en": "List not found", "ar": "الإعلان غير موجود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "List with ID 66ab99... not found"
+                  "message": { "en": "List with ID 66ab99... not found", "ar": "الإعلان بالمعرف 66ab99... غير موجود" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1505,16 +1909,18 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "Listing updated successfully",
+            "description": { "en": "Listing updated successfully", "ar": "تم تحديث الإعلان بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Listing updated successfully",
+                  "message": { "en": "Listing updated successfully", "ar": "تم تحديث الإعلان بنجاح" },
                   "data": {
                     "_id": "66ab23...",
                     "title": "Updated Apartment Title",
+                    "arTitle": "تم تحديث عنوان الشقة",
                     "descrption": "Updated description",
+                    "arDescrption": "تم تحديث الوصف",
                     "pricePerNight": 150,
                     "governorate": "Cairo",
                     "maxGustes": 4
@@ -1524,45 +1930,45 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Bad request or empty body",
+            "description": { "en": "Bad request or empty body", "ar": "طلب خاطئ أو جسم الطلب فارغ" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Request body cannot be empty"
+                  "message": { "en": "Request body cannot be empty", "ar": "جسم الطلب لا يمكن أن يكون فارغًا" }
                 }
               }
             }
           },
           "403": {
-            "description": "User not authorized to update this listing",
+            "description": { "en": "User not authorized to update this listing", "ar": "المستخدم غير مخوّل لتحديث هذا الإعلان" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You are not authorized to update this listing"
+                  "message": { "en": "You are not authorized to update this listing", "ar": "أنت غير مخوّل لتحديث هذا الإعلان" }
                 }
               }
             }
           },
           "404": {
-            "description": "List not found",
+            "description": { "en": "List not found", "ar": "الإعلان غير موجود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "List with ID 66ab99... not found"
+                  "message": { "en": "List with ID 66ab99... not found", "ar": "الإعلان بالمعرف 66ab99... غير موجود" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1583,45 +1989,45 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "List deleted successfully",
+            "description": { "en": "List deleted successfully", "ar": "تم حذف الإعلان بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Listing deleted successfully"
+                  "message": { "en": "Listing deleted successfully", "ar": "تم حذف الإعلان بنجاح" }
                 }
               }
             }
           },
           "403": {
-            "description": "Cannot delete this list",
+            "description": { "en": "Cannot delete this list", "ar": "لا يمكن حذف هذا الإعلان" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You are not authorized to delete this listing"
+                  "message": { "en": "You are not authorized to delete this listing", "ar": "أنت غير مخوّل لحذف هذا الإعلان" }
                 }
               }
             }
           },
           "404": {
-            "description": "List not found",
+            "description": { "en": "List not found", "ar": "الإعلان غير موجود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "List with ID 66ab99... not found"
+                  "message": { "en": "List with ID 66ab99... not found", "ar": "الإعلان بالمعرف 66ab99... غير موجود" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1656,7 +2062,7 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Search results returned successfully",
+            "description": { "en": "Search results returned successfully", "ar": "تم إرجاع نتائج البحث بنجاح" },
             "content": {
               "application/json": {
                 "example": {
@@ -1667,16 +2073,16 @@ const swaggerDefinition = {
                   "data": [
                     {
                       "_id": "66ab23...",
-                      "title": "Cozy Apartment in Cairo",
-                      "description": "Beautiful 2-bedroom apartment near downtown",
+                      "title": { "en": "Cozy Apartment in Cairo", "ar": "شقة مريحة في القاهرة" },
+                      "description": { "en": "Beautiful 2-bedroom apartment near downtown", "ar": "شقة جميلة بغرفتي نوم بالقرب من وسط المدينة" },
                       "pricePerNight": 100,
                       "governorate": "Cairo",
                       "maxGustes": 3
                     },
                     {
                       "_id": "66ab24...",
-                      "title": "Luxury Villa in Giza",
-                      "description": "Spacious villa with pool and garden",
+                      "title": { "en": "Luxury Villa in Giza", "ar": "فيلا فاخرة في الجيزة" },
+                      "description": { "en": "Spacious villa with pool and garden", "ar": "فيلا واسعة مع حمام سباحة وحديقة" },
                       "pricePerNight": 400,
                       "governorate": "Giza",
                       "maxGustes": 8
@@ -1687,23 +2093,23 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Invalid query (too short or missing)",
+            "description": { "en": "Invalid query (too short or missing)", "ar": "استعلام غير صالح (قصير جدًا أو مفقود)" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You must enter at least 3 characters"
+                  "message": { "en": "You must enter at least 3 characters", "ar": "يجب إدخال 3 أحرف على الأقل" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1727,16 +2133,28 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Listing approved successfully",
+            "description": { 
+              "en": "Listing approved successfully", 
+              "ar": "تم الموافقة على القائمة بنجاح" 
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Listing approved successfully",
+                  "message": { 
+                    "en": "Listing approved successfully", 
+                    "ar": "تم الموافقة على القائمة بنجاح" 
+                  },
                   "data": {
                     "_id": "66ac12...",
-                    "title": "Modern Apartment in Cairo",
-                    "description": "2-bedroom furnished apartment near metro",
+                    "title": { 
+                      "en": "Modern Apartment in Cairo", 
+                      "ar": "شقة حديثة في القاهرة" 
+                    },
+                    "description": { 
+                      "en": "2-bedroom furnished apartment near metro", 
+                      "ar": "شقة مفروشة بغرفتي نوم بالقرب من المترو" 
+                    },
                     "pricePerNight": 120,
                     "governorate": "Cairo",
                     "isApproved": true,
@@ -1747,34 +2165,52 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Bad request (ID missing)",
+            "description": { 
+              "en": "Bad request (ID missing)", 
+              "ar": "طلب غير صالح (المعرف مفقود)" 
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Listing ID is required"
+                  "message": { 
+                    "en": "Listing ID is required", 
+                    "ar": "مطلوب معرف القائمة" 
+                  }
                 }
               }
             }
           },
           "404": {
-            "description": "Listing not found",
+            "description": { 
+              "en": "Listing not found", 
+              "ar": "القائمة غير موجودة" 
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Listing not found"
+                  "message": { 
+                    "en": "Listing not found", 
+                    "ar": "القائمة غير موجودة" 
+                  }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { 
+              "en": "Internal server error", 
+              "ar": "خطأ داخلي في الخادم" 
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { 
+                    "en": "Internal Server Error", 
+                    "ar": "حدث خطأ في الخادم" 
+                  }
                 }
               }
             }
@@ -1789,7 +2225,7 @@ const swaggerDefinition = {
         "security": [{ "bearerAuth": [] }],
         "responses": {
           "200": {
-            "description": "Listings retrieved successfully",
+            "description": { "en": "Listings retrieved successfully", "ar": "تم استرجاع القوائم بنجاح" },
             "content": {
               "application/json": {
                 "example": {
@@ -1798,12 +2234,12 @@ const swaggerDefinition = {
                   "lists": [
                     {
                       "_id": "66ac12...",
-                      "title": "Modern Apartment in Cairo",
-                      "description": "2-bedroom furnished apartment near metro",
+                      "title": { "en": "Modern Apartment in Cairo", "ar": "شقة حديثة في القاهرة" },
+                      "description": { "en": "2-bedroom furnished apartment near metro", "ar": "شقة مفروشة بغرفتي نوم بالقرب من المترو" },
                       "pricePerNight": 120,
                       "categoryId": {
                         "_id": "66ab11...",
-                        "name": "Apartments"
+                        "name": { "en": "Apartments", "ar": "شقق" }
                       },
                       "host": "66aa99..."
                     }
@@ -1813,34 +2249,34 @@ const swaggerDefinition = {
             }
           },
           "404": {
-            "description": "No listings found for this host",
+            "description": { "en": "No listings found for this host", "ar": "لا توجد قوائم لهذا المضيف" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "No listings found for this host"
+                  "message": { "en": "No listings found for this host", "ar": "لا توجد قوائم لهذا المضيف" }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized (not logged in)",
+            "description": { "en": "Unauthorized (not logged in)", "ar": "غير مصرح (لم يتم تسجيل الدخول)" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Authentication required"
+                  "message": { "en": "Authentication required", "ar": "مطلوب تسجيل الدخول" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1857,7 +2293,7 @@ const swaggerDefinition = {
         "parameters": [],
         "responses": {
           "200": {
-            "description": "List of ratings for the user",
+            "description": { "en": "List of ratings for the user", "ar": "قائمة التقييمات للمستخدم" },
             "content": {
               "application/json": {
                 "example": {
@@ -1868,28 +2304,28 @@ const swaggerDefinition = {
                       "_id": "66ad12...",
                       "listingId": {
                         "_id": "66ac34...",
-                        "title": "Modern Apartment in Cairo"
+                        "title": { "en": "Modern Apartment in Cairo", "ar": "شقة حديثة في القاهرة" }
                       },
                       "guestId": {
                         "_id": "66aa99...",
                         "userName": "JohnDoe"
                       },
                       "rating": 4.5,
-                      "comment": "Very clean and convenient location",
+                      "comment": { "en": "Very clean and convenient location", "ar": "نظيفة جدًا وموقع ملائم" },
                       "createdAt": "2025-08-16T12:00:00.000Z"
                     },
                     {
                       "_id": "66ad13...",
                       "listingId": {
                         "_id": "66ac35...",
-                        "title": "Luxury Villa in Giza"
+                        "title": { "en": "Luxury Villa in Giza", "ar": "فيلا فاخرة في الجيزة" }
                       },
                       "guestId": {
                         "_id": "66aa99...",
                         "userName": "JohnDoe"
                       },
                       "rating": 5,
-                      "comment": "Amazing stay with a beautiful pool",
+                      "comment": { "en": "Amazing stay with a beautiful pool", "ar": "إقامة رائعة مع مسبح جميل" },
                       "createdAt": "2025-08-15T15:30:00.000Z"
                     }
                   ]
@@ -1898,23 +2334,23 @@ const swaggerDefinition = {
             }
           },
           "404": {
-            "description": "User has no ratings",
+            "description": { "en": "User has no ratings", "ar": "المستخدم لا يملك تقييمات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "No ratings found for this user"
+                  "message": { "en": "No ratings found for this user", "ar": "لم يتم العثور على تقييمات لهذا المستخدم" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -1957,18 +2393,18 @@ const swaggerDefinition = {
         },
         "responses": {
           "201": {
-            "description": "Rating submitted successfully",
+            "description": { "en": "Rating submitted successfully", "ar": "تم تقديم التقييم بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Rating submitted successfully",
+                  "message": { "en": "Rating submitted successfully", "ar": "تم تقديم التقييم بنجاح" },
                   "data": {
                     "_id": "66ad45...",
                     "bookingId": "66ac99...",
                     "guestId": "66aa99...",
                     "rating": 5,
-                    "comment": "Amazing stay, highly recommended!",
+                    "comment": { "en": "Amazing stay, highly recommended!", "ar": "إقامة رائعة، موصى بها بشدة!" },
                     "createdAt": "2025-08-16T12:30:00.000Z"
                   }
                 }
@@ -1976,45 +2412,45 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Already rated, missing fields, or guest hasn’t checked out yet",
+            "description": { "en": "Already rated, missing fields, or guest hasn’t checked out yet", "ar": "تم التقييم مسبقًا، أو الحقول مفقودة، أو لم يغادر الضيف بعد" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You have already rated this booking"
+                  "message": { "en": "You have already rated this booking", "ar": "لقد قمت بتقييم هذا الحجز مسبقًا" }
                 }
               }
             }
           },
           "403": {
-            "description": "Unauthorized or booking not associated with user",
+            "description": { "en": "Unauthorized or booking not associated with user", "ar": "غير مصرح أو الحجز غير مرتبط بالمستخدم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You are not allowed to rate this booking"
+                  "message": { "en": "You are not allowed to rate this booking", "ar": "غير مسموح لك بتقييم هذا الحجز" }
                 }
               }
             }
           },
           "404": {
-            "description": "Booking not found",
+            "description": { "en": "Booking not found", "ar": "الحجز غير موجود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Booking with ID 66ac99... not found"
+                  "message": { "en": "Booking with ID 66ac99... not found", "ar": "الحجز بالمعرف 66ac99... غير موجود" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2038,7 +2474,7 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "List of ratings for the listing",
+            "description": { "en": "List of ratings for the listing", "ar": "قائمة التقييمات لهذه القائمة" },
             "content": {
               "application/json": {
                 "example": {
@@ -2053,7 +2489,7 @@ const swaggerDefinition = {
                         "userName": "JohnDoe"
                       },
                       "rating": 5,
-                      "comment": "Amazing stay!",
+                      "comment": { "en": "Amazing stay!", "ar": "إقامة رائعة!" },
                       "createdAt": "2025-08-16T12:30:00.000Z"
                     },
                     {
@@ -2064,7 +2500,7 @@ const swaggerDefinition = {
                         "userName": "JaneSmith"
                       },
                       "rating": 4,
-                      "comment": "Very clean and convenient",
+                      "comment": { "en": "Very clean and convenient", "ar": "نظيف جدًا ومريح" },
                       "createdAt": "2025-08-15T14:20:00.000Z"
                     },
                     {
@@ -2075,7 +2511,7 @@ const swaggerDefinition = {
                         "userName": "AliceW"
                       },
                       "rating": 3,
-                      "comment": "Good but noisy neighborhood",
+                      "comment": { "en": "Good but noisy neighborhood", "ar": "جيد ولكن الحي صاخب" },
                       "createdAt": "2025-08-14T09:15:00.000Z"
                     }
                   ]
@@ -2084,34 +2520,34 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Missing listingId",
+            "description": { "en": "Missing listingId", "ar": "معرف القائمة مفقود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Listing ID is required"
+                  "message": { "en": "Listing ID is required", "ar": "معرف القائمة مطلوب" }
                 }
               }
             }
           },
           "404": {
-            "description": "Listing not found or no ratings",
+            "description": { "en": "Listing not found or no ratings", "ar": "القائمة غير موجودة أو لا توجد تقييمات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "No ratings found for this listing"
+                  "message": { "en": "No ratings found for this listing", "ar": "لا توجد تقييمات لهذه القائمة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2153,18 +2589,18 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "Rating updated successfully",
+            "description": { "en": "Rating updated successfully", "ar": "تم تحديث التقييم بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Rating updated successfully",
+                  "message": { "en": "Rating updated successfully", "ar": "تم تحديث التقييم بنجاح" },
                   "data": {
                     "_id": "66ad45...",
                     "bookingId": "66ac99...",
                     "guestId": "66aa99...",
                     "rating": 4,
-                    "comment": "Updated comment: Very clean and convenient location",
+                    "comment": { "en": "Updated comment: Very clean and convenient location", "ar": "تعليق محدث: نظيف جدًا ومريح" },
                     "updatedAt": "2025-08-16T15:00:00.000Z"
                   }
                 }
@@ -2172,23 +2608,23 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Missing ratingId or no update data",
+            "description": { "en": "Missing ratingId or no update data", "ar": "معرف التقييم مفقود أو لا توجد بيانات للتحديث" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "No update data provided"
+                  "message": { "en": "No update data provided", "ar": "لم يتم تقديم بيانات للتحديث" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2210,45 +2646,45 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Rating deleted successfully",
+            "description": { "en": "Rating deleted successfully", "ar": "تم حذف التقييم بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Rating deleted successfully"
+                  "message": { "en": "Rating deleted successfully", "ar": "تم حذف التقييم بنجاح" }
                 }
               }
             }
           },
           "400": {
-            "description": "Missing ratingId",
+            "description": { "en": "Missing ratingId", "ar": "معرف التقييم مفقود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Rating ID is required"
+                  "message": { "en": "Rating ID is required", "ar": "مطلوب معرف التقييم" }
                 }
               }
             }
           },
           "404": {
-            "description": "Rating or listing not found",
+            "description": { "en": "Rating or listing not found", "ar": "التقييم أو القائمة غير موجود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Rating not found"
+                  "message": { "en": "Rating not found", "ar": "التقييم غير موجود" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2278,15 +2714,15 @@ const swaggerDefinition = {
         },
         "responses": {
           "201": {
-            "description": "Category created successfully",
+            "description": { "en": "Category created successfully", "ar": "تم إنشاء الفئة بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Category created successfully",
+                  "message": { "en": "Category created successfully", "ar": "تم إنشاء الفئة بنجاح" },
                   "data": {
                     "_id": "64d29fabc123...",
-                    "name": "Villa",
+                    "name": { "en": "Villa", "ar": "فيلا" },
                     "createdAt": "2025-08-16T15:30:00.000Z",
                     "updatedAt": "2025-08-16T15:30:00.000Z"
                   }
@@ -2295,23 +2731,23 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Validation error",
+            "description": { "en": "Validation error", "ar": "خطأ في التحقق من البيانات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Category name is required or already exists"
+                  "message": { "en": "Category name is required or already exists", "ar": "اسم الفئة مطلوب أو موجود مسبقًا" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2324,28 +2760,28 @@ const swaggerDefinition = {
         "tags": ["Categories"],
         "responses": {
           "200": {
-            "description": "List of categories",
+            "description": { "en": "List of categories", "ar": "قائمة الفئات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
                   "results": 3,
                   "data": [
-                    { "_id": "64d29fabc123...", "name": "Villa" },
-                    { "_id": "64d2a0def456...", "name": "Apartment" },
-                    { "_id": "64d2a1ghi789...", "name": "Studio" }
+                    { "_id": "64d29fabc123...", "name": { "en": "Villa", "ar": "فيلا" } },
+                    { "_id": "64d2a0def456...", "name": { "en": "Apartment", "ar": "شقة" } },
+                    { "_id": "64d2a1ghi789...", "name": { "en": "Studio", "ar": "استوديو" } }
                   ]
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2383,15 +2819,15 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "Category updated successfully",
+            "description": { "en": "Category updated successfully", "ar": "تم تحديث الفئة بنجاح" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
-                  "message": "Category Updated Successfully",
+                  "status": "success",
+                  "message": { "en": "Category updated successfully", "ar": "تم تحديث الفئة بنجاح" },
                   "category": {
                     "_id": "64d29fabc123...",
-                    "name": "Luxury Villa",
+                    "name": { "en": "Luxury Villa", "ar": "فيلا فاخرة" },
                     "updatedAt": "2025-08-16T16:00:00.000Z"
                   }
                 }
@@ -2399,34 +2835,34 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": { "en": "Bad request", "ar": "طلب غير صالح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Id of Category Is Required"
+                  "message": { "en": "Id of Category is required", "ar": "معرف الفئة مطلوب" }
                 }
               }
             }
           },
           "404": {
-            "description": "Category not found",
+            "description": { "en": "Category not found", "ar": "الفئة غير موجودة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Category Not Found"
+                  "message": { "en": "Category not found", "ar": "الفئة غير موجودة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2448,45 +2884,45 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Category deleted successfully",
+            "description": { "en": "Category deleted successfully", "ar": "تم حذف الفئة بنجاح" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
-                  "message": "Category Deleted Successfully"
+                  "status": "success",
+                  "message": { "en": "Category deleted successfully", "ar": "تم حذف الفئة بنجاح" }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": { "en": "Bad request", "ar": "طلب غير صالح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Id of Category Is Required"
+                  "message": { "en": "Id of Category is required", "ar": "معرف الفئة مطلوب" }
                 }
               }
             }
           },
           "404": {
-            "description": "Category not found",
+            "description": { "en": "Category not found", "ar": "الفئة غير موجودة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Category Not Found"
+                  "message": { "en": "Category not found", "ar": "الفئة غير موجودة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2526,7 +2962,7 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "Stripe checkout session created successfully",
+            "description": { "en": "Stripe checkout session created successfully", "ar": "تم إنشاء جلسة الدفع بنجاح" },
             "content": {
               "application/json": {
                 "example": {
@@ -2542,8 +2978,8 @@ const swaggerDefinition = {
                           "currency": "usd",
                           "unit_amount": 50000,
                           "product_data": {
-                            "name": "Luxury Villa in Alexandria",
-                            "description": "Spacious villa with sea view.",
+                            "name": { "en": "Luxury Villa in Alexandria", "ar": "فيلا فاخرة في الإسكندرية" },
+                            "description": { "en": "Spacious villa with sea view.", "ar": "فيلا واسعة مع إطلالة على البحر." },
                             "images": ["https://cdn.app.com/villa1.jpg"]
                           }
                         },
@@ -2561,45 +2997,45 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Bad request, invalid dates or incomplete booking details",
+            "description": { "en": "Bad request, invalid dates or incomplete booking details", "ar": "طلب غير صالح، تواريخ أو بيانات الحجز غير كاملة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Check-in and check-out dates are required"
+                  "message": { "en": "Check-in and check-out dates are required", "ar": "تاريخ الوصول والمغادرة مطلوب" }
                 }
               }
             }
           },
           "403": {
-            "description": "Unauthorized user role",
+            "description": { "en": "Unauthorized user role", "ar": "دور المستخدم غير مصرح به" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You must be a guest to book a list"
+                  "message": { "en": "You must be a guest to book a list", "ar": "يجب أن تكون ضيفًا لحجز القائمة" }
                 }
               }
             }
           },
           "404": {
-            "description": "Listing not found",
+            "description": { "en": "Listing not found", "ar": "القائمة غير موجودة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Can't find list"
+                  "message": { "en": "Can't find list", "ar": "لا يمكن العثور على القائمة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Failed to create checkout session"
+                  "message": { "en": "Failed to create checkout session", "ar": "فشل في إنشاء جلسة الدفع" }
                 }
               }
             }
@@ -2615,11 +3051,11 @@ const swaggerDefinition = {
         "parameters": [],
         "responses": {
           "200": {
-            "description": "List of bookings for the guest",
+            "description": { "en": "List of bookings for the guest", "ar": "قائمة الحجوزات الخاصة بالضيف" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
+                  "status": "success",
                   "results": 2,
                   "data": [
                     {
@@ -2627,8 +3063,8 @@ const swaggerDefinition = {
                       "guest": "64f9a456def7890123456789",
                       "listing": {
                         "_id": "66ab23f7890abcd123456789",
-                        "title": "Luxury Villa in Alexandria",
-                        "descrption": "Spacious villa with sea view.",
+                        "title": { "en": "Luxury Villa in Alexandria", "ar": "فيلا فاخرة في الإسكندرية" },
+                        "description": { "en": "Spacious villa with sea view.", "ar": "فيلا واسعة مع إطلالة على البحر." },
                         "pricePerNight": 300,
                         "governorate": "Alexandria",
                         "photos": [
@@ -2647,8 +3083,8 @@ const swaggerDefinition = {
                       "guest": "64f9a456def7890123456789",
                       "listing": {
                         "_id": "66ab24f7890abcd123456780",
-                        "title": "Budget Apartment in Giza",
-                        "descrption": "Affordable stay near the pyramids.",
+                        "title": { "en": "Budget Apartment in Giza", "ar": "شقة اقتصادية في الجيزة" },
+                        "description": { "en": "Affordable stay near the pyramids.", "ar": "إقامة ميسورة بالقرب من الأهرامات." },
                         "pricePerNight": 80,
                         "governorate": "Giza",
                         "photos": [
@@ -2668,23 +3104,23 @@ const swaggerDefinition = {
             }
           },
           "403": {
-            "description": "User not authorized",
+            "description": { "en": "User not authorized", "ar": "المستخدم غير مصرح له" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You are not authorized to view these bookings"
+                  "message": { "en": "You are not authorized to view these bookings", "ar": "أنت غير مصرح لك بعرض هذه الحجوزات" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2700,11 +3136,11 @@ const swaggerDefinition = {
         "parameters": [],
         "responses": {
           "200": {
-            "description": "List of bookings for the host's listings",
+            "description": { "en": "List of bookings for the host's listings", "ar": "قائمة الحجوزات لعقارات المضيف" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
+                  "status": "success",
                   "results": 2,
                   "data": [
                     {
@@ -2716,8 +3152,8 @@ const swaggerDefinition = {
                       },
                       "listing": {
                         "_id": "66ab23f7890abcd123456789",
-                        "title": "Luxury Villa in Alexandria",
-                        "location": "Alexandria"
+                        "title": { "en": "Luxury Villa in Alexandria", "ar": "فيلا فاخرة في الإسكندرية" },
+                        "location": { "en": "Alexandria", "ar": "الإسكندرية" }
                       },
                       "checkIn": "2025-09-01T00:00:00.000Z",
                       "checkOut": "2025-09-05T23:59:59.999Z",
@@ -2734,8 +3170,8 @@ const swaggerDefinition = {
                       },
                       "listing": {
                         "_id": "66ab24f7890abcd123456780",
-                        "title": "Budget Apartment in Giza",
-                        "location": "Giza"
+                        "title": { "en": "Budget Apartment in Giza", "ar": "شقة اقتصادية في الجيزة" },
+                        "location": { "en": "Giza", "ar": "الجيزة" }
                       },
                       "checkIn": "2025-09-10T00:00:00.000Z",
                       "checkOut": "2025-09-12T23:59:59.999Z",
@@ -2749,34 +3185,34 @@ const swaggerDefinition = {
             }
           },
           "403": {
-            "description": "User not authorized",
+            "description": { "en": "User not authorized", "ar": "المستخدم غير مصرح له" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You are not authorized to view these bookings"
+                  "message": { "en": "You are not authorized to view these bookings", "ar": "أنت غير مصرح لك بعرض هذه الحجوزات" }
                 }
               }
             }
           },
           "404": {
-            "description": "No bookings found for the host",
+            "description": { "en": "No bookings found for the host", "ar": "لا توجد حجوزات لهذا المضيف" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You do not have any bookings"
+                  "message": { "en": "You do not have any bookings", "ar": "ليس لديك أي حجوزات" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2800,7 +3236,7 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "List of bookings for the specified listing",
+            "description": { "en": "List of bookings for the specified listing", "ar": "قائمة الحجوزات للقائمة المحددة" },
             "content": {
               "application/json": {
                 "example": {
@@ -2816,8 +3252,8 @@ const swaggerDefinition = {
                       },
                       "listing": {
                         "_id": "66ab23f7890abcd123456789",
-                        "title": "Luxury Villa in Alexandria",
-                        "location": "Alexandria"
+                        "title": { "en": "Luxury Villa in Alexandria", "ar": "فيلا فاخرة في الإسكندرية" },
+                        "location": { "en": "Alexandria", "ar": "الإسكندرية" }
                       },
                       "checkIn": "2025-09-01T00:00:00.000Z",
                       "checkOut": "2025-09-05T23:59:59.999Z",
@@ -2834,8 +3270,8 @@ const swaggerDefinition = {
                       },
                       "listing": {
                         "_id": "66ab23f7890abcd123456789",
-                        "title": "Luxury Villa in Alexandria",
-                        "location": "Alexandria"
+                        "title": { "en": "Luxury Villa in Alexandria", "ar": "فيلا فاخرة في الإسكندرية" },
+                        "location": { "en": "Alexandria", "ar": "الإسكندرية" }
                       },
                       "checkIn": "2025-09-10T00:00:00.000Z",
                       "checkOut": "2025-09-12T23:59:59.999Z",
@@ -2849,34 +3285,34 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Missing listingId",
+            "description": { "en": "Missing listingId", "ar": "معرف القائمة مفقود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Listing ID is required"
+                  "message": { "en": "Listing ID is required", "ar": "معرف القائمة مطلوب" }
                 }
               }
             }
           },
           "403": {
-            "description": "Unauthorized access",
+            "description": { "en": "Unauthorized access", "ar": "الوصول غير مصرح به" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You are not authorized to view these bookings"
+                  "message": { "en": "You are not authorized to view these bookings", "ar": "أنت غير مصرح لك بعرض هذه الحجوزات" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -2916,12 +3352,12 @@ const swaggerDefinition = {
         },
         "responses": {
           "201": {
-            "description": "Booking created successfully",
+            "description": { "en": "Booking created successfully", "ar": "تم إنشاء الحجز بنجاح" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
-                  "message": "Booking Created",
+                  "status": "success",
+                  "message": { "en": "Booking created", "ar": "تم إنشاء الحجز" },
                   "data": {
                     "_id": "64f9b123abc456def7890123",
                     "guest": "64f9a456def7890123456789",
@@ -2938,45 +3374,45 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Missing fields or date conflict",
+            "description": { "en": "Missing fields or date conflict", "ar": "حقول مفقودة أو تعارض في التواريخ" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Provide all required fields"
+                  "message": { "en": "Provide all required fields", "ar": "يرجى إدخال جميع الحقول المطلوبة" }
                 }
               }
             }
           },
           "403": {
-            "description": "Unauthorized access (not a guest)",
+            "description": { "en": "Unauthorized access (not a guest)", "ar": "الوصول غير مصرح به (ليست ضيفًا)" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "You must be a guest to book a list"
+                  "message": { "en": "You must be a guest to book a list", "ar": "يجب أن تكون ضيفًا لحجز قائمة" }
                 }
               }
             }
           },
           "404": {
-            "description": "Listing not found",
+            "description": { "en": "Listing not found", "ar": "القائمة غير موجودة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Listing not found"
+                  "message": { "en": "Listing not found", "ar": "القائمة غير موجودة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Something went wrong on the server"
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -3000,11 +3436,11 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Booking retrieved successfully",
+            "description": { "en": "Booking retrieved successfully", "ar": "تم استرجاع الحجز بنجاح" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
+                  "status": "success",
                   "data": {
                     "_id": "64f9b123abc456def7890123",
                     "guest": "64f9a456def7890123456789",
@@ -3020,10 +3456,50 @@ const swaggerDefinition = {
               }
             }
           },
-          "400": { "description": "Booking ID is missing" },
-          "403": { "description": "Unauthorized access" },
-          "404": { "description": "Booking not found" },
-          "500": { "description": "Internal server error" }
+          "400": {
+            "description": { "en": "Booking ID is missing", "ar": "معرف الحجز مفقود" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "Booking ID is required", "ar": "مطلوب معرف الحجز" }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": { "en": "Unauthorized access", "ar": "الوصول غير مصرح به" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "You are not authorized to view this booking", "ar": "غير مصرح لك بعرض هذا الحجز" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": { "en": "Booking not found", "ar": "الحجز غير موجود" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "Booking not found", "ar": "الحجز غير موجود" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
+                }
+              }
+            }
+          }
         }
       },
       "patch": {
@@ -3055,11 +3531,61 @@ const swaggerDefinition = {
           }
         },
         "responses": {
-          "200": { "description": "Booking updated successfully" },
-          "400": { "description": "Missing bookingId or invalid dates" },
-          "403": { "description": "Unauthorized update attempt" },
-          "404": { "description": "Booking or listing not found" },
-          "500": { "description": "Internal server error" }
+          "200": {
+            "description": { "en": "Booking updated successfully", "ar": "تم تحديث الحجز بنجاح" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "message": { "en": "Booking updated successfully", "ar": "تم تحديث الحجز بنجاح" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": { "en": "Missing bookingId or invalid dates", "ar": "معرف الحجز مفقود أو تواريخ غير صالحة" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "Booking ID and valid dates are required", "ar": "مطلوب معرف الحجز وتواريخ صالحة" }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": { "en": "Unauthorized update attempt", "ar": "محاولة تحديث غير مصرح بها" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "You are not authorized to update this booking", "ar": "غير مصرح لك بتحديث هذا الحجز" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": { "en": "Booking or listing not found", "ar": "الحجز أو القائمة غير موجودة" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "Booking or listing not found", "ar": "الحجز أو القائمة غير موجودة" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
+                }
+              }
+            }
+          }
         }
       },
       "delete": {
@@ -3077,20 +3603,60 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Booking deleted successfully",
+            "description": { "en": "Booking deleted successfully", "ar": "تم حذف الحجز بنجاح" },
             "content": {
               "application/json": {
                 "example": {
-                  "status": "Success",
-                  "message": "Booking and related dates removed successfully"
+                  "status": "success",
+                  "message": { "en": "Booking and related dates removed successfully", "ar": "تم حذف الحجز والتواريخ المرتبطة بنجاح" }
                 }
               }
             }
           },
-          "400": { "description": "Booking ID is missing" },
-          "403": { "description": "Unauthorized delete attempt" },
-          "404": { "description": "Booking not found" },
-          "500": { "description": "Internal server error" }
+          "400": {
+            "description": { "en": "Booking ID is missing", "ar": "معرف الحجز مفقود" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "Booking ID is required", "ar": "مطلوب معرف الحجز" }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": { "en": "Unauthorized delete attempt", "ar": "محاولة حذف غير مصرح بها" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "You are not authorized to delete this booking", "ar": "غير مصرح لك بحذف هذا الحجز" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": { "en": "Booking not found", "ar": "الحجز غير موجود" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "fail",
+                  "message": { "en": "Booking not found", "ar": "الحجز غير موجود" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "message": { "en": "Something went wrong on the server", "ar": "حدث خطأ في الخادم" }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3117,15 +3683,15 @@ const swaggerDefinition = {
         },
         "responses": {
           "201": {
-            "description": "Amenity created successfully",
+            "description": { "en": "Amenity created successfully", "ar": "تم إنشاء الميزة بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Amenity created successfully",
+                  "message": { "en": "Amenity created successfully", "ar": "تم إنشاء الميزة بنجاح" },
                   "data": {
                     "_id": "64d2af123456...",
-                    "name": "WiFi",
+                    "name": { "en": "WiFi", "ar": "واي فاي" },
                     "icon": "wifi-icon.png",
                     "createdAt": "2025-08-16T16:00:00.000Z",
                     "updatedAt": "2025-08-16T16:00:00.000Z"
@@ -3135,23 +3701,23 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Validation error",
+            "description": { "en": "Validation error", "ar": "خطأ في التحقق من الصحة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Amenity name is required"
+                  "message": { "en": "Amenity name is required", "ar": "اسم الميزة مطلوب" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -3164,7 +3730,7 @@ const swaggerDefinition = {
         "tags": ["Amenities"],
         "responses": {
           "200": {
-            "description": "List of amenities",
+            "description": { "en": "List of amenities", "ar": "قائمة المميزات" },
             "content": {
               "application/json": {
                 "example": {
@@ -3172,12 +3738,12 @@ const swaggerDefinition = {
                   "data": [
                     {
                       "_id": "64d2af123456...",
-                      "name": "WiFi",
+                      "name": { "en": "WiFi", "ar": "واي فاي" },
                       "icon": "wifi-icon.png"
                     },
                     {
                       "_id": "64d2b0123456...",
-                      "name": "Pool",
+                      "name": { "en": "Pool", "ar": "حمام سباحة" },
                       "icon": "pool-icon.png"
                     }
                   ]
@@ -3186,23 +3752,23 @@ const swaggerDefinition = {
             }
           },
           "404": {
-            "description": "No amenities found",
+            "description": { "en": "No amenities found", "ar": "لا توجد مميزات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "No amenities found"
+                  "message": { "en": "No amenities found", "ar": "لا توجد مميزات" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -3240,15 +3806,15 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "Amenity updated successfully",
+            "description": { "en": "Amenity updated successfully", "ar": "تم تحديث الميزة بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Amenity updated successfully",
+                  "message": { "en": "Amenity updated successfully", "ar": "تم تحديث الميزة بنجاح" },
                   "data": {
                     "_id": "64d2af123456...",
-                    "name": "WiFi",
+                    "name": { "en": "WiFi", "ar": "واي فاي" },
                     "icon": "wifi-icon-updated.png",
                     "createdAt": "2025-08-16T16:00:00.000Z",
                     "updatedAt": "2025-08-16T17:00:00.000Z"
@@ -3258,34 +3824,34 @@ const swaggerDefinition = {
             }
           },
           "400": {
-            "description": "Missing amenity ID",
+            "description": { "en": "Missing amenity ID", "ar": "معرف الميزة مفقود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Amenity ID is required"
+                  "message": { "en": "Amenity ID is required", "ar": "مطلوب معرف الميزة" }
                 }
               }
             }
           },
           "404": {
-            "description": "Amenity not found",
+            "description": { "en": "Amenity not found", "ar": "الميزة غير موجودة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Amenity not found"
+                  "message": { "en": "Amenity not found", "ar": "الميزة غير موجودة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -3307,45 +3873,45 @@ const swaggerDefinition = {
         ],
         "responses": {
           "200": {
-            "description": "Amenity deleted successfully",
+            "description": { "en": "Amenity deleted successfully", "ar": "تم حذف الميزة بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "Amenity deleted successfully"
+                  "message": { "en": "Amenity deleted successfully", "ar": "تم حذف الميزة بنجاح" }
                 }
               }
             }
           },
           "400": {
-            "description": "Missing amenity ID",
+            "description": { "en": "Missing amenity ID", "ar": "معرف الميزة مفقود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Amenity ID is required"
+                  "message": { "en": "Amenity ID is required", "ar": "مطلوب معرف الميزة" }
                 }
               }
             }
           },
           "404": {
-            "description": "Amenity not found",
+            "description": { "en": "Amenity not found", "ar": "الميزة غير موجودة" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Amenity not found"
+                  "message": { "en": "Amenity not found", "ar": "الميزة غير موجودة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Internal server error",
+            "description": { "en": "Internal server error", "ar": "خطأ داخلي في الخادم" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "Internal Server Error"
+                  "message": { "en": "Internal Server Error", "ar": "حدث خطأ في الخادم" }
                 }
               }
             }
@@ -3381,34 +3947,34 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "Documents uploaded and indexed successfully",
+            "description": { "en": "Documents uploaded and indexed successfully", "ar": "تم رفع وفهرسة المستندات بنجاح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": "2 documents uploaded and indexed successfully"
+                  "message": { "en": "2 documents uploaded and indexed successfully", "ar": "تم رفع وفهرسة مستندين بنجاح" }
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid input",
+            "description": { "en": "Invalid input", "ar": "إدخال غير صالح" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "documents must be an array"
+                  "message": { "en": "documents must be an array", "ar": "يجب أن تكون المستندات مصفوفة" }
                 }
               }
             }
           },
           "500": {
-            "description": "Failed to upload documents",
+            "description": { "en": "Failed to upload documents", "ar": "فشل في رفع المستندات" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Failed to upload documents"
+                  "message": { "en": "Failed to upload documents", "ar": "فشل في رفع المستندات" }
                 }
               }
             }
@@ -3439,34 +4005,37 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": "AI-generated answer",
+            "description": { "en": "AI-generated answer", "ar": "إجابة تم إنشاؤها بواسطة الذكاء الاصطناعي" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "answer": "Maskan is a web application that allows users to book rental properties in Egypt, where hosts can list properties and guests can make bookings."
+                  "answer": { 
+                    "en": "Maskan is a web application that allows users to book rental properties in Egypt, where hosts can list properties and guests can make bookings.", 
+                    "ar": "مسكن هو تطبيق ويب يسمح للمستخدمين بحجز العقارات للإيجار في مصر، حيث يمكن للمضيفين عرض عقاراتهم ويمكن للضيوف إجراء الحجوزات."
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Missing question",
+            "description": { "en": "Missing question", "ar": "السؤال مفقود" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": "question is required"
+                  "message": { "en": "question is required", "ar": "حقل السؤال مطلوب" }
                 }
               }
             }
           },
           "500": {
-            "description": "Failed to process query",
+            "description": { "en": "Failed to process query", "ar": "فشل في معالجة الاستعلام" },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": "Failed to process query"
+                  "message": { "en": "Failed to process query", "ar": "فشل في معالجة الاستعلام" }
                 }
               }
             }

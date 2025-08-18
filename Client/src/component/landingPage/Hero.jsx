@@ -5,12 +5,15 @@ import AnimatedContent from "../../ui/AnimatedContent";
 import FadeContent from "../../ui/FadeContent";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+
 export default function Hero() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   function handleClickSearch() {
     if (!query) {
-      toast.error("Please enter search query first");
+      toast.error(t("hero.toastError"));
       return;
     }
     navigate(`/listings?query=${query}`);
@@ -20,7 +23,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/50 bg-opacity-50"></div>
       <div className="absolute inset-0 flex items-center justify-center z-10 flex-col gap-6 md:p-8  p-4 lg:p-36">
         <TextType
-          text={[" Find your perfect rental in Egypt"]}
+          text={[t("hero.title")]}
           typingSpeed={75}
           pauseDuration={1500}
           showCursor={true}
@@ -28,9 +31,7 @@ export default function Hero() {
           className="text-stone-100 text-2xl md:text-4xl lg:text-5xl font-bold"
         />
         <h2 className=" scale-up-left text-stone-300 text-lg  md:text-xl lg:text-2xl ">
-          Explore a wide range of rental properties across Egypt, from cozy
-          apartments to luxurious villas. Discover your ideal stay with our
-          easy-to-use search tools.
+          {t("hero.subtitle")}
         </h2>
         <FadeContent
           blur={true}
@@ -43,7 +44,7 @@ export default function Hero() {
           <div className="flex w-full flex-col sm:flex-row max-w-md gap-1  ">
             <input
               type="text"
-              placeholder="Where to?"
+              placeholder={t("hero.placeholder")}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="flex-1 w-[90%] self-center sm:w-auto px-4 py-2 rounded-md sm:rounded-r-none border bg-gray-100 border-gray-300 focus:outline-none focus:ring-2 focus:ring-primarry"
@@ -52,7 +53,7 @@ export default function Hero() {
               onClick={handleClickSearch}
               className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm sm:rounded-none sm:rounded-r-md hover:bg-primarry-hover hover:cursor-pointer transition-all"
             >
-              Search
+              {t("hero.searchBtn")}
             </button>
           </div>
         </FadeContent>
