@@ -232,26 +232,19 @@ export const updateList = asyncHandler(async (req, res, next) => {
   if (!id) {
     return next(
       new AppError(
-        { 
-          en: "Listing ID is required", 
-          ar: "معرّف القائمة مطلوب" 
-        }, 
+        { en: "Listing ID is required", ar: "معرّف القائمة مطلوب" },
         400
       )
     );
   }
 
   const host = req.user._id;
-
   const list = await listModel.findById(id);
 
   if (!list) {
     return next(
       new AppError(
-        { 
-          en: "List not found", 
-          ar: "لم يتم العثور على القائمة" 
-        }, 
+        { en: "List not found", ar: "لم يتم العثور على القائمة" },
         404
       )
     );
@@ -260,10 +253,10 @@ export const updateList = asyncHandler(async (req, res, next) => {
   if (list.host.toString() !== host.toString()) {
     return next(
       new AppError(
-        { 
-          en: "You are not authorized to update this list", 
-          ar: "غير مصرح لك بتحديث هذه القائمة" 
-        }, 
+        {
+          en: "You are not authorized to update this list",
+          ar: "غير مصرح لك بتحديث هذه القائمة",
+        },
         403
       )
     );
@@ -272,14 +265,11 @@ export const updateList = asyncHandler(async (req, res, next) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     return next(
       new AppError(
-        { 
-          en: "Request body is empty", 
-          ar: "جسم الطلب فارغ" 
-        }, 
+        { en: "Request body is empty", ar: "جسم الطلب فارغ" },
         400
       )
     );
-  };
+  }
 
   const {
     title,
@@ -292,7 +282,7 @@ export const updateList = asyncHandler(async (req, res, next) => {
     latitude,
     amenitiesId,
     maxGustes,
-    photos,
+    photos, // صور جديدة
   } = req.body;
 
   const updateData = {
@@ -305,10 +295,30 @@ export const updateList = asyncHandler(async (req, res, next) => {
     ...(maxGustes && { maxGustes }),
   };
 
-  if (photos) {
-    updateData.photos = photos;
+  // ----- Handle photos -----
+  let updatedPhotos = [...list.photos];
+
+  // إضافة صور جديدة
+  if (photos && Array.isArray(photos)) {
+    updatedPhotos = [...updatedPhotos, ...photos];
   }
 
+  // التحقق من عدد الصور
+  if (updatedPhotos.length < 5) {
+    return next(
+      new AppError(
+        {
+          en: "A listing must have at least 5 photos",
+          ar: "يجب أن تحتوي القائمة على 5 صور على الأقل",
+        },
+        400
+      )
+    );
+  }
+
+  updateData.photos = updatedPhotos;
+
+  // ----- Handle location -----
   if (address && longitude && latitude) {
     updateData.location = {
       address,
@@ -326,10 +336,10 @@ export const updateList = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: { 
-      en: "Listing updated successfully", 
-      ar: "تم تحديث القائمة بنجاح" 
-    }
+    message: {
+      en: "Listing updated successfully",
+      ar: "تم تحديث القائمة بنجاح",
+    },
   });
 });
 
