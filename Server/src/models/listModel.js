@@ -1,5 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import { ratingSchema } from "./ratingModel.js";
+import AppError from "../utilities/appError.js";
+import { v2 as cloudinary } from "cloudinary";
+import { extractPublicId } from "../utilities/cloudinaryHelper.js";
+
 
 const listSchema = new Schema(
   {
@@ -163,6 +167,53 @@ listSchema.index({
   description: "text",
   governorate: "text",
 });
+
+listSchema.pre("findOneAndDelete", async function (next) {
+  try {
+    // `this` is the Query
+    const doc = await this.model.findOne(this.getFilter());
+    if (!doc) return next();
+
+    // check for active bookings
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const hasActiveBooking = doc.bookedDates.some(
+      (b) => b.checkOutDate && b.checkOutDate >= today
+    );
+
+    if (hasActiveBooking) {
+      return next(
+        new AppError(
+          {
+            en: "Cannot delete listing. It has active or upcoming bookings.",
+            ar: "لا يمكن حذف هذه القائمه. تحتوي على حجوزات نشطة أو قادمة",
+          },
+          400
+        )
+      );
+    }
+
+    // delete Cloudinary photos
+    if (doc.photos && doc.photos.length > 0) {
+      for (const photo of doc.photos) {
+        const url = photo;
+        const publicId = extractPublicId(url);
+
+        if (publicId) {
+          const result = await cloudinary.uploader.destroy(publicId);
+          console.log("Deleted:", publicId, "=>", result);
+        }
+      }
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 
 const listModel = mongoose.model("List", listSchema);
 export default listModel;

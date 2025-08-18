@@ -376,7 +376,7 @@ export const deleteList = asyncHandler(async (req, res, next) => {
     );
   }
 
-  await listModel.deleteOne({ _id: id });
+  await listModel.findOneAndDelete({_id:id});
 
   res.status(200).json({
     status: "success",

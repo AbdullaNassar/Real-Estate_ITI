@@ -4,7 +4,7 @@ export const otpTemplate = (otp) => `
         
         <!-- Header -->
         <div style="background-color: #6b4f36; padding: 20px;">
-            <h1 style="color: #fff; margin: 0;">Maskan</h1>
+            <h1 style="color: #fff; margin: 0;">Maskn</h1>
         </div>
         
         <!-- Body -->
@@ -21,7 +21,7 @@ export const otpTemplate = (otp) => `
         
         <!-- Footer -->
         <div style="background-color: #f1e7dc; padding: 15px; font-size: 12px; color: #666;">
-            <p>© 2025 Maskan. All rights reserved.</p>
+            <p>© 2025 Maskn. All rights reserved.</p>
         </div>
         </div>
     </div>
