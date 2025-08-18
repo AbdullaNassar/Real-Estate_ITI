@@ -200,10 +200,8 @@ listSchema.pre("findOneAndDelete", async function (next) {
         const url = photo;
         const publicId = extractPublicId(url);
 
-        if (publicId) {
-          const result = await cloudinary.uploader.destroy(publicId);
-          console.log("Deleted:", publicId, "=>", result);
-        }
+        if (publicId) await cloudinary.uploader.destroy(publicId);
+        
       }
     }
 

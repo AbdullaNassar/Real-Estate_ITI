@@ -3,9 +3,9 @@ import amenityModel from "../models/amenityModel.js";
 import AppError from "../utilities/appError.js";
 
 export const createAmenity = asyncHandler(async (req, res, next) => {
-  const { name, icon } = req.body;
+  const { name , arName , icon } = req.body;
 
-  if (!name) {
+  if (!name || !arName ) {
     return next(new AppError({en:"Amenity name is required",ar:"اسم الخدمة مطلوب"}, 400));
   }
 
@@ -14,7 +14,7 @@ export const createAmenity = asyncHandler(async (req, res, next) => {
     return next(new AppError({en:"This amenity already exists",ar:"هذه الميزة موجودة بالفعل"}, 400));
   }
 
-  const amenity = await amenityModel.create({ name, icon });
+  const amenity = await amenityModel.create({ name, arName , icon });
 
   res.status(201).json({
     status: "success",

@@ -3,8 +3,8 @@ import categoryModel from "../models/categoryModel.js";
 import AppError from "../utilities/appError.js";
 
 export const createCategory = asyncHandler(async (req, res) => {
-  const { name } = req.body;
-  if (!name) {
+  const { name , arName } = req.body;
+  if (!name || !arName) {
     throw new AppError(
       { 
         en: "Category Name is required", 
@@ -14,7 +14,7 @@ export const createCategory = asyncHandler(async (req, res) => {
     );
   }
 
-  const category = await categoryModel.create({ name });
+  const category = await categoryModel.create({ name , arName });
 
   res.status(201).json({
     status: "Success",
