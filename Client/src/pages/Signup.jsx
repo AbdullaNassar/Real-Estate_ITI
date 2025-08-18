@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 import Header from "../ui/Header";
 import { axiosInstance } from "../services/axiosInstance";
+import { useTranslation } from "react-i18next";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ export default function Signup() {
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   function handleRegister(value) {
     SetIsLoading(true);
@@ -39,29 +41,29 @@ export default function Signup() {
 
   const validationSchema = YUP.object().shape({
     userName: YUP.string()
-      .min(3, "Name must be at least 3 characters")
-      .max(50, "Name must be less than 50 characters")
-      .required("Name is required"),
+      .min(3, t("signup.validation.userNameMin"))
+      .max(50, t("signup.validation.userNameMax"))
+      .required(t("signup.validation.userNameRequired")),
     email: YUP.string()
-      .min(3, "Email must be at least 3 characters")
-      .max(50, "Email must be less than 50 characters")
-      .email("you enter invalid email ")
-      .required("email is required"),
+      .min(3, t("signup.validation.emailMin"))
+      .max(50, t("signup.validation.emailMax"))
+      .email(t("signup.validation.emailInvalid"))
+      .required(t("signup.validation.emailRequired")),
     password: YUP.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
-        "password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number"
+        t("signup.validation.passwordPattern")
       )
-      .required("password is required"),
+      .required(t("signup.validation.passwordRequired")),
     confirmPassword: YUP.string()
-      .oneOf([YUP.ref("password"), "Passwords must match"])
-      .required("confirm password is required"),
+      .oneOf([YUP.ref("password"), t("signup.validation.confirmPasswordMatch")])
+      .required(t("signup.validation.confirmPasswordRequired")),
     role: YUP.string()
-      .oneOf(["guest", "host"], "Role must be either guest or host")
-      .required("Role is required"),
+      .oneOf(["guest", "host"], t("signup.validation.roleInvalid"))
+      .required(t("signup.validation.roleRequired")),
     terms: YUP.boolean()
-      .oneOf([true], "You must agree to the Terms & Conditions")
-      .required("You must agree to the Terms & Conditions"),
+      .oneOf([true], t("signup.validation.termsRequired"))
+      .required(t("signup.validation.termsRequired")),
   });
 
   const registerForm = useFormik({
@@ -86,7 +88,7 @@ export default function Signup() {
           className="w-full sm:max-w-md max-w-md bg-gray-100 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-12">
-            Create Your Account
+            {t("signup.title")}
           </h2>
 
           <div className="mb-4">
@@ -94,7 +96,7 @@ export default function Signup() {
               htmlFor="userName"
               className="block mb-1 text-lg font-medium text-gray-700"
             >
-              Full Name
+              {t("signup.fullName")}
             </label>
             <input
               name="userName"
@@ -103,7 +105,7 @@ export default function Signup() {
               value={registerForm.values.userName}
               type="text"
               id="userName"
-              placeholder="Enter your full name"
+              placeholder={t("signup.fullNamePlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -118,7 +120,7 @@ export default function Signup() {
               htmlFor="email"
               className="block mb-1 text-lg font-medium text-gray-700"
             >
-              Email
+             {t("signup.email")}
             </label>
             <input
               name="email"
@@ -127,7 +129,7 @@ export default function Signup() {
               value={registerForm.values.email}
               type="email"
               id="email"
-              placeholder="Enter your email"
+              placeholder= {t("signup.emailPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -141,7 +143,7 @@ export default function Signup() {
               htmlFor="password"
               className="block mb-1 text-lg font-medium text-gray-700"
             >
-              Password
+              {t("signup.password")}
             </label>
             <input
               name="password"
@@ -150,7 +152,7 @@ export default function Signup() {
               value={registerForm.values.password}
               type={showPassword ? "text" : "password"}
               id="password"
-              placeholder="Enter your password"
+              placeholder={t("signup.passwordPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
             <span
@@ -170,7 +172,7 @@ export default function Signup() {
               htmlFor="confirmPassword"
               className="block mb-1 text-lg font-medium text-gray-700"
             >
-              Confirm Password
+              {t("signup.confirmPassword")}
             </label>
             <input
               name="confirmPassword"
@@ -179,7 +181,7 @@ export default function Signup() {
               value={registerForm.values.confirmPassword}
               type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
-              placeholder="Confirm password"
+              placeholder={t("signup.confirmPasswordPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span
@@ -199,7 +201,7 @@ export default function Signup() {
           )}
           <div className="mb-4">
             <label className="block mb-1 text-lg font-medium text-gray-700">
-              Role
+              {t("signup.role")}
             </label>
             <div className="flex items-center space-x-6 mt-2">
               <label className="inline-flex items-center">
@@ -211,7 +213,7 @@ export default function Signup() {
                   value="guest"
                   className="form-radio text-blue-600"
                 />
-                <span className="ml-2 text-gray-700">Guest</span>
+                <span className="ml-2 text-gray-700">{t("signup.guest")}</span>
               </label>
               <label className="inline-flex items-center">
                 <input
@@ -222,7 +224,7 @@ export default function Signup() {
                   value="host"
                   className="form-radio text-blue-600"
                 />
-                <span className="ml-2 text-gray-700">Host</span>
+                <span className="ml-2 text-gray-700">{t("signup.host")}</span>
               </label>
             </div>
           </div>
@@ -238,7 +240,7 @@ export default function Signup() {
               checked={registerForm.values.terms}
             />
             <label htmlFor="terms" className="text-sm text-gray-700">
-              I agree to the Terms & Conditions
+              {t("signup.terms")}
             </label>
           </div>
           {registerForm.errors.terms && registerForm.touched.terms ? (
@@ -256,18 +258,18 @@ export default function Signup() {
               {isLoading ? (
                 <FaSpinner className="mx-auto animate-spin" />
               ) : (
-                "Signup"
+                t("signup.signupButton")
               )}
             </button>
           </div>
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account ?{" "}
+            {t("signup.alreadyAccount")}
               <button
                 onClick={() => navigate("/login")}
                 className="text-gray-600 hover:cursor-pointer hover:underline font-medium"
               >
-                Log In
+               {t("signup.loginButton")}
               </button>
             </p>
           </div>

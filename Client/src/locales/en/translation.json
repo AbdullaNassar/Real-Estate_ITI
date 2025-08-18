@@ -1,5 +1,215 @@
 {
-  "welcome": "Welcome",
-  "home": "Home",
-  "listings": "Listings"
+  "contact": {
+    "title": "Contact Us",
+    "nameLabel": "Enter Your Name",
+    "emailLabel": "Enter Your Email",
+    "messageLabel": "Message",
+    "submit": "Send Message",
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email",
+    "messageRequired": "Message is required",
+    "toastSuccess": "Email sent successfully!",
+    "toastError": "Failed to send email"
+  },
+  "hero": {
+    "title": "Find your perfect rental in Egypt",
+    "subtitle": "Explore a wide range of rental properties across Egypt, from cozy apartments to luxurious villas. Discover your ideal stay with our easy-to-use search tools.",
+    "placeholder": "Where to?",
+    "searchBtn": "Search",
+    "toastError": "Please enter search query first"
+  },
+  "about": {
+    "title": "About Maskan",
+    "subtitle": "Connecting Egypt, One Home at a Time",
+    "ourStoryTitle": "Our Story",
+    "ourStoryText": "Maskan was created with a simple goal: to make it easier for people across Egypt to find comfortable and trustworthy places to stay. Inspired by the concept of community and hospitality, we built a platform that brings together hosts and guests in a safe, transparent, and convenient way.",
+    "whatWeDoTitle": "What We Do",
+    "whatWeDoList": {
+      "item1": "Connect travelers and locals with unique stays across Egypt.",
+      "item2": "Provide hosts with tools to manage listings, bookings, and payments easily.",
+      "item3": "Ensure every booking is backed by secure transactions and clear communication."
+    },
+    "whyChooseTitle": "Why Choose Maskan?",
+    "whyChooseList": {
+      "item1title": "Local Expertise:",
+      "item1": "We know Egypt and its neighborhoods inside out.",
+      "item2title": "Verified Listings:",
+      "item2": " Every property is reviewed for safety and accuracy.",
+      "item3title": "Secure Payments:",
+      "item3": "Your transactions are protected from start to finish."
+    },
+    "visionTitle": "Our Vision",
+    "visionText": "We aim to be Egypt’s most trusted platform for local travel and stays — a place where people feel at home wherever they go. Our mission is to strengthen communities, support local hosts, and help travelers experience the authentic side of Egypt.",
+    "contactTitle": "Get in Touch",
+    "contactText": "Have questions, feedback, or ideas? We’d love to hear from you.",
+    "maskan": "Maskan"
+  },
+  "header": {
+    "home": "Home",
+    "listings": "Listings",
+    "about": "About",
+    "contact": "Contact",
+    "signup": "Signup",
+    "login": "Login",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "changePasswordModal": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "currentPasswordPlaceholder": "Enter your current password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "currentRequired": "Current Password is required",
+    "newRequired": "New Password is required",
+    "confirmRequired": "Confirm Password is required",
+    "passwordMatch": "Passwords must match",
+    "passwordRules": "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    "cancel": "Cancel",
+    "save": "Save",
+    "success": "Password changed successfully",
+    "error": "Failed to change password"
+  },
+  "howItWorks": {
+    "title": "How Maskan Works",
+    "subtitle": "Your journey to authentic Egyptian hospitality in three simple steps",
+    "searchTitle": "Search Homes",
+    "searchText": "Browse through carefully curated homes across Egypt's most beautiful cities and hidden gems",
+    "bookTitle": "Book Easily",
+    "bookText": "Secure your perfect stay with our simple booking process and transparent pricing",
+    "enjoyTitle": "Enjoy Your Stay",
+    "enjoyText": "Experience authentic Egyptian hospitality and create memories that last a lifetime"
+  },
+   "signup": {
+    "title": "Create Your Account",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm password",
+    "role": "Role",
+    "guest": "Guest",
+    "host": "Host",
+    "terms": "I agree to the Terms & Conditions",
+    "signupButton": "Signup",
+    "alreadyAccount": "Already have an account ?",
+    "loginButton": "Log In",
+    "validation": {
+      "userNameMin": "Name must be at least 3 characters",
+      "userNameMax": "Name must be less than 50 characters",
+      "userNameRequired": "Name is required",
+      "emailMin": "Email must be at least 3 characters",
+      "emailMax": "Email must be less than 50 characters",
+      "emailInvalid": "you enter invalid email ",
+      "emailRequired": "email is required",
+      "passwordPattern": "password Must Contain At Least One Uppercase Letter, One Lowercase Letter, and One Number",
+      "passwordRequired": "password is required",
+      "confirmPasswordMatch": "Passwords must match",
+      "confirmPasswordRequired": "confirm password is required",
+      "roleInvalid": "Role must be either guest or host",
+      "roleRequired": "Role is required",
+      "termsRequired": "You must agree to the Terms & Conditions"
+    }
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to your account",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Log in",
+    "noAccount": "Don't have an account?",
+    "signupButton": "SignUp",
+    "validation": {
+      "emailMin": "Email must be at least 3 characters",
+      "emailMax": "Email must be less than 50 characters",
+      "emailInvalid": "you enter invalid email ",
+      "emailRequired": "email is required",
+      "passwordRequired": "password is required"
+    },
+    "errors": {
+      "enterEmail": "please enter your email",
+      "otpSent": "OTP Sent please Check Your Email"
+    }
+  },
+  "notFound": {
+    "title": "Page not found!",
+    "subtitle": "Are you sure you want to be here?",
+    "button": "Go to Home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated:",
+    "intro": "Welcome to Maskan — your trusted local platform for finding and booking apartments in Egypt. This Privacy Policy explains how we collect, use, and protect your personal information when you use our platform.",
+    "info": {
+      "title": "Information We Collect",
+      "item1": "Personal details such as name, phone number, email address, and payment information.",
+      "item2": "Booking and listing details including dates, locations, and property preferences.",
+      "item3": "Technical data like IP address, browser type, and device information."
+    },
+    "usage": {
+      "title": "How We Use Your Information",
+      "item1": "To process bookings and manage listings.",
+      "item2": "To improve our services and user experience.",
+      "item3": "To communicate important updates and offers.",
+      "item4": "To ensure platform security and prevent fraud."
+    },
+    "sharing": {
+      "title": "Sharing of Information",
+      "text": "We only share your information with hosts, guests, and service providers when necessary to complete bookings, comply with the law, or improve our services. We never sell your personal data."
+    },
+    "security": {
+      "title": "Data Security",
+      "text": "We use secure technologies and follow industry standards to protect your information. However, no method of transmission over the internet is 100% secure."
+    },
+    "rights": {
+      "title": "Your Rights",
+      "item1": "Access and update your personal information.",
+      "item2": "Request deletion of your data.",
+      "item3": "Opt out of promotional communications."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "text": "If you have questions about this Privacy Policy or your personal data, please contact us."
+    }
+  },
+"verifyOtp": {
+    "title": {
+      "reset": "Reset your password",
+      "verify": "Verify Your Email"
+    },
+    "subtitle": "We've sent a 6-digit code to your email. Enter it below to continue.",
+    "placeholder": {
+      "newPassword": "New Password"
+    },
+    "buttons": {
+      "reset": "Reset Password",
+      "verify": "Verify"
+    },
+    "resend": {
+      "prompt": "Didn't receive the code?",
+      "button": "Resend OTP"
+    },
+    "success": {
+      "reset": "Password reset successful",
+      "verify": "Account verified",
+      "resent": "OTP resent successfully"
+    },
+    "errors": {
+      "invalidOtp": "Please enter a full 6-digit code.",
+      "emptyPassword": "Please enter your new password.",
+      "resetFailed": "Password reset failed",
+      "verifyFailed": "Verification failed",
+      "resentFailed": "Failed to resend OTP"
+    }
+  }
 }

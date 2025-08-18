@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import * as YUP from "yup";
 
 import { axiosInstance } from "../../services/axiosInstance";
+import { useTranslation } from "react-i18next";
+
 
 export default function ChangePasswordModal({ onClose, onSuccess }) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -17,12 +19,13 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
 
   function handleUpdatePassword(value) {
     SetIsLoading(true);
+
     console.log("changepaswword => changepassword", value);
     axiosInstance
       .patch("/users/change-password", value)
       .then((res) => {
         console.log("change password success", res);
-        toast.success("password change");
+        toast.success(t("changePassword.success"));
         queryClient.invalidateQueries({ queryKey: ["user"] });
 
         if (onSuccess) onSuccess();
@@ -32,7 +35,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
         SetErrMessage(err?.response?.data?.message);
         console.log(err?.response?.data?.message);
         toast.error(
-          err?.response?.data?.message || "Failed to change password"
+          err?.response?.data?.message ||t("changePassword.error")
         );
       })
       .finally(() => {
@@ -44,20 +47,20 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
     currentPassword: YUP.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
-        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+       t("changePasswordModal.passwordRules")
       )
-      .required("Current Password is required"),
+      .required(t("changePasswordModal.currentRequired")),
 
     newPassword: YUP.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
-        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+        t("changePasswordModal.passwordRules")
       )
-      .required("New Password is required"),
+      .required(t("changePasswordModal.newRequired")),
 
     confirmPassword: YUP.string()
-      .oneOf([YUP.ref("newPassword")], "Passwords must match")
-      .required("Confirm Password is required"),
+      .oneOf([YUP.ref("newPassword")], t("changePasswordModal.passwordMatch"))
+      .required(t("changePasswordModal.confirmRequired")),
   });
 
   const formik = useFormik({
@@ -70,6 +73,8 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
     validationSchema,
   });
 
+  const {t} = useTranslation()
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-gray-50/30 backdrop-blur-xs">
       <form
@@ -77,7 +82,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
         className="w-full max-w-md bg-gray-50 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[90vh]"
       >
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
-          Change Password
+          {t("ChangePasswordModal.title")}
         </h2>
 
         {/* current password */}
@@ -86,7 +91,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             htmlFor="currentPassword"
             className="block mb-1 text-lg font-medium text-gray-700"
           >
-            Current Password
+            {t("ChangePasswordModal.currentPassword")}
           </label>
           <input
             name="currentPassword"
@@ -115,7 +120,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             htmlFor="newPassword"
             className="block mb-1 text-lg font-medium text-gray-700"
           >
-            New Password
+            {t("ChangePasswordModal.newPassword")}
           </label>
           <input
             name="newPassword"
@@ -124,7 +129,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.newPassword}
             type={showNewPassword ? "text" : "password"}
             id="newPassword"
-            placeholder="Enter your new password"
+            placeholder= {t("ChangePasswordModal.newPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span
@@ -144,7 +149,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             htmlFor="confirmPassword"
             className="block mb-1 text-lg font-medium text-gray-700"
           >
-            Confirm Password
+            {t("ChangePasswordModal.confirmPassword")}
           </label>
           <input
             name="confirmPassword"
@@ -153,7 +158,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.confirmPassword}
             type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
-            placeholder="Confirm password"
+            placeholder={t("ChangePasswordModal.currentPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span
@@ -175,7 +180,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             disabled={isLoading}
             className="bg-transparent border-gray-700 border hover:bg-gray-500 hover:cursor-pointer transition hover:text-gray-50 text-gray-800 px-4 py-2 rounded-md"
           >
-            Cancel
+            {t("ChangePasswordModal.cancel")}
           </button>
           <button
             type="submit"
@@ -185,7 +190,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             {isLoading ? (
               <span className="animate-spin h-4 w-4 mr-2 border-2 border-t-transparent rounded-full" />
             ) : (
-              "Save"
+              t("ChangePasswordModal.save")
             )}
           </button>
         </div>

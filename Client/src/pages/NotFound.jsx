@@ -1,7 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
+  const {t} = useTranslation()
   return (
     <section className="py-10 bg-white h-screen">
       <div className="container mx-auto px-4">
@@ -16,16 +18,16 @@ const NotFound = () => {
           ></div>
           <div className="mt-6">
             <h3 className="text-[40px] font-semibold text-gray-800">
-              Page not found!
+              {t("notFound.title")}
             </h3>
             <p className="text-gray-600 mt-2">
-              Are you sure you want to be here?
+             {t("notFound.subtitle")}
             </p>
             <Link
               to="/"
               className="inline-block mt-6 px-6 py-3 bg-primarry text-white text-lg rounded hover:bg-primarry-hover transition"
             >
-              Go to Home
+             {t("notFound.button")}
             </Link>
           </div>
         </div>

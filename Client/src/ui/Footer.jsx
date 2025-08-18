@@ -1,5 +1,5 @@
 import { Facebook, Home, Instagram, Mail, Twitter } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -40,20 +40,20 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <NavLink
+                  to="/about"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
                   About Us
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a
-                  href="#"
+                <NavLink
+                  to="/contact"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
                   Contact
-                </a>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -78,20 +78,20 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <NavLink
+                  to="/terms"   
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
                   Terms of Service
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a
-                  href="#"
+                <NavLink
+                  to="/privacy"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </NavLink>
               </li>
             </ul>
           </div>
