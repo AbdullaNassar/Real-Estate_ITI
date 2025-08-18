@@ -4,13 +4,24 @@ import AppError from "../utilities/appError.js";
 
 export const createCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
-  if (!name) throw new AppError("Category Name Is Required", 400);
+  if (!name) {
+    throw new AppError(
+      { 
+        en: "Category Name is required", 
+        ar: "اسم التصنيف مطلوب" 
+      }, 
+      400
+    );
+  }
 
   const category = await categoryModel.create({ name });
 
   res.status(201).json({
     status: "Success",
-    message: "Category Created Successfully",
+    message: { 
+      en: "Category Created Successfully", 
+      ar: "تم إنشاء التصنيف بنجاح" 
+    },
     category,
   });
 }); 
@@ -29,8 +40,24 @@ export const updateCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
 
-  if (!id) throw new AppError("Id of Category Is Required", 400);
-  if (!name) throw new AppError("Category Name Is Required", 400);
+  if (!id) {
+    throw new AppError(
+      { 
+        en: "Id of Category is required", 
+        ar: "معرّف التصنيف مطلوب" 
+      }, 
+      400
+    );
+  }
+  if (!name) {
+    throw new AppError(
+      { 
+        en: "Category Name is required", 
+        ar: "اسم التصنيف مطلوب" 
+      }, 
+      400
+    );
+  }
 
   const category = await categoryModel.findByIdAndUpdate(
     id,
@@ -38,11 +65,22 @@ export const updateCategory = asyncHandler(async (req, res) => {
     { new: true, runValidators: true }
   );
 
-  if (!category) throw new AppError("Category Not Found", 404);
+  if (!category) {
+    throw new AppError(
+      { 
+        en: "Category not found", 
+        ar: "لم يتم العثور على التصنيف" 
+      }, 
+      404
+    );
+  }
 
   res.status(200).json({
     status: "Success",
-    message: "Category Updated Successfully",
+    message: { 
+      en: "Category Updated Successfully", 
+      ar: "تم تحديث التصنيف بنجاح" 
+    },
     category,
   });
 });
@@ -50,15 +88,35 @@ export const updateCategory = asyncHandler(async (req, res) => {
 export const deleteCategory = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  if (!id) throw new AppError("Id of Category Is Required", 400);
+  if (!id) {
+    throw new AppError(
+      { 
+        en: "Id of Category is required", 
+        ar: "معرّف التصنيف مطلوب" 
+      }, 
+      400
+    );
+  }
 
   const category = await categoryModel.findById(id);
-  if (!category) throw new AppError("Category Not Found", 404);
+
+  if (!category) {
+    throw new AppError(
+      { 
+        en: "Category not found", 
+        ar: "لم يتم العثور على التصنيف" 
+      }, 
+      404
+    );
+  }
 
   await categoryModel.deleteOne({ _id: id });
 
   res.status(200).json({
     status: "Success",
-    message: "Category Deleted Successfully",
+    message: { 
+      en: "Category Deleted Successfully", 
+      ar: "تم حذف التصنيف بنجاح" 
+    }
   });
 });

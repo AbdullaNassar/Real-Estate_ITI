@@ -63,7 +63,10 @@ export const processAndUploadImages = (options = {}) => {
         if (!acceptedTypes.includes(mimetype)) {
           return res.status(400).json({
             status: "Failed",
-            message: `File type ${mimetype} is not allowed. Allowed types: ${acceptedTypes.join(", ")}`,
+            message: { 
+              en: `File type ${mimetype} is not allowed. Allowed types: ${acceptedTypes.join(", ")}`, 
+              ar: `نوع الملف ${mimetype} غير مسموح. الأنواع المسموح بها: ${acceptedTypes.join(", ")}` 
+            },
           });
         }
 
@@ -109,7 +112,10 @@ export const processAndUploadImages = (options = {}) => {
     } catch (error) {
       res.status(500).json({
         status: "Failed",
-        message: "Image upload failed",
+        message: { 
+          en: "Image upload failed", 
+          ar: "فشل تحميل الصورة" 
+        },
         error: error.message,
       });
     }

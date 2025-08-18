@@ -31,6 +31,10 @@ const listSchema = new Schema(
       type: Number,
       default: 1,
     },
+    bathrooms: {
+      type: Number,
+      default: 1,
+    },
     pricePerNight: {
       type: Number,
       required: [true, "Price Per Night is Required"],

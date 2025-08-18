@@ -1,9 +1,9 @@
 import userModel from "../models/userModel.js";
-import listModel from "../models/listModel.js"
+import listModel from "../models/listModel.js";
 import { sendOTPEmail } from "../utilities/sendEmail.utilies.js";
 import bcrypt from "bcryptjs";
 import Crypto from "crypto-js";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 import { asyncHandler } from "../middlewares/asyncHandlerError.middleware.js";
 import AppError from "../utilities/appError.js";
 
@@ -12,10 +12,6 @@ export const getAllUsers = asyncHandler(async (req, res) => {
     {},
     { password: 0, phoneNumber: 0, __v: 0 }
   );
-
-  if (!users || users.length === 0) {
-    throw new AppError("No users found", 404);
-  }
 
   res.status(200).json({
     status: "Success",
@@ -27,10 +23,24 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 export const updateUser = asyncHandler(async (req, res) => {
   const id = req.user._id;
 
-  let { userName, email, phoneNumber, profilePic, gender, dateOfBirth } = req.body;
+  let { userName, email, phoneNumber, profilePic, gender, dateOfBirth } =
+    req.body;
 
-  if (!userName && !email && !phoneNumber && !profilePic && !gender && !dateOfBirth) {
-    throw new AppError("At least one field must be provided to update", 400);
+  if (
+    !userName &&
+    !email &&
+    !phoneNumber &&
+    !profilePic &&
+    !gender &&
+    !dateOfBirth
+  ) {
+    throw new AppError(
+      { 
+        en: "At least one field must be provided to update", 
+        ar: "يجب تقديم حقل واحد على الأقل للتحديث" 
+      }, 
+      400
+    );
   }
 
   if (phoneNumber) {
@@ -48,21 +58,30 @@ export const updateUser = asyncHandler(async (req, res) => {
       phoneNumber,
       profilePic,
       gender,
-      dateOfBirth
+      dateOfBirth,
     },
     {
       new: true,
-      runValidators: true
+      runValidators: true,
     }
   );
 
   if (!updatedUser) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   res.status(200).json({
     status: "Success",
-    message: "User updated successfully",
+    message: { 
+      en: "User updated successfully", 
+      ar: "تم تحديث المستخدم بنجاح" 
+    },
   });
 });
 
@@ -72,12 +91,21 @@ export const deleteUser = asyncHandler(async (req, res) => {
   const deletedUser = await userModel.findByIdAndDelete(id);
 
   if (!deletedUser) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   res.status(200).json({
     status: "Success",
-    message: "User deleted successfully",
+    message: { 
+      en: "Profile Deleted successfully", 
+      ar: "تم حذف الحساب بنجاح" 
+    },
   });
 });
 
@@ -85,12 +113,21 @@ export const deleteAllUsers = asyncHandler(async (req, res) => {
   const result = await userModel.deleteMany({ role: { $ne: "admin" } });
 
   if (result.deletedCount === 0) {
-    throw new AppError("No non-admin users found to delete", 404);
+    throw new AppError(
+      { 
+        en: "No non-admin users found to delete", 
+        ar: "لم يتم العثور على أي مستخدمين غير مسؤولين للحذف" 
+      }, 
+      404
+    );
   }
 
   res.status(200).json({
     status: "Success",
-    message: `${result.deletedCount} users deleted successfully`,
+    message: { 
+      en: `${result.deletedCount} users deleted successfully`, 
+      ar: `تم حذف ${result.deletedCount} مستخدم بنجاح` 
+    },
   });
 });
 
@@ -98,16 +135,34 @@ export const verifyOTP = asyncHandler(async (req, res) => {
   const { email, otp } = req.body;
 
   if (!email || !otp) {
-    throw new AppError("Provide all fields", 400);
+    throw new AppError(
+      { 
+        en: "Provide all fields", 
+        ar: "يرجى تقديم جميع الحقول" 
+      }, 
+      400
+    );
   }
 
   const user = await userModel.findOne({ email });
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   if (user.isVerified) {
-    throw new AppError("User already verified", 400);
+    throw new AppError(
+      { 
+        en: "User already verified", 
+        ar: "المستخدم تم التحقق منه مسبقًا" 
+      }, 
+      400
+    );
   }
 
   const decryptUserOtp = Crypto.AES.decrypt(
@@ -115,11 +170,16 @@ export const verifyOTP = asyncHandler(async (req, res) => {
     process.env.USER_OTP_KEY
   ).toString(Crypto.enc.Utf8);
 
-  const isOTPValid =
-    decryptUserOtp === otp && user.otpExpiresAt > new Date();
+  const isOTPValid = decryptUserOtp === otp && user.otpExpiresAt > new Date();
 
   if (!isOTPValid) {
-    throw new AppError("Invalid or expired OTP", 400);
+    throw new AppError(
+      { 
+        en: "Invalid or expired OTP", 
+        ar: "رمز التحقق غير صالح أو منتهي الصلاحية" 
+      }, 
+      400
+    );
   }
 
   user.isVerified = true;
@@ -129,7 +189,10 @@ export const verifyOTP = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     status: "Success",
-    message: "Email verified successfully",
+    message: { 
+      en: "Email verified successfully", 
+      ar: "تم التحقق من البريد الإلكتروني بنجاح" 
+    },
   });
 });
 
@@ -137,16 +200,34 @@ export const resendOTP = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    throw new AppError("Email is required", 400);
+    throw new AppError(
+      { 
+        en: "Email is required", 
+        ar: "البريد الإلكتروني مطلوب" 
+      }, 
+      400
+    );
   }
 
   const user = await userModel.findOne({ email });
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   if (user.isVerified) {
-    throw new AppError("User is already verified", 400);
+    throw new AppError(
+      { 
+        en: "User is already verified", 
+        ar: "المستخدم تم التحقق منه مسبقًا" 
+      }, 
+      400
+    );
   }
 
   // Generate new OTP
@@ -167,7 +248,10 @@ export const resendOTP = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     status: "Success",
-    message: "New OTP sent to email",
+    message: { 
+      en: "New OTP sent to email", 
+      ar: "تم إرسال رمز التحقق الجديد إلى البريد الإلكتروني" 
+    },
   });
 });
 
@@ -175,12 +259,24 @@ export const requestPasswordReset = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
-    throw new AppError("Email is required", 400);
+    throw new AppError(
+      { 
+        en: "Email is required", 
+        ar: "البريد الإلكتروني مطلوب" 
+      }, 
+      400
+    );
   }
 
   const user = await userModel.findOne({ email });
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   // Generate OTP and expiry
@@ -198,11 +294,14 @@ export const requestPasswordReset = asyncHandler(async (req, res) => {
   await user.save();
 
   // Send OTP email
-  await sendOTPEmail(user.email, otp);
+  await sendOTPEmail(user.email, otp, false);
 
   res.status(200).json({
     status: "Success",
-    message: "OTP sent to email for password reset",
+    message: { 
+      en: "OTP sent to email for password reset", 
+      ar: "تم إرسال رمز التحقق إلى البريد الإلكتروني لإعادة تعيين كلمة المرور" 
+    },
   });
 });
 
@@ -210,12 +309,24 @@ export const resetPassword = asyncHandler(async (req, res) => {
   const { email, otp, newPassword } = req.body;
 
   if (!email || !otp || !newPassword) {
-    throw new AppError("Provide all fields", 400);
+    throw new AppError(
+      { 
+        en: "Provide all fields", 
+        ar: "يرجى تقديم جميع الحقول" 
+      }, 
+      400
+    );
   }
 
   const user = await userModel.findOne({ email });
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   // Decrypt stored OTP
@@ -225,7 +336,13 @@ export const resetPassword = asyncHandler(async (req, res) => {
   ).toString(Crypto.enc.Utf8);
 
   if (decryptedOTP !== otp || new Date() > user.resetPasswordOTPExpires) {
-    throw new AppError("Invalid or expired OTP", 400);
+    throw new AppError(
+      { 
+        en: "Invalid or expired OTP", 
+        ar: "رمز التحقق غير صالح أو منتهي الصلاحية" 
+      }, 
+      400
+    );
   }
 
   user.password = newPassword;
@@ -236,7 +353,10 @@ export const resetPassword = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     status: "Success",
-    message: "Password reset successfully",
+    message: { 
+      en: "Password reset successfully", 
+      ar: "تم إعادة تعيين كلمة المرور بنجاح" 
+    },
   });
 });
 
@@ -244,21 +364,45 @@ export const changePassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword, confirmPassword } = req.body;
 
   if (!currentPassword || !newPassword || !confirmPassword) {
-    throw new AppError("All fields are required", 400);
+    throw new AppError(
+      { 
+        en: "All fields are required", 
+        ar: "جميع الحقول مطلوبة" 
+      }, 
+      400
+    );
   }
 
   if (newPassword !== confirmPassword) {
-    throw new AppError("Passwords do not match", 400);
+    throw new AppError(
+      { 
+        en: "Passwords do not match", 
+        ar: "كلمتا المرور غير متطابقتين" 
+      }, 
+      400
+    );
   }
 
   const user = await userModel.findById(req.user._id).select("+password");
   if (!user) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   const isMatch = await bcrypt.compare(currentPassword, user.password);
   if (!isMatch) {
-    throw new AppError("Current password is incorrect", 400);
+    throw new AppError(
+      { 
+        en: "Current password is incorrect", 
+        ar: "كلمة المرور الحالية غير صحيحة" 
+      }, 
+      400
+    );
   }
 
   user.password = newPassword;
@@ -279,13 +423,22 @@ export const changePassword = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     status: "Success",
-    message: "Password changed successfully",
+    message: { 
+      en: "Password changed successfully", 
+      ar: "تم تغيير كلمة المرور بنجاح" 
+    },
   });
 });
 
 export const getUserInfo = asyncHandler(async (req, res) => {
   if (!req.user) {
-    throw new AppError("User not found", 404);
+    throw new AppError(
+      { 
+        en: "User not found", 
+        ar: "لم يتم العثور على المستخدم" 
+      }, 
+      404
+    );
   }
 
   const {
@@ -303,9 +456,10 @@ export const getUserInfo = asyncHandler(async (req, res) => {
 
   let decryptedPhone = "";
   if (phoneNumber) {
-    decryptedPhone = Crypto.AES.decrypt(phoneNumber, process.env.USER_PHONE_KEY).toString(
-      Crypto.enc.Utf8
-    );
+    decryptedPhone = Crypto.AES.decrypt(
+      phoneNumber,
+      process.env.USER_PHONE_KEY
+    ).toString(Crypto.enc.Utf8);
   }
 
   res.status(200).json({
@@ -325,36 +479,39 @@ export const getUserInfo = asyncHandler(async (req, res) => {
   });
 });
 
-export const toggleFavorite = asyncHandler(async (req,res)=>{
+export const toggleFavorite = asyncHandler(async (req, res) => {
+  const { listingId } = req.params;
+  const userId = req.user._id;
 
-    const { listingId } = req.params;
-    const userId = req.user._id;
+  const listing = await listModel.findById(listingId);
+  if (!listing){ 
+    throw new AppError(
+      { 
+        en: "Listing not found", 
+        ar: "لم يتم العثور على القائمة" 
+      }, 
+      404
+    )
+  };
 
-    const listing = await listModel.findById(listingId);
-    if (!listing) throw new AppError('Listing not found',404);
+  const user = await userModel.findById(userId);
 
-    const user = await userModel.findById(userId);
+  const index = user.favorites.indexOf(listingId);
+  if (index > -1) {
+    // Listing already favorited, remove it
+    user.favorites.splice(index, 1);
+  } else {
+    // Add to favorites
+    user.favorites.push(listingId);
+  }
 
-    const index = user.favorites.indexOf(listingId);
-    if (index > -1) {
-      // Listing already favorited, remove it
-      user.favorites.splice(index, 1);
-    } else {
-      // Add to favorites
-      user.favorites.push(listingId);
-    }
-
-    await user.save();
-    res.status(200).json({ favorites: user.favorites });
-})
+  await user.save();
+  res.status(200).json({ favorites: user.favorites });
+});
 
 export const getUserFavorites = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   const user = await userModel.findById(userId).populate("favorites");
-
-  if (!user.favorites || user.favorites.length === 0) {
-    throw new AppError('User does not have any favorites');
-  }
 
   res.status(200).json({ favorites: user.favorites });
 });

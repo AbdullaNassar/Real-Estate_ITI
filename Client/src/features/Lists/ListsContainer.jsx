@@ -3,6 +3,7 @@ import ListsBox from "./ListsBox";
 import { useListsByGovern } from "./useListsByGovern";
 import Spinner from "../../ui/Spinner";
 import Counter from "../../ui/animated/Counter";
+import { useNavigate } from "react-router-dom";
 const listHeading = [
   "Popular homes in ",
   "Stay in ",
@@ -12,6 +13,7 @@ const listHeading = [
 ];
 export default function ListsContainer() {
   let { data: lists, error, isLoading } = useListsByGovern();
+  const navigate = useNavigate();
   if (isLoading) return <Spinner />;
   if (error) return <h2>{error.message} Error....</h2>;
 
@@ -64,7 +66,10 @@ export default function ListsContainer() {
             apartment through our platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-gradient-to-r from-primarry to-primarry-hover text-white font-semibold px-8 py-3 rounded-xl hover:cursor-pointer transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            <button
+              onClick={() => navigate("/listings")}
+              className="bg-gradient-to-r from-primarry to-primarry-hover text-white font-semibold px-8 py-3 rounded-xl hover:cursor-pointer transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
               Browse All Apartments
             </button>
           </div>

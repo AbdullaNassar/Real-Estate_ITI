@@ -1,11 +1,11 @@
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import OtpInput from "../ui/OtpInput";
 import Header from "../ui/Header";
 import { useTranslation } from "react-i18next";
+import { axiosInstance } from "../services/axiosInstance";
 
 export default function VerifyOtp() {
   const [otp, setOtp] = useState("");
@@ -25,12 +25,8 @@ export default function VerifyOtp() {
       if (!newPassword) {
         return toast.error(t("verifyOtp.errors.emptyPassword"));
       }
-      axios
-        .post("http://localhost:8000/api/v1/users/reset-password", {
-          email,
-          otp,
-          newPassword,
-        })
+      axiosInstance
+        .post("/users/reset-password", { email, otp, newPassword })
         .then(() => {
           toast.success(t("verifyOtp.success.reset"));
           navigate("/login");
@@ -39,8 +35,8 @@ export default function VerifyOtp() {
           toast.error(t("verifyOtp.errors.resetFailed"));
         });
     } else {
-      axios
-        .post("http://localhost:8000/api/v1/users/verify-otp", { email, otp })
+      axiosInstance
+        .post("/users/verify-otp", { email, otp })
         .then(() => {
           toast.success(t("verifyOtp.success.verify"));
           navigate("/");
@@ -52,8 +48,8 @@ export default function VerifyOtp() {
   };
 
   const handleResendOtp = () => {
-    axios
-      .post("http://localhost:8000/api/v1/users/resend-otp", { email })
+    axiosInstance
+      .post("/users/resend-otp", { email })
       .then(() => {
         toast.success(t("verifyOtp.success.resent"));
       })
@@ -66,7 +62,7 @@ export default function VerifyOtp() {
     <>
       <Header />
       <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-        <div className="w-full max-w-md bg-white shadow-md rounded-xl p-6 sm:p-8">
+        <div className="w-full max-w-md bg-gray-200 shadow-md rounded-xl p-6 sm:p-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-4">
             {isForgetPassword
               ? t("verifyOtp.title.reset")
@@ -83,7 +79,7 @@ export default function VerifyOtp() {
               <input
                 type="password"
                 placeholder={t("verifyOtp.placeholder.newPassword")}
-                className="w-full px-4 py-2 border rounded-lg"
+                className="w-full px-4 py-2 border-0 rounded-lg bg-gray-300 text-gray-800"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
@@ -93,7 +89,7 @@ export default function VerifyOtp() {
           <div className="mt-6 text-center">
             <button
               onClick={sendOtp}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition duration-300"
+              className="bg-primarry hover:bg-primarry-hover hover:cursor-pointer text-white font-semibold px-6 py-2 rounded-lg transition duration-300"
             >
               {isForgetPassword
                 ? t("verifyOtp.buttons.reset")
@@ -106,7 +102,7 @@ export default function VerifyOtp() {
               {t("verifyOtp.resend.prompt")}{" "}
               <button
                 onClick={handleResendOtp}
-                className="text-blue-600 hover:underline font-medium"
+                className="text-gray-800 underline  hover:cursor-pointer font-medium"
               >
                 {t("verifyOtp.resend.button")}
               </button>

@@ -1,56 +1,56 @@
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import AppError from "../utilities/appError.js";
+import { asyncHandler } from "./asyncHandlerError.middleware.js";
 
-export const isUserLoggedIn = async (req, res, next) => {
-  try {
-    // if (!req.headers.authorization.startsWith("Bearer")) {
-    //   return res.status(400).json({
-    //     status: "Failed",
-    //     message: "Bearer Token Is Required",
-    //   });
-    // }
+export const isUserLoggedIn =asyncHandler( async (req, res, next) => {
+  const token = req.cookies.token;
 
-    // let token = req.headers.authorization.split(" ")[1];
-    const token = req.cookies.token;
-
-    if (!token) {
-      return res.status(401).json({
-        status: "Failed",
-        message:
-          "you are not authorized to access this route,please login first",
-      });
-    }
-
-    const payLoad = jwt.verify(token, process.env.JWT_SECRET);
-
-    const user = await userModel.findById(payLoad.id);
-
-    if (!user) {
-      return res.status(404).json({
-        status: "Failed",
-        message: "User Not Found",
-      });
-    }
-
-    if (user.passwordChangedAt) {
-
-      const passwordChangedTimestamp = parseInt(user.passwordChangedAt.getTime() / 1000, 10);
-      if (payLoad.iat < passwordChangedTimestamp) {
-
-          return res.status(401).json({
-          status: 'Failed',
-          message: 'User recently changed password! Please log in again.',
-          });
-        }
-    }
-
-    req.user = user;
-    next();
-  } catch (error) {
-    return res.status(400).json({
-      status: "Failed",
-      message: "Invalid Token",
-      error: error.message,
-    });
+  if (!token) {
+    return next(
+      new AppError(
+        {
+          en: "You are not authorized to access this route, please login first",
+          ar: "غير مصرح لك بالدخول إلى هذا المسار، يرجى تسجيل الدخول أولاً"
+        },
+        401
+      )
+    );
   }
-};
+
+  const payLoad = jwt.verify(token, process.env.JWT_SECRET);
+
+  const user = await userModel.findById(payLoad.id);
+
+  if (!user) {
+    return next(
+      new AppError(
+        {
+          en: "User not found",
+          ar: "المستخدم غير موجود"
+        },
+        404
+      )
+    );
+  }
+
+  if (user.passwordChangedAt) {
+
+    const passwordChangedTimestamp = parseInt(user.passwordChangedAt.getTime() / 1000, 10);
+    if (payLoad.iat < passwordChangedTimestamp) {
+
+        return next(
+          new AppError(
+            {
+              en: "User recently changed password! Please log in again.",
+              ar: "قام المستخدم بتغيير كلمة المرور مؤخرًا! يرجى تسجيل الدخول مرة أخرى."
+            },
+            401
+          )
+        );
+      }
+  }
+
+  req.user = user;
+  next();
+});

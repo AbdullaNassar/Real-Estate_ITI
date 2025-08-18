@@ -8,23 +8,55 @@ import AppError from "../utilities/appError.js";
 export const prepareCheckOut = asyncHandler(async (req, res, next) => {
   const list = await listModel.findById(req.params.listId);
   if (!list) {
-    return next(new AppError("Can't find list", 404));
+    return next(
+      new AppError(
+        { 
+          en: "Can't find list", 
+          ar: "لا يمكن العثور على القائمة" 
+        }, 
+        404
+      )
+    );
   }
 
   if (req?.user?.role !== "guest") {
-    return next(new AppError("You must be a guest to book a list", 403));
+    return next(
+      new AppError(
+        { 
+          en: "You must be a guest to book a list", 
+          ar: "يجب أن تكون ضيفًا لحجز قائمة" 
+        }, 
+        403
+      )
+    );
   }
 
   let { checkIn, checkOut } = req.body;
   if (!checkIn || !checkOut) {
-    return next(new AppError("Check-in and check-out dates are required", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Check-in and check-out dates are required", 
+          ar: "تاريخ تسجيل الوصول والمغادرة مطلوب" 
+        }, 
+        400
+      )
+    );
   }
 
   checkIn = new Date(checkIn);
   checkOut = new Date(checkOut);
 
   if (isNaN(checkIn) || isNaN(checkOut)) {
-    return next(new AppError("Invalid check-in or check-out date", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Invalid check-in or check-out date", 
+          ar: "تاريخ تسجيل الوصول أو المغادرة غير صالح" 
+        }, 
+        400
+      )
+    );
   }
 
   // Egypt timezone
@@ -44,12 +76,26 @@ export const prepareCheckOut = asyncHandler(async (req, res, next) => {
   checkOutDate.setHours(23, 59, 59, 999);
 
   if (checkInDate < currentDate) {
-    return next(new AppError("Check-in date must be in the future", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Check-in date must be in the future", 
+          ar: "يجب أن يكون تاريخ تسجيل الوصول في المستقبل" 
+        }, 
+        400
+      )
+    );
   }
 
   if (checkOutDate <= checkInDate) {
     return next(
-      new AppError("Check-out date must be after check-in date", 400)
+      new AppError(
+        { 
+          en: "Check-out date must be after check-in date", 
+          ar: "يجب أن يكون تاريخ تسجيل المغادرة بعد تاريخ تسجيل الوصول" 
+        }, 
+        400
+      )
     );
   }
 
@@ -98,8 +144,14 @@ export const prepareCheckOut = asyncHandler(async (req, res, next) => {
 
     if (hasConflict) {
       return next(
-        new AppError("These dates are not available for booking", 400)
-      );
+      new AppError(
+        { 
+          en: "These dates are not available for booking", 
+          ar: "هذه التواريخ غير متاحة للحجز" 
+        }, 
+        400
+      )
+    );
     }
   }
 
@@ -114,23 +166,59 @@ export const prepareCheckOut = asyncHandler(async (req, res, next) => {
 
 const createBookinCheckOut = asyncHandler(async (session) => {
   const user = await userModel.findOne({ email: session.customer_email });
-  if (!user) throw new AppError("User not found for provided email", 404);
+  if (!user) {
+    throw new AppError(
+      { 
+        en: "User not found for provided email", 
+        ar: "لم يتم العثور على مستخدم للبريد الإلكتروني المقدم" 
+      }, 
+      404
+    );
+  }
 
   if (!session.metadata?.checkIn || !session.metadata?.checkOut) {
-    throw new AppError("Check-in and check-out dates are required", 400);
+    throw new AppError(
+      { 
+        en: "Check-in and check-out dates are required", 
+        ar: "تاريخ تسجيل الوصول والمغادرة مطلوب" 
+      }, 
+      400
+    );
   }
 
   const listing = session.client_reference_id;
-  if (!listing) throw new AppError("Listing ID is required", 400);
+  if (!listing) {
+    throw new AppError(
+      { 
+        en: "Listing ID is required", 
+        ar: "مطلوب رقم تعريف القائمة" 
+      }, 
+      400
+    );
+  }
 
   const totalPrice = session.metadata.totalPrice;
-  if (!totalPrice) throw new AppError("Total price is required", 400);
+  if (!totalPrice) {
+    throw new AppError(
+      { 
+        en: "Total price is required", 
+        ar: "السعر الإجمالي مطلوب" 
+      }, 
+      400
+    );
+  }
 
   let checkIn = new Date(session.metadata.checkIn * 1000);
   let checkOut = new Date(session.metadata.checkOut * 1000);
 
   if (isNaN(checkIn) || isNaN(checkOut)) {
-    throw new AppError("Invalid check-in or check-out date", 400);
+    throw new AppError(
+      { 
+        en: "Invalid check-in or check-out date", 
+        ar: "تاريخ تسجيل الوصول أو المغادرة غير صالح" 
+      }, 
+      400
+    );
   }
 
   const booking = await bookingModel.create({
@@ -160,15 +248,37 @@ const createBookinCheckOut = asyncHandler(async (session) => {
 
 export const getCheckout = asyncHandler(async (req, res) => {
   const list = await listModel.findById(req.params.listId);
-  if (!list) throw new AppError("Listing not found", 404);
+  if (!list) {
+    throw new AppError(
+      { 
+        en: "Listing not found", 
+        ar: "لم يتم العثور على القائمة" 
+      }, 
+      404
+    );
+  }
 
-  if (!req.booking) throw new AppError("Booking details are missing", 400);
+  if (!req.booking) {
+    throw new AppError(
+      { 
+        en: "Booking details are missing", 
+        ar: "تفاصيل الحجز مفقودة" 
+      }, 
+      400
+    );
+  }
   if (
     !req.booking.checkIn ||
     !req.booking.checkOut ||
     !req.booking.totalPrice
   ) {
-    throw new AppError("Incomplete booking details", 400);
+    throw new AppError(
+      { 
+        en: "Incomplete booking details", 
+        ar: "تفاصيل الحجز غير مكتملة" 
+      }, 
+      400
+    );
   }
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -188,7 +298,7 @@ export const getCheckout = asyncHandler(async (req, res) => {
     line_items: [
       {
         price_data: {
-          currency: "usd",
+          currency: "egp",
           unit_amount: req.booking.totalPrice * 100, // amount in cents
           product_data: {
             name: list.title,
@@ -236,20 +346,44 @@ export const createBooking = asyncHandler(async (req, res, next) => {
   const { listingId } = req.params;
 
   if (!listingId) {
-    return next(new AppError("Listing Id is required", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Listing Id is required", 
+          ar: "معرّف القائمة مطلوب" 
+        }, 
+        400
+      )
+    );
   }
 
   const { checkIn, checkOut, paymentMethod } = req.body;
 
   if (!checkIn || !checkOut || !paymentMethod) {
-    return next(new AppError("Provide all required fields", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Provide all required fields", 
+          ar: "يرجى توفير جميع الحقول المطلوبة" 
+        }, 
+        400
+      )
+    );
   }
 
   const guest = req.user._id;
   const listing = await listModel.findById(listingId);
 
   if (!listing) {
-    return next(new AppError("Listing not found", 404));
+    return next(
+      new AppError(
+        { 
+          en: "Listing not found", 
+          ar: "لم يتم العثور على القائمة" 
+        }, 
+        404
+      )
+    );
   }
 
   const egyptTimezone = "Africa/Cairo";
@@ -268,12 +402,26 @@ export const createBooking = asyncHandler(async (req, res, next) => {
   checkOutDate.setHours(23, 59, 59, 999);
 
   if (checkInDate < currentDate) {
-    return next(new AppError("Check-in date must be in the future", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Check-in date must be in the future", 
+          ar: "يجب أن يكون تاريخ تسجيل الوصول في المستقبل" 
+        }, 
+        400
+      )
+    );
   }
 
   if (checkOutDate <= checkInDate) {
     return next(
-      new AppError("Check-out date must be after check-in date", 400)
+      new AppError(
+        { 
+          en: "Check-out date must be after check-in date", 
+          ar: "يجب أن يكون تاريخ تسجيل المغادرة بعد تاريخ تسجيل الوصول" 
+        }, 
+        400
+      )
     );
   }
 
@@ -315,7 +463,13 @@ export const createBooking = asyncHandler(async (req, res, next) => {
 
     if (hasConflict) {
       return next(
-        new AppError("These dates are not available for booking", 400)
+        new AppError(
+          { 
+            en: "These dates are not available for booking", 
+            ar: "هذه التواريخ غير متاحة للحجز" 
+          }, 
+          400
+        )
       );
     }
   }
@@ -346,7 +500,10 @@ export const createBooking = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     status: "Success",
-    message: "Booking Created",
+    message: { 
+      en: "Booking Created Successfully", 
+      ar: "تم الحجز بنجاح" 
+    },
     data: booking,
   });
 });
@@ -355,25 +512,55 @@ export const updateBooking = asyncHandler(async (req, res, next) => {
   const { bookingId } = req.params;
 
   if (!bookingId) {
-    return next(new AppError("Booking ID is required", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Booking ID is required", 
+          ar: "معرّف الحجز مطلوب" 
+        }, 
+        400
+      )
+    );
   }
 
   const booking = await bookingModel.findById(bookingId);
   if (!booking) {
-    return next(new AppError("Booking not found", 404));
+    return next(
+      new AppError(
+        { 
+          en: "Booking not found", 
+          ar: "لم يتم العثور على الحجز" 
+        }, 
+        404
+      )
+    );
   }
 
   if (booking.guest.toString() !== req.user._id.toString()) {
     return next(
-      new AppError("You are not allowed to update this booking", 403)
-    );
+      new AppError(
+        { 
+          en: "You are not allowed to update this booking", 
+          ar: "غير مسموح لك بتعديل هذا الحجز" 
+        },
+        403
+      )
+);
   }
 
   const { checkIn, checkOut, paymentMethod } = req.body;
 
   const listing = await listModel.findById(booking.listing);
   if (!listing) {
-    return next(new AppError("Listing not found", 404));
+    return next(
+      new AppError(
+        { 
+          en: "Listing not found", 
+          ar: "لم يتم العثور على القائمة" 
+        }, 
+        404
+      )
+    );
   }
 
   // Step 1: Remove old bookedDates linked to this booking
@@ -390,7 +577,15 @@ export const updateBooking = asyncHandler(async (req, res, next) => {
 
     const days = (end - start) / (1000 * 60 * 60 * 24);
     if (days <= 0) {
-      return next(new AppError("Invalid check-in/check-out dates", 400));
+      return next(
+      new AppError(
+        { 
+          en: "Invalid check-in/check-out dates", 
+          ar: "تواريخ تسجيل الوصول والمغادرة غير صالحة" 
+        }, 
+        400
+      )
+    );
     }
 
     booking.totalPrice = listing.pricePerNight * days;
@@ -434,7 +629,10 @@ export const updateBooking = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "Success",
-    message: "Booking and listing dates updated successfully",
+    message: { 
+      en: "Booking and listing dates updated successfully", 
+      ar: "تم تحديث تواريخ الحجز والقائمة بنجاح" 
+    }
   });
 });
 
@@ -442,17 +640,39 @@ export const deleteBooking = asyncHandler(async (req, res, next) => {
   const { bookingId } = req.params;
 
   if (!bookingId) {
-    return next(new AppError("Booking ID is required", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Booking ID is required", 
+          ar: "معرّف الحجز مطلوب" 
+        }, 
+        400
+      )
+    );
   }
 
   const booking = await bookingModel.findById(bookingId);
   if (!booking) {
-    return next(new AppError("Booking not found", 404));
+    return next(
+      new AppError(
+        { 
+          en: "Booking not found", 
+          ar: "لم يتم العثور على الحجز" 
+        }, 
+        404
+      )
+    );
   }
 
   if (booking.guest.toString() !== req.user._id.toString()) {
     return next(
-      new AppError("You are not allowed to delete this booking", 403)
+      new AppError(
+        { 
+          en: "You are not allowed to delete this booking", 
+          ar: "غير مسموح لك بحذف هذا الحجز" 
+        }, 
+        403
+      )
     );
   }
 
@@ -468,7 +688,10 @@ export const deleteBooking = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "Success",
-    message: "Booking and related dates removed successfully",
+    message: { 
+      en: "Booking and related dates removed successfully", 
+      ar: "تم حذف الحجز والتواريخ المرتبطة بنجاح" 
+    }
   });
 });
 
@@ -477,10 +700,6 @@ export const getAllGuestBooking = asyncHandler(async (req, res, next) => {
     .find({ guest: req.user._id })
     .populate("listing")
     .sort({ createdAt: -1 });
-
-  // if (!bookings.length) {
-  //   return next(new AppError("No bookings found for this guest", 404));
-  // }
 
   res.status(200).json({
     status: "Success",
@@ -492,10 +711,6 @@ export const getAllGuestBooking = asyncHandler(async (req, res, next) => {
 export const getAllHostListingBooked = asyncHandler(async (req, res, next) => {
   const listings = await listModel.find({ host: req.user._id });
 
-  // if (!listings.length) {
-  //   return next(new AppError("Host does not have any listings", 404));
-  // }
-
   const listingIds = listings.map((l) => l._id);
 
   const bookings = await bookingModel
@@ -503,10 +718,6 @@ export const getAllHostListingBooked = asyncHandler(async (req, res, next) => {
     .populate("guest", "name email")
     .populate("listing", "title location")
     .sort({ createdAt: -1 });
-
-  if (!bookings.length) {
-    return next(new AppError("You do not have any bookings", 404));
-  }
 
   res.status(200).json({
     status: "Success",
@@ -519,18 +730,40 @@ export const getBookingById = asyncHandler(async (req, res, next) => {
   const { bookingId } = req.params;
 
   if (!bookingId) {
-    return next(new AppError("Booking ID is required", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Booking ID is required", 
+          ar: "معرّف الحجز مطلوب" 
+        }, 
+        400
+      )
+    );
   }
 
   const booking = await bookingModel.findById(bookingId);
 
   if (!booking) {
-    return next(new AppError("Booking not found", 404));
+    return next(
+      new AppError(
+        { 
+          en: "Booking not found", 
+          ar: "لم يتم العثور على الحجز" 
+        }, 
+        404
+      )
+    );
   }
 
   if (booking.guest.toString() !== req.user._id.toString()) {
     return next(
-      new AppError("You are not allowed to access this booking", 403)
+      new AppError(
+        { 
+          en: "You are not allowed to access this booking", 
+          ar: "غير مسموح لك بالوصول إلى هذا الحجز" 
+        }, 
+        403
+      )
     );
   }
 
@@ -544,7 +777,15 @@ export const getBookingsList = asyncHandler(async (req, res, next) => {
   const { listingId } = req.params;
 
   if (!listingId) {
-    return next(new AppError("Listing ID is required", 400));
+    return next(
+      new AppError(
+        { 
+          en: "Listing ID is required", 
+          ar: "معرّف القائمة مطلوب" 
+        }, 
+        400
+      )
+    );
   }
 
   const bookings = await bookingModel
