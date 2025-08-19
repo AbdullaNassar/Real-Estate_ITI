@@ -25,13 +25,22 @@ export const formatCurrency = (value) =>
     value
   );
 
-export const formatPrice = (price) => {
-  return new Intl.NumberFormat("en-EG", {
+export const formatPrice = (price, lang = "en") => {
+  const locale = lang === "ar" ? "ar-EG" : "en-EG";
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "EGP",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(price);
+};
+
+export const formatNumber = (number, lang = "en") => {
+  const locale = lang === "ar" ? "ar-EG" : "en-EG";
+
+  return new Intl.NumberFormat(locale, {
+    useGrouping: false,
+  }).format(number);
 };
 
 export const formatDate = (dateString) => {

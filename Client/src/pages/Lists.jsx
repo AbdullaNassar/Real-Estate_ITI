@@ -13,6 +13,8 @@ import { useCategories } from "../features/Lists/categories/useCategories";
 import Empty from "../ui/Empty";
 import Error from "../ui/Error";
 import { IoSearch } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
+import { formatNumber } from "../utils/helper";
 
 export default function Lists() {
   const [searchParam, setSearchParams] = useSearchParams();
@@ -25,6 +27,8 @@ export default function Lists() {
   const [searchQuery, setSearchQuery] = useState();
   const [govern, setGovern] = useState("Government");
   const [category, setCategory] = useState("List Type");
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
 
   // hooks
   const { lists, error, isLoading, refetch } = useLists({
@@ -167,7 +171,7 @@ export default function Lists() {
             <span>
               <CiFilter />
             </span>
-            <h2 className=" font-semibold ">Filters</h2>
+            <h2 className=" font-semibold ">{t("lists.filters.filter")}</h2>
           </div>
 
           <div>
@@ -177,7 +181,7 @@ export default function Lists() {
                 value={govern}
                 className="p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
               >
-                <option value="all">Government</option>
+                <option value="all">{t("lists.filters.govern")}</option>
                 {governmentList.map((item) => {
                   return (
                     <option key={item._id} value={item._id}>
@@ -191,7 +195,7 @@ export default function Lists() {
                 value={category}
                 className="p-2 rounded-sm border focus:ring bg-gray-100 focus:ring-primarry focus:ring-offset-1  border-gray-300 outline-0 disabled:opacity-50"
               >
-                <option value="all">List Type</option>
+                <option value="all">{t("lists.filters.type")}</option>
                 {categories.data.map((item) => {
                   return (
                     <option key={item._id} value={item._id}>
@@ -202,7 +206,7 @@ export default function Lists() {
               </select>
 
               <div className="space-y-2">
-                <h3 className="font-semibold">Available Date</h3>
+                <h3 className="font-semibold">{t("lists.filters.date")}</h3>
                 <DatePicker
                   selectsRange={true}
                   startDate={startDate}
@@ -210,12 +214,12 @@ export default function Lists() {
                   onChange={handleDate}
                   isClearable={true}
                   minDate={new Date()}
-                  placeholderText="Select a date range"
+                  placeholderText={t("lists.filters.dateRange")}
                   className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="font-semibold">Price</h3>
+                <h3 className="font-semibold">{t("lists.filters.price")}</h3>
                 <div className="flex gap-4 items-center ">
                   <input
                     type="range"
@@ -226,7 +230,9 @@ export default function Lists() {
                     onChange={(e) => handlePrice(e)}
                     className="accent-primarry flex-1 hover:cursor-pointer"
                   />
-                  <label htmlFor="">${price}</label>
+                  <label htmlFor="">
+                    {t("common.cur")} {formatNumber(price, lang)}
+                  </label>
                 </div>
               </div>
               <div className="flex gap-1 ">
@@ -234,13 +240,13 @@ export default function Lists() {
                   onClick={handleReset}
                   className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-gray-400 hover:text-gray-100 transition-all mt-4 mb-2"
                 >
-                  clear
+                  {t("lists.filters.clear")}
                 </button>
                 <button
                   onClick={handleApplyFilters}
                   className="px-2 py-1 border rounded-sm hover:cursor-pointer hover:bg-stone-800 hover:text-stone-100 transition-all mt-4 mb-2 bg-stone-700 text-stone-100"
                 >
-                  Apply
+                  {t("lists.filters.apply")}
                 </button>
               </div>
             </div>
@@ -248,7 +254,9 @@ export default function Lists() {
         </div>
         <div className=" grow space-y-6 flex flex-col">
           <div className="flex-col-reverse items-start md:flex-row gap-4 md:gap-0 flex md:justify-between md:items-center ">
-            <h2 className="text-xl font-bold">{lists.total} Results</h2>
+            <h2 className="text-xl font-bold">
+              {formatNumber(lists.total, lang)} {t("lists.results")}
+            </h2>
             <div className="flex gap-1">
               <input
                 value={searchQuery}

@@ -17,7 +17,8 @@ import Review from "../features/review/Review";
 import { useReviews } from "../features/review/useReviews";
 import { MdDelete } from "react-icons/md";
 import { useDeleteReview } from "../features/review/useDeleteReviews";
-import { formatPrice } from "../utils/helper";
+import { formatNumber, formatPrice } from "../utils/helper";
+import { useTranslation } from "react-i18next";
 
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(null);
@@ -28,6 +29,8 @@ export default function ListingDetails() {
   const [reviewToEdit, setReviewToEdit] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
 
   // hooks
   const {
@@ -128,15 +131,19 @@ export default function ListingDetails() {
       {/* heading */}
       <div>
         <div className="flex items-center gap-4">
-          <h2 className="font-semibold text-3xl mb-3">{data.title}</h2>
-          <div className="badge badge-accent">{data.categoryId?.name}</div>
+          <h2 className="font-semibold text-3xl mb-3">
+            {lang === "en" ? data.title : data.arTitle}
+          </h2>
+          <div className="badge badge-accent">
+            {lang === "en" ? data.categoryId?.name : data.categoryId?.arName}
+          </div>
         </div>
-        <p>{data.descrption}</p>
+        <p>{lang === "en" ? data.descrption : data.arDescrption}</p>
       </div>
 
       {/* aminites */}
       <div>
-        <h2 className="font-semibold text-3xl mb-3">Aminites</h2>
+        <h2 className="font-semibold text-3xl mb-3">{t("lists.amenities")}</h2>
         <div className="flex gap-3 flex-wrap">
           {data?.amenitiesId.map((item) => {
             return (
@@ -145,7 +152,7 @@ export default function ListingDetails() {
                 {/* <span className="text-3xl">
                   <PiSwimmingPoolLight />
                 </span> */}
-                {item?.name}
+                {lang === "en" ? item?.name : item?.arName}
               </div>
             );
           })}
@@ -154,7 +161,7 @@ export default function ListingDetails() {
 
       {/* Map */}
       <div>
-        <h2 className="font-semibold text-3xl mb-3">Location</h2>
+        <h2 className="font-semibold text-3xl mb-3">{t("lists.location")}</h2>
         <MyMap
           lat={data.location.coordinates.coordinates[0]}
           lng={data.location.coordinates.coordinates[1]}
@@ -163,7 +170,7 @@ export default function ListingDetails() {
 
       {/* Reviews */}
       <div>
-        <h2 className="font-semibold text-3xl mb-3">Reviews</h2>
+        <h2 className="font-semibold text-3xl mb-3">{t("lists.reviews")}</h2>
         {reviewForSpecificList?.ratings?.length > 0 ? (
           <div className="space-y-6">
             {reviewForSpecificList.ratings.map((review) => {
@@ -240,7 +247,7 @@ export default function ListingDetails() {
             })}
           </div>
         ) : (
-          <p>No reviews yet.</p>
+          <p>{t("lists.No reviews yet.")}</p>
         )}
       </div>
 
@@ -249,7 +256,7 @@ export default function ListingDetails() {
           onClick={() => setShowReview(!showReview)}
           className="bg-blue-700 text-gray-50 px-4 py-2 rounded-md hover:scale-105 transition cursor-pointer"
         >
-          write a review
+          {t("lists.write a review")}
         </button>
       </div>
 
@@ -267,7 +274,7 @@ export default function ListingDetails() {
       {/* Host */}
 
       <div>
-        <h2 className="font-semibold text-3xl mb-3">Host</h2>
+        <h2 className="font-semibold text-3xl mb-3">{t("lists.host")}</h2>
         <div className="sm:flex items-center gap-8">
           <div className="flex gap-4  items-center">
             <div className="size-24 flex items-center justify-center  bg-gray-500  overflow-hidden rounded-full p-0.5 ">
@@ -280,7 +287,11 @@ export default function ListingDetails() {
             <div>
               <h2 className="font-semibold text-2xl">{data.host?.userName}</h2>
               <h3 className="text-gray-500 text-xl">
-                Host since {new Date(data.host?.createdAt).getFullYear()}
+                {t("lists.host")} {t("lists.since")}{" "}
+                {formatNumber(
+                  new Date(data.host?.createdAt).getFullYear(),
+                  lang
+                )}
               </h3>
             </div>
           </div>
@@ -295,17 +306,17 @@ export default function ListingDetails() {
 
       {/* Booking Date */}
       <div className="">
-        <h2 className="font-semibold text-3xl mb-3">Booking</h2>
+        <h2 className="font-semibold text-3xl mb-3">{t("lists.booking")}</h2>
 
         <div className="space-y-2 ">
-          <h3> Select Your Stay Dates</h3>
+          <h3> {t("lists.Select Your Stay Dates")}</h3>
           <DatePicker
             selectsRange={true}
             startDate={startDate}
             endDate={endDate}
             onChange={handleDate}
             isClearable={true}
-            placeholderText="Select a date range"
+            placeholderText={t("lists.Select a date range")}
             excludeDateIntervals={bookedDates}
             className="w-full p-2 rounded-sm border focus:ring focus:ring-primarry focus:ring-offset-1 bg-gray-100 border-gray-300 outline-0 disabled:opacity-50"
           />
@@ -314,28 +325,34 @@ export default function ListingDetails() {
 
       {/* Price */}
       <div>
-        <h2 className="font-semibold text-3xl mb-3">Price Details</h2>
+        <h2 className="font-semibold text-3xl mb-3">
+          {t("lists.Price Details")}
+        </h2>
         <div className="flex flex-col gap-3 sm:max-w-1/3 justify-between">
           <div className="flex justify-between">
-            <span className="text-gray-500">Nighly rate</span>
+            <span className="text-gray-500">{t("lists.Nightly rate")}</span>
             <span className="font-semibold ">
-              {formatPrice(data?.pricePerNight)}
+              {formatPrice(data?.pricePerNight, lang)}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Cleaning Fee</span>
-            <span className="font-semibold text-gray-500">Free</span>
+            <span className="text-gray-500">{t("lists.Cleaning Fee")}</span>
+            <span className="font-semibold text-gray-500">
+              {t("lists.Free")}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Service Fee</span>
-            <span className="font-semibold text-gray-500">Free</span>
+            <span className="text-gray-500">{t("lists.Service Fee")}</span>
+            <span className="font-semibold text-gray-500">
+              {t("lists.Free")}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-500">Total</span>
+            <span className="text-gray-500">{t("lists.Total")}</span>
             <span className="font-semibold">
               {startDate && endDate
                 ? formatPrice(Math.round(days * data.pricePerNight))
-                : "0 EGP"}
+                : formatPrice(0, lang)}
             </span>
           </div>
           <button
@@ -344,7 +361,9 @@ export default function ListingDetails() {
             className="bg-primarry mt-8 mb-4 py-2 text-stone-100 rounded-sm
             text-lg hover:bg-primarry-hover hover:cursor-pointer transition-all"
           >
-            {isPending ? "Processing..." : "Proceed to Checkout"}
+            {isPending
+              ? t("lists.Processing...")
+              : t("lists.Proceed to Checkout")}
           </button>
         </div>
       </div>

@@ -20,7 +20,7 @@
     "emailjs-com": "^3.2.0",
     "formik": "^2.4.6",
     "gsap": "^3.13.0",
-    "i18next": "^25.3.2",
+    "i18next": "^25.3.6",
     "i18next-browser-languagedetector": "^8.2.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.539.0",

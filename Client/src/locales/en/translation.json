@@ -1,4 +1,10 @@
 {
+  "common": {
+    "showDetails": "Show Details",
+    "cur": "EGP",
+    "search": "Search",
+    "egypt": "Egypt"
+  },
   "contact": {
     "title": "Contact Us",
     "nameLabel": "Enter Your Name",
@@ -84,7 +90,7 @@
     "enjoyTitle": "Enjoy Your Stay",
     "enjoyText": "Experience authentic Egyptian hospitality and create memories that last a lifetime"
   },
-   "signup": {
+  "signup": {
     "title": "Create Your Account",
     "fullName": "Full Name",
     "fullNamePlaceholder": "Enter your full name",
@@ -182,7 +188,7 @@
       "text": "If you have questions about this Privacy Policy or your personal data, please contact us."
     }
   },
-"verifyOtp": {
+  "verifyOtp": {
     "title": {
       "reset": "Reset your password",
       "verify": "Verify Your Email"
@@ -211,5 +217,40 @@
       "verifyFailed": "Verification failed",
       "resentFailed": "Failed to resend OTP"
     }
+  },
+  "lists": {
+    "results": "Results",
+    "filters": {
+      "filter": "Filter",
+      "govern": "Government",
+      "type": "List Type",
+      "date": "Available Date",
+      "dateRange": "Select a date range ",
+      "price": "Price",
+      "apply": "Apply",
+      "clear": "Clear"
+    },
+    "guests": "guests",
+    "bedroom": "bedroom",
+    "bath": "bath",
+    "night": "night",
+    "amenities": "Aminites",
+    "location": "Location",
+    "reviews": "Reviews",
+    "host": "Host",
+    "since": "since",
+    "booking": "Booking",
+    "Price Details": "Price Details",
+    "Nightly rate": "Nighly rate",
+    "Cleaning Fee": "Cleaning Fee",
+    "Service Fee": "Service Fee",
+    "Total": "Total",
+    "No reviews yet.": "No reviews yet.",
+    "write a review": "write a review",
+    "Select Your Stay Dates": "Select Your Stay Dates",
+    "Select a date range": "Select a date range",
+    "Free": "Free",
+    "Processing...": "Processing...",
+    "Proceed to Checkout": "Proceed to Checkout"
   }
 }

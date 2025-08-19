@@ -28,8 +28,13 @@ export default function Header() {
   // Change to Arabic
   const toggleLanguage = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
+
+    // Change the language in i18next
     i18n.changeLanguage(newLang);
-    document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr"; // optional for RTL support
+
+    // Store both preferences (userLanguagePreference takes priority)
+    localStorage.setItem("i18nextLng", newLang);
+    localStorage.setItem("userLanguagePreference", newLang);
   };
   if (isLoading) return <h1>loading...</h1>;
   if (error) return <h1>error{error.message}</h1>;
@@ -103,7 +108,7 @@ export default function Header() {
               }`
             }
           >
-             {t("header.about")}
+            {t("header.about")}
           </NavLink>
         </li>
         <li>
@@ -121,7 +126,7 @@ export default function Header() {
       <div className="flex gap-2 md:gap-4 items-center">
         <div className="flex gap-2">
           <button
-            // onClick={toggleLanguage}
+            onClick={toggleLanguage}
             className="size-8 rounded-full text-gray-600 bg-gray-200 flex justify-center items-center hover:cursor-pointer hover:bg-gray-300 transition-all "
           >
             <TbWorld />
