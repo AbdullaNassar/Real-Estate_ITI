@@ -8,7 +8,6 @@ import * as YUP from "yup";
 import { axiosInstance } from "../../services/axiosInstance";
 import { useTranslation } from "react-i18next";
 
-
 export default function ChangePasswordModal({ onClose, onSuccess }) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -16,6 +15,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   function handleUpdatePassword(value) {
     SetIsLoading(true);
@@ -34,9 +34,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
       .catch((err) => {
         SetErrMessage(err?.response?.data?.message);
         console.log(err?.response?.data?.message);
-        toast.error(
-          err?.response?.data?.message ||t("changePassword.error")
-        );
+        toast.error(err?.response?.data?.message || t("changePassword.error"));
       })
       .finally(() => {
         SetIsLoading(false);
@@ -47,7 +45,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
     currentPassword: YUP.string()
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,100}$/,
-       t("changePasswordModal.passwordRules")
+        t("changePasswordModal.passwordRules")
       )
       .required(t("changePasswordModal.currentRequired")),
 
@@ -72,8 +70,6 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
     onSubmit: handleUpdatePassword,
     validationSchema,
   });
-
-  const {t} = useTranslation()
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-gray-50/30 backdrop-blur-xs">
@@ -129,7 +125,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.newPassword}
             type={showNewPassword ? "text" : "password"}
             id="newPassword"
-            placeholder= {t("ChangePasswordModal.newPasswordPlaceholder")}
+            placeholder={t("ChangePasswordModal.newPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span

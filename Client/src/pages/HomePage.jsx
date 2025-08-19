@@ -5,6 +5,7 @@ import Features from "../component/landingPage/Features";
 import Testimonials from "../component/landingPage/Testimonials";
 import Cta from "../component/landingPage/Cta";
 import ShowCase from "../component/landingPage/ShowCase";
+import BackToTop from "../component/BackToTop";
 
 export default function HomePage() {
   return (
@@ -20,6 +21,7 @@ export default function HomePage() {
 
       <Testimonials />
       <Cta />
+      <BackToTop />
     </div>
   );
 }

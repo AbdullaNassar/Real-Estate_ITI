@@ -223,7 +223,7 @@
     "filters": {
       "filter": "عوامل التصفية",
       "govern": "المحافظة",
-      "type": "نوع القائمة",
+      "type": "نوع العقار",
       "date": "التاريخ المتاح",
       "dateRange": "اختر نطاق تاريخ",
       "price": "السعر",
@@ -239,7 +239,7 @@
     "reviews": "التقييمات",
     "host": "المضيف",
     "since": "منذ",
-    "booking": "الحجز",
+    "booking": "احجز الان",
     "Price Details": "تفاصيل السعر",
     "Nightly rate": "سعر الليلة",
     "Cleaning Fee": "رسوم التنظيف",
@@ -423,5 +423,10 @@
     "Updating...": "جارٍ التحديث...",
     "Submitting...": "جارٍ الإرسال...",
     "Submit Review": "إرسال التقييم"
+  },
+  "errors": {
+    "Something went wrong": "حدث خطأ ما",
+    "Something wrong happened...": "حدث خطأ غير متوقع...",
+    "Try again": "حاول مرة أخرى"
   }
 }

@@ -80,9 +80,8 @@ export default function About() {
             </h2>
             <p>
               {t("about.contactText")}
-              Have questions, feedback, or ideas? We’d love to hear from you.{" "}
-              <Link to="/contact" className="underline font-semibold ml-2">
-                Contact Us
+              <Link to="/contact" className="underline font-semibold ml-2 mr-2">
+                {t("header.contact")}
               </Link>
             </p>
           </section>

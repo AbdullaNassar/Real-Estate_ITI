@@ -185,7 +185,7 @@ export default function Lists() {
                 {governmentList.map((item) => {
                   return (
                     <option key={item._id} value={item._id}>
-                      {item.name}
+                      {lang === "en" ? item.name : item.arName}
                     </option>
                   );
                 })}
@@ -199,7 +199,7 @@ export default function Lists() {
                 {categories.data.map((item) => {
                   return (
                     <option key={item._id} value={item._id}>
-                      {item.name}
+                      {lang === "en" ? item.name : item.arName}
                     </option>
                   );
                 })}

@@ -423,5 +423,10 @@
     "Updating...": "Updating...",
     "Submitting...": "Submitting...",
     "Submit Review": "Submit Review"
+  },
+  "errors": {
+    "Something went wrong": "Something went wrong",
+    "Something Wrong happened...": "Something Wrong happened...",
+    "Try again": "Try again"
   }
 }
