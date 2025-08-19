@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 const listHeading = [
   { en: "Popular homes in ", ar: "أفضل الشقق المميزة في " },
   { en: "Stay in ", ar: "استمتع بالإقامة في " },
-  { en: "Homes in ", ar: "شقق متاحة في " },
   { en: "Places to stay in ", ar: "أماكن رائعة للإقامة في " },
+  { en: "Homes in ", ar: "شقق متاحة في " },
   { en: "Check out homes in ", ar: "اكتشف الشقق المتوفرة في " },
 ];
 
@@ -20,7 +20,7 @@ export default function ListsContainer() {
   if (isLoading) return <Spinner />;
   if (error) return <h2>{error.message} Error....</h2>;
 
-  let data = lists.data.slice(0, 4);
+  let data = lists.data.slice(0, 3);
   return (
     <div className="mt-16 flex flex-col gap-4">
       <div className="text-center mb-16">

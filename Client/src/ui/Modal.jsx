@@ -1,6 +1,8 @@
 import ReactDOM from "react-dom";
-import logoBlack from "/imgs/logoBlack.svg";
 import logo from "/imgs/logo.svg";
+import logoBlack from "/imgs/logoBlack.svg";
+import logoar from "/imgs/logoar.svg";
+import logoardark from "/imgs/logoardark.svg";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useTheme } from "../features/theme/useTheme";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -19,6 +21,9 @@ import { FiUser } from "react-icons/fi";
 import { useLogout } from "../features/auth/useLogout";
 import { useTranslation } from "react-i18next";
 export function SidebarModal({ isOpen, onCancel }) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+
   const { theme } = useTheme();
   const { user, isLoading, error } = useUser();
   const { isPending: isLogout, logout } = useLogout();
@@ -38,7 +43,19 @@ export function SidebarModal({ isOpen, onCancel }) {
   }
   return ReactDOM.createPortal(
     <div className=" fixed top-0 left-0 w-full h-full bg-black/70 flex justify-center items-center z-50  ">
-      <div className="bg-gray-100 rounded-md absolute top-0 left-0 h-full w-3/4 sm:w-1/2 text-stone-600 ">
+      <div
+        className={`bg-gray-100 rounded-md absolute top-0 h-full w-3/4 sm:w-1/2 text-stone-600
+      transition-transform duration-300 ease-in-out
+      ${lang === "ar" ? "tilt-in-right-1 right-0" : "tilt-in-left-1 left-0"}
+      ${
+        isOpen
+          ? "translate-x-0"
+          : lang === "ar"
+          ? "translate-x-full"
+          : "-translate-x-full"
+      }
+    `}
+      >
         <div className="relative p-2 ">
           <button
             className="text-4xl absolute top-1 right-2"
@@ -55,7 +72,15 @@ export function SidebarModal({ isOpen, onCancel }) {
             className="mt-4 p-4 "
           >
             <img
-              src={theme === "light" ? logo : logoBlack}
+              src={
+                theme === "light"
+                  ? i18n.language === "en"
+                    ? logo
+                    : logoar
+                  : i18n.language === "en"
+                  ? logoBlack
+                  : logoardark
+              }
               alt="Maskn Logo"
               className="w-36 mb-4"
             />
@@ -77,7 +102,7 @@ export function SidebarModal({ isOpen, onCancel }) {
                 <span>
                   <MdOutlineDashboardCustomize />
                 </span>
-                Home
+                {t("header.home")}
               </NavLink>
             </li>
             <li>
@@ -96,7 +121,7 @@ export function SidebarModal({ isOpen, onCancel }) {
                 <span>
                   <HiOutlineHomeModern />
                 </span>
-                Listings
+                {t("header.listings")}
               </NavLink>
             </li>
             <li>
@@ -115,7 +140,7 @@ export function SidebarModal({ isOpen, onCancel }) {
                 <span>
                   <IoIosInformationCircleOutline />
                 </span>
-                About
+                {t("header.about")}
               </NavLink>
             </li>
             <li>
@@ -134,7 +159,7 @@ export function SidebarModal({ isOpen, onCancel }) {
                 <span>
                   <LuMessageSquareShare />
                 </span>
-                Contact us
+                {t("header.contact")}
               </NavLink>
             </li>
           </ul>
@@ -149,14 +174,14 @@ export function SidebarModal({ isOpen, onCancel }) {
                 <span>
                   <CiLogout />
                 </span>
-                Logout
+                {t("header.logout")}
               </>
             ) : (
               <>
                 <span>
                   <FiUser />
                 </span>
-                Login
+                {t("header.hlogin")}
               </>
             )}
           </button>

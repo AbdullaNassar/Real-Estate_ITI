@@ -4,7 +4,7 @@ import Animation from "../../ui/animated/Animation";
 import { useTranslation } from "react-i18next";
 
 export default function Testimonials() {
-  const {t}=useTranslation()
+  const { t } = useTranslation();
   return (
     <Animation>
       <section className="py-20 bg-gray-100">
@@ -14,7 +14,7 @@ export default function Testimonials() {
               {t("testimonials.title")}
             </h2>
             <p className="text-xl text-gray-600">
-             {t("testimonials.subtitle")}
+              {t("testimonials.subtitle")}
             </p>
           </div>
 
@@ -29,7 +29,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-800 mb-6 leading-relaxed">
-               {t("testimonials.review1.text")}
+                {t("testimonials.review1.text")}
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
@@ -43,7 +43,9 @@ export default function Testimonials() {
                   <h4 className="font-semibold text-gray-800">
                     {t("testimonials.review1.name")}
                   </h4>
-                  <p className="text-gray-500 text-sm">{t("testimonials.review1.role")}</p>
+                  <p className="text-gray-500 text-sm">
+                    {t("testimonials.review1.role")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -58,7 +60,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                 {t("testimonials.review2.text")}"
+                {t("testimonials.review2.text")}"
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
@@ -69,8 +71,14 @@ export default function Testimonials() {
                   />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">  {t("testimonials.review1.name")}</h4>
-                  <p className="text-gray-500 text-sm">  {t("testimonials.review1.role")}</p>
+                  <h4 className="font-semibold text-gray-800">
+                    {" "}
+                    {t("testimonials.review2.name")}
+                  </h4>
+                  <p className="text-gray-500 text-sm">
+                    {" "}
+                    {t("testimonials.review2.role")}
+                  </p>
                 </div>
               </div>
             </div>
@@ -85,7 +93,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                  {t("testimonials.review3.text")}
+                {t("testimonials.review3.text")}
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
@@ -96,8 +104,14 @@ export default function Testimonials() {
                   />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">  {t("testimonials.review1.name")}</h4>
-                  <p className="text-gray-500 text-sm">  {t("testimonials.review1.role")}</p>
+                  <h4 className="font-semibold text-gray-800">
+                    {" "}
+                    {t("testimonials.review3.name")}
+                  </h4>
+                  <p className="text-gray-500 text-sm">
+                    {" "}
+                    {t("testimonials.review3.role")}
+                  </p>
                 </div>
               </div>
             </div>

@@ -8,7 +8,8 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
 export default function Hero() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   function handleClickSearch() {
@@ -41,7 +42,7 @@ export default function Hero() {
           delay={4000}
         >
           {/* Anything placed inside this container will be fade into view */}
-          <div className="flex w-full flex-col sm:flex-row max-w-md gap-1  ">
+          {/* <div className="flex w-full flex-col sm:flex-row max-w-md gap-1  ">
             <input
               type="text"
               placeholder={t("hero.placeholder")}
@@ -52,6 +53,26 @@ export default function Hero() {
             <button
               onClick={handleClickSearch}
               className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm sm:rounded-none sm:rounded-r-md hover:bg-primarry-hover hover:cursor-pointer transition-all"
+            >
+              {t("hero.searchBtn")}
+            </button>
+          </div> */}
+          <div className="flex w-full flex-col sm:flex-row max-w-md gap-1">
+            <input
+              type="text"
+              placeholder={t("hero.placeholder")}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1 w-[90%] self-center sm:w-auto px-4 py-2 rounded-md 
+               sm:ltr:rounded-r-none sm:rtl:rounded-l-none 
+               border bg-gray-100 border-gray-300 
+               focus:outline-none focus:ring-2 focus:ring-primarry"
+            />
+            <button
+              onClick={handleClickSearch}
+              className="bg-primarry self-center sm:self-auto text-white px-4 py-2 rounded-sm 
+               sm:ltr:rounded-r-md sm:rtl:rounded-l-md 
+               hover:bg-primarry-hover hover:cursor-pointer transition-all"
             >
               {t("hero.searchBtn")}
             </button>
