@@ -10,7 +10,7 @@ import { axiosInstance } from "../services/axiosInstance";
 export default function VerifyOtp() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { state } = useLocation();
   const navigate = useNavigate();
   const { email, type } = state || {};
@@ -31,8 +31,12 @@ export default function VerifyOtp() {
           toast.success(t("verifyOtp.success.reset"));
           navigate("/login");
         })
-        .catch(() => {
-          toast.error(t("verifyOtp.errors.resetFailed"));
+        .catch((err) => {
+          const lang = i18n.language || "en";
+          const msg =
+            err.response?.data?.message?.[lang] ||
+            t("verifyOtp.errors.verifyFailed");
+          toast.error(msg);
         });
     } else {
       axiosInstance
@@ -41,8 +45,10 @@ export default function VerifyOtp() {
           toast.success(t("verifyOtp.success.verify"));
           navigate("/");
         })
-        .catch(() => {
-          toast.error(t("verifyOtp.errors.verifyFailed"));
+        .catch((err) => {
+          const lang = i18n.language || "en";
+          const msg = err.response?.data?.message?.[lang] || t("verifyOtp.errors.verifyFailed");
+          toast.error(msg);
         });
     }
   };
