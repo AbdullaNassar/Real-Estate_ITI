@@ -54,14 +54,14 @@ export default function Chatbot() {
           >
             <div className="header-info flex items-center gap-2">
               <TbMessageChatbot
-                className="h-9 w-9 p-2 rounded-full bg-white shadow-md"
+                className="h-9 w-9 p-2 rounded-full bg-gray-50 shadow-md"
                 style={{ color: "#C69963" }}
               />
               <h2 className="text-lg font-semibold">Chatbot</h2>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="h-8 w-8 flex items-center justify-center rounded-full hover:cursor-pointer bg-white hover:opacity-80 transition"
+              className="h-8 w-8 flex items-center justify-center rounded-full hover:cursor-pointer bg-gray-50 hover:opacity-80 transition"
               style={{ color: "#C69963" }}
             >
               <MdKeyboardArrowDown size={20} />
@@ -114,7 +114,7 @@ export default function Chatbot() {
           </div>
 
           {/* Footer */}
-          <div className="chat-footer bg-white border-t border-gray-200 p-3 flex items-center gap-2">
+          <div className="chat-footer bg-gray-100 border-t border-gray-200 p-3 flex items-center gap-2">
             <input
               type="text"
               name="message"
@@ -127,7 +127,7 @@ export default function Chatbot() {
                   formik.handleSubmit();
                 }
               }}
-              className="flex-1 p-2 text-sm border text-gray-50 pl-4 border-gray-300 rounded-full focus:outline-none"
+              className="flex-1 p-2 text-sm border text-gray-800 pl-4 border-gray-300 rounded-full focus:outline-none"
               style={{
                 boxShadow: `0 0 0 2px transparent`,
               }}

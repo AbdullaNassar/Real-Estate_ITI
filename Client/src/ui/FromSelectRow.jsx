@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function FormSelectRow({
   register,
@@ -11,6 +12,8 @@ export default function FormSelectRow({
   disabled = false,
   required = false,
 }) {
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
   return (
     <div className="flex flex-col space-y-2">
       {label && (
@@ -27,7 +30,7 @@ export default function FormSelectRow({
       >
         {options.map((opt) => (
           <option key={opt._id} value={opt._id}>
-            {opt.name}
+            {lang === "en" ? opt.name : opt.arName}
           </option>
         ))}
       </select>

@@ -4,13 +4,19 @@ import { RiStarSFill } from "react-icons/ri";
 import { IoPricetagOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { FaFireFlameCurved } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
+import { governments } from "../../utils/constants";
+import { formatCurrency, formatNumber, formatPrice } from "../../utils/helper";
 export default function ListItemCard({ list }) {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+
   return (
     <div
       onClick={() => navigate(`/ListDetails/${list._id}`)}
       role="button"
-      className="relative hover:cursor-pointer p-2 h-full flex flex-col shadow-xl bg-gray-50 text-center rounded-md"
+      className="relative transition-transform duration-300 hover:scale-105 hover:shadow-xl hover:cursor-pointer p-2 h-full flex flex-col shadow-xl bg-gray-50 text-center rounded-md"
     >
       {/* <span className="absolute top-4 right-3 text-gray-100  text-3xl">
         <svg
@@ -42,18 +48,23 @@ export default function ListItemCard({ list }) {
           className="h-48 w-full rounded-md"
         />
         <div className="p-2 space-y-2">
-          <h3>{list.title}</h3>
+          <h3>{lang === "en" ? list.title : list.arTitle}</h3>
         </div>
 
         <div className="text-gray-500 flex justify-around items-center mb-4">
           <span className="flex gap-1 items-center">
             <MdOutlineRoom className="text-xl text-primarry" />
-            <span>{list.governorate}</span>
+            <span>
+              {lang === "en"
+                ? list.governorate
+                : governments[list.governorate].arName}
+            </span>
           </span>
           <span className="flex gap-1 items-center">
             <CiUser className="text-xl text-primarry" />
             <span>
-              {list.roomNumbers} {list.roomNumbers == 1 ? "room" : "rooms"}
+              {list.roomNumbers}{" "}
+              {list.roomNumbers == 1 ? t("lists.room") : t("lists.rooms")}
             </span>
           </span>
         </div>
@@ -64,7 +75,9 @@ export default function ListItemCard({ list }) {
           </span>
           <span className="flex gap-1 items-center">
             <IoPricetagOutline className="text-xl text-primarry" />
-            <span>{list.pricePerNight}/night</span>
+            <span>
+              {formatPrice(list.pricePerNight, lang)}/{t("lists.night")}
+            </span>
           </span>
         </div>
         <div></div>
@@ -74,7 +87,7 @@ export default function ListItemCard({ list }) {
         className="bg-gray-200 w-full rounded-sm  py-4 text-gray-800 sm:text-lg  transition-all mt-4 hover:cursor-pointer hover:bg-primarry-hover hover:text-stone-100"
         // className="bg-primarry w-full rounded-sm  py-4 text-stone-100 transition-all mt-4 hover:cursor-pointer hover:bg-primarry-hover"
       >
-        Show Details
+        {t("common.showDetails")}
       </button>
     </div>
   );

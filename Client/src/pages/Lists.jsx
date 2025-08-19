@@ -257,7 +257,7 @@ export default function Lists() {
             <h2 className="text-xl font-bold">
               {formatNumber(lists.total, lang)} {t("lists.results")}
             </h2>
-            <div className="flex gap-1">
+            {/* <div className="flex gap-1">
               <input
                 value={searchQuery}
                 onChange={handleSearch}
@@ -268,6 +268,27 @@ export default function Lists() {
               <button
                 onClick={handleApplyFilters}
                 className="bg-primarry rounded-r-full p-2 hover:cursor-pointer text-stone-200 hover:bg-primarry-hover"
+              >
+                <IoSearch />
+              </button>
+            </div> */}
+            <div
+              className={`flex items-center gap-1 ${
+                lang === "ar" ? "flex-row-reverse" : "flex-row"
+              }`}
+              dir={lang === "ar" ? "rtl" : "ltr"}
+            >
+              <input
+                value={searchQuery}
+                onChange={handleSearch}
+                type="search"
+                className="bg-gray-200 rounded-full w-[70%] sm:w-auto grow p-2 sm:pl-4 focus:!outline-none focus:!isolation-auto focus:!z-0 focus:!outline-offset-0"
+                placeholder={t("common.search")}
+              />
+              <button
+                onClick={handleApplyFilters}
+                className="bg-primarry p-2 size-8 text-stone-200 hover:cursor-pointer hover:bg-primarry-hover 
+               rounded-full"
               >
                 <IoSearch />
               </button>
@@ -283,21 +304,24 @@ export default function Lists() {
 
           {/* pagination */}
           {totalPages > 1 && (
-            <div className="flex gap-4 self-center mt-8">
+            <div
+              className="flex gap-4 self-center mt-8"
+              dir="ltr" // Force LTR
+            >
               <button
-                disabled={page == 1}
+                disabled={page === 1}
                 onClick={handlePrev}
-                className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
+                className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center"
               >
                 <span>
                   <GrFormPrevious />
                 </span>
-                {/* <span>Prev</span> */}
               </button>
+
               <button
                 disabled={totalPages === page}
                 onClick={handleNext}
-                className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center "
+                className="size-8 rounded-full disabled:bg-gray-400 border text-lg hover:bg-gray-300 hover:cursor-pointer border-gray-400 flex items-center justify-center"
               >
                 <span>
                   <GrFormNext />

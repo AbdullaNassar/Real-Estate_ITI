@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 
 import { useUpdateReview } from "./useUpdateReview";
+import { useTranslation } from "react-i18next";
 
 export default function Review({
   onClose,
@@ -13,7 +14,7 @@ export default function Review({
   reviewToEdit,
 }) {
   const queryClient = useQueryClient();
-
+  const { t } = useTranslation();
   const isEditing = Boolean(reviewToEdit?._id);
 
   const { mutate: updateReview, isPending: isUpdating } =
@@ -28,13 +29,14 @@ export default function Review({
       return data;
     },
     onSuccess: () => {
-      toast.success("Review submitted successfully");
+      toast.success(t("review.Review submitted successfully"));
       queryClient.invalidateQueries({ queryKey: ["reviews", listingId] });
       onClose();
     },
     onError: (err) => {
       toast.error(
-        err?.response?.data?.message || "Error while submitting review"
+        err?.response?.data?.message ||
+          t("review.Error while submitting review")
       );
     },
   });
@@ -63,12 +65,14 @@ export default function Review({
     <div className="fixed inset-0 z-1000 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-black/30 backdrop-blur-sm">
       <div className="bg-gray-50 p-6 rounded-lg shadow-xl w-full max-w-md relative">
         <h2 className="text-xl font-semibold mb-4 text-center">
-          {isEditing ? "Update Review" : "Leave a Review"}
+          {isEditing ? t("review.Update Review") : t("review.Leave a Review")}
         </h2>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div>
-            <label className="block font-medium mb-1">Rating:</label>
+            <label className="block font-medium mb-1">
+              {t("review.Rating")}:
+            </label>
             <div className="rating">
               {[1, 2, 3, 4, 5].map((star) => (
                 <input
@@ -88,7 +92,7 @@ export default function Review({
           {/* Comment */}
           <div>
             <label htmlFor="comment" className="block font-medium mb-1">
-              Comment:
+              {t("review.Comment")}:
             </label>
             <textarea
               id="comment"
@@ -108,7 +112,7 @@ export default function Review({
               onClick={onClose}
               className="bg-transparent border-gray-700 border hover:bg-gray-500 hover:cursor-pointer transition hover:text-gray-50 text-gray-800 px-4 py-2 rounded-md"
             >
-              Close
+              {t("review.Close")}
             </button>
             <button
               type="submit"
@@ -117,11 +121,11 @@ export default function Review({
             >
               {isEditing
                 ? isUpdating
-                  ? "Updating..."
-                  : "Update Review"
+                  ? t("review.Updating...")
+                  : t("review.Update Review")
                 : isCreating
-                ? "Submitting..."
-                : "Submit Review"}
+                ? t("review.Submitting...")
+                : t("review.Submit Review")}
             </button>
           </div>
         </form>

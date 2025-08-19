@@ -9,6 +9,8 @@ import GuestBooking from "../features/profile/GuestBooking";
 import HostApartment from "../features/profile/HostApartment";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
+import { useTranslation } from "react-i18next";
+import { formatNumber } from "../utils/helper";
 
 export default function Profile() {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -16,6 +18,8 @@ export default function Profile() {
   const [editPassword, setEditPassword] = useState(false);
   const [activeTab, setActiveTab] = useState("about");
   const navigate = useNavigate();
+  const { i18n, t } = useTranslation();
+  const lang = i18n.language;
 
   const { user, refetch, isLoading: loadingUser, error: errorUser } = useUser();
 
@@ -71,13 +75,17 @@ export default function Profile() {
             </h2>
             {/* <p className="text-gray-600">{curUser?.role}</p> */}
             <p className="text-gray-600">
-              Joined in{" "}
+              {t("profile.Joined in")}
               {curUser?.createdAt
-                ? new Date(curUser?.createdAt).getFullYear()
+                ? formatNumber(new Date(curUser?.createdAt).getFullYear(), lang)
                 : ""}
             </p>
             <div className="badge font-semibold badge-accent">
-              {curUser?.role}
+              {lang === "en"
+                ? curUser?.role
+                : curUser?.role === "host"
+                ? "مالك"
+                : "مضيف"}
             </div>
           </div>
         </div>
@@ -89,7 +97,7 @@ export default function Profile() {
               onClick={() => navigate("/addList")}
               className="sm:w-auto px-6 py-2 border rounded bg-primarry text-stone-100 hover:bg-primarry-hover transition cursor-pointer"
             >
-              Add New List
+              {t("profile.Add New List")}
             </button>
           )}
           <button
@@ -97,14 +105,14 @@ export default function Profile() {
             className="sm:w-auto px-6 py-2 border rounded bg-gray-400 text-gray-100 hover:bg-gray-500 transition cursor-pointer"
             disabled={isRefetching}
           >
-            Edit Profile
+            {t("profile.Edit Profile")}
           </button>
 
           <button
             onClick={() => setEditPassword(true)}
             className="sm:w-auto px-11 py-2 border rounded bg-gray-400 text-gray-100 hover:bg-gray-500 transition whitespace-nowrap cursor-pointer"
           >
-            Change Password
+            {t("profile.Change Password")}
           </button>
         </div>
       </div>
@@ -134,7 +142,7 @@ export default function Profile() {
           }`}
           onClick={() => setActiveTab("about")}
         >
-          About
+          {t("profile.About")}
         </button>
         <button
           className={` cursor-pointer sm:text-2xl px-4 py-2 font-semibold ${
@@ -144,7 +152,9 @@ export default function Profile() {
           }`}
           onClick={() => setActiveTab("booking")}
         >
-          {curUser?.role === "host" ? "Your Apartments" : "Your Bookings"}
+          {curUser?.role === "host"
+            ? t("profile.Your Apartments")
+            : t("profile.Your Bookings")}
         </button>
       </div>
 
@@ -155,7 +165,7 @@ export default function Profile() {
             <div className="flex items-center mb-6">
               <div className="w-1 h-6 bg-gray-500 rounded-full mr-3"></div>
               <h3 className="text-xl font-bold text-gray-900">
-                Confirmed Information
+                {t("profile.Confirmed Information")}
               </h3>
             </div>
             <div className="bg-gray-200 rounded-xl p-6 border border-blue-100 shadow-sm">
@@ -164,7 +174,7 @@ export default function Profile() {
                   <div className="flex items-center mb-2">
                     <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
                     <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                      Email Address
+                      {t("profile.Email Address")}
                     </p>
                   </div>
                   <p className="text-gray-900 font-medium break-words bg-gray-50 px-3 py-2 rounded-lg border border-blue-200 group-hover:shadow-sm transition-shadow">
@@ -176,13 +186,13 @@ export default function Profile() {
                   <div className="flex items-center mb-2">
                     <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
                     <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                      Phone Number
+                      {t("profile.Phone Number")}
                     </p>
                   </div>
                   <p className="text-gray-900 font-medium bg-gray-50 px-3 py-2 rounded-lg border border-blue-200 group-hover:shadow-sm transition-shadow">
                     {curUser?.phoneNumber || (
                       <span className="text-gray-500 italic">
-                        Not available yet
+                        {t("profile.Not available yet")}
                       </span>
                     )}
                   </p>
@@ -192,7 +202,7 @@ export default function Profile() {
                   <div className="flex items-center mb-2">
                     <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
                     <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                      Verification Status
+                      {t("profile.Verification Status")}
                     </p>
                   </div>
                   <div className="bg-gray-50 px-3 py-2 rounded-lg border border-blue-200 group-hover:shadow-sm transition-shadow">
@@ -200,14 +210,14 @@ export default function Profile() {
                       <div className="flex items-center">
                         <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
                         <span className="text-green-700 font-semibold">
-                          Verified
+                          {t("profile.Verified")}
                         </span>
                       </div>
                     ) : (
                       <div className="flex items-center">
                         <div className="w-3 h-3 bg-amber-500 rounded-full mr-2"></div>
                         <span className="text-amber-700 font-semibold">
-                          Not verified
+                          {t("profile.Not verified")}
                         </span>
                       </div>
                     )}
@@ -222,7 +232,7 @@ export default function Profile() {
             <div className="flex items-center mb-6">
               <div className="w-1 h-6 bg-gray-500 rounded-full mr-3"></div>
               <h3 className="text-xl font-bold text-gray-900">
-                Personal Information
+                {t("profile.Personal Information")}
               </h3>
             </div>
             <div className="bg-gray-200 rounded-xl p-6 border border-purple-100 shadow-sm">
@@ -231,13 +241,13 @@ export default function Profile() {
                   <div className="flex items-center mb-2">
                     <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
                     <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                      Gender
+                      {t("profile.Gender")}
                     </p>
                   </div>
                   <p className="text-gray-900 font-medium bg-gray-50 px-3 py-2 rounded-lg border border-purple-200 group-hover:shadow-sm transition-shadow">
                     {curUser?.gender || (
                       <span className="text-gray-500 italic">
-                        Not selected yet
+                        {t("profile.Not selected yet")}
                       </span>
                     )}
                   </p>
@@ -247,7 +257,7 @@ export default function Profile() {
                   <div className="flex items-center mb-2">
                     <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
                     <p className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
-                      Date of Birth
+                      {t("profile.Date of Birth")}
                     </p>
                   </div>
                   <p className="text-gray-900 font-medium bg-gray-50 px-3 py-2 rounded-lg border border-purple-200 group-hover:shadow-sm transition-shadow">
@@ -262,7 +272,7 @@ export default function Profile() {
                       )
                     ) : (
                       <span className="text-gray-500 italic">
-                        Not selected yet
+                        {t("profile.Not selected yet")}
                       </span>
                     )}
                   </p>

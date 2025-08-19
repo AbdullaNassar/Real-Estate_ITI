@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useInView, useMotionValue, useSpring } from "motion/react";
+import { useTranslation } from "react-i18next";
+import { formatNumber } from "../../utils/helper";
 
 export default function Counter({
   to,
@@ -15,6 +17,8 @@ export default function Counter({
 }) {
   const ref = useRef(null);
   const motionValue = useMotionValue(direction === "down" ? to : from);
+  const { i18n } = useTranslation();
+  const lang = i18n.language; // en | ar
 
   const damping = 20 + 40 * (1 / duration);
   const stiffness = 100 * (1 / duration);
@@ -31,12 +35,10 @@ export default function Counter({
 
     if (str.includes(".")) {
       const decimals = str.split(".")[1];
-
       if (parseInt(decimals) !== 0) {
         return decimals.length;
       }
     }
-
     return 0;
   };
 
@@ -83,24 +85,19 @@ export default function Counter({
       if (ref.current) {
         const hasDecimals = maxDecimals > 0;
 
-        const options = {
-          useGrouping: !!separator,
-          minimumFractionDigits: hasDecimals ? maxDecimals : 0,
-          maximumFractionDigits: hasDecimals ? maxDecimals : 0,
-        };
-
-        const formattedNumber = Intl.NumberFormat("en-US", options).format(
-          latest
+        const formatted = formatNumber(
+          hasDecimals ? latest.toFixed(maxDecimals) : Math.round(latest),
+          lang
         );
 
         ref.current.textContent = separator
-          ? formattedNumber.replace(/,/g, separator)
-          : formattedNumber;
+          ? formatted.replace(/,/g, separator)
+          : formatted;
       }
     });
 
     return () => unsubscribe();
-  }, [springValue, separator, maxDecimals]);
+  }, [springValue, separator, maxDecimals, lang]);
 
   return <span className={className} ref={ref} />;
 }

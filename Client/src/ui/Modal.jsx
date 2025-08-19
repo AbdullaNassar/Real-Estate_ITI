@@ -17,6 +17,7 @@ import Error from "./Error";
 import { CiLogout } from "react-icons/ci";
 import { FiUser } from "react-icons/fi";
 import { useLogout } from "../features/auth/useLogout";
+import { useTranslation } from "react-i18next";
 export function SidebarModal({ isOpen, onCancel }) {
   const { theme } = useTheme();
   const { user, isLoading, error } = useUser();
@@ -173,6 +174,7 @@ export function ConfirmationModal({
   title,
   isPending = false,
 }) {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
@@ -181,8 +183,9 @@ export function ConfirmationModal({
         <div className="flex  gap-3 flex-col font-semibold mb-6">
           <RiDeleteBin6Line className="text-red-500 text-3xl" />
           <p className="text-lg">
-            Are you sure you want to delete this {title} permanently? This
-            action cannot be undone.
+            {t(
+              "deleteModal.Are you sure you want to delete this {title} permanently? Thisaction cannot be undone."
+            )}
           </p>
         </div>
         <div className="flex justify-end gap-4 mt-6">
@@ -190,14 +193,14 @@ export function ConfirmationModal({
             onClick={onCancel}
             className="px-4 py-2 border border-gray-300 hover:cursor-pointer hover:gray-500 text-gray-900 rounded shadow hover:shadow-md transition"
           >
-            No
+            {t("deleteModal.No")}
           </button>
           <button
             disabled={isPending}
             onClick={onConfirm}
             className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 hover:cursor-pointer transition"
           >
-            Yes
+            {isPending ? t("deleteModal.deleting...") : t("deleteModal.Yes")}
           </button>
         </div>
       </div>

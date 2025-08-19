@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function FormCheckboxRow({
   id,
@@ -9,6 +10,8 @@ export default function FormCheckboxRow({
   errors = {},
   required = false,
 }) {
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
   return (
     <div className="flex flex-col space-y-2">
       {label && (
@@ -27,7 +30,7 @@ export default function FormCheckboxRow({
               {...register(id, rules)}
               className="accent-primarry text-gray-50"
             />
-            <span>{opt.name}</span>
+            <span>{lang === "en" ? opt.name : opt.arName}</span>
           </label>
         ))}
       </div>

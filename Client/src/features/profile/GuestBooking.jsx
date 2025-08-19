@@ -12,11 +12,13 @@ import {
 import Spinner from "../../ui/Spinner";
 import Error from "../../ui/Error";
 import { useGuestBookings } from "../booking/useGeustBooking";
-import { formatPrice } from "../../utils/helper";
+import { formatDate, formatNumber, formatPrice } from "../../utils/helper";
+import { useTranslation } from "react-i18next";
 
 export default function GuestBooking() {
   const { data, error, isLoading } = useGuestBookings();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   // handle loading, error states
   if (isLoading) return <Spinner />;
@@ -27,13 +29,13 @@ export default function GuestBooking() {
     return (
       <div className="flex flex-col items-center justify-center text-center py-12 px-4 bg-gray-50 rounded-xl shadow-md">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          You don't have any Bookings yet
+          {t("profile.You don't have any Bookings yet")}
         </h2>
         <button
           onClick={() => navigate("/listings")}
           className="bg-primarry hover:bg-primarry-hover text-stone-100 font-medium py-3 px-6 rounded-lg hover:cursor-pointer shadow transition-all duration-200"
         >
-          Explore Our Properties!
+          {t("profile.Explore Our Properties!")}
         </button>
       </div>
     );
@@ -52,6 +54,8 @@ export default function GuestBooking() {
 }
 
 const TotalBookingsMinimal = ({ data }) => {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   return (
     <div className="bg-gray-50 rounded-lg shadow-md border-l-4 border-blue-500 p-6">
       <div className="flex items-center">
@@ -59,9 +63,11 @@ const TotalBookingsMinimal = ({ data }) => {
           <User className="h-6 w-6 text-blue-600" />
         </div>
         <div>
-          <p className="text-gray-600 text-sm font-medium">Total Bookings</p>
+          <p className="text-gray-600 text-sm font-medium">
+            {t("profile.Total Bookings")}
+          </p>
           <h2 className="text-3xl font-bold text-gray-900">
-            {data.toLocaleString()}
+            {formatNumber(data.toLocaleString(), lang)}
           </h2>
         </div>
       </div>
@@ -70,16 +76,9 @@ const TotalBookingsMinimal = ({ data }) => {
 };
 
 function BookingItem({ booking }) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   // Format date function
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   // Format price function
 
@@ -139,7 +138,7 @@ function BookingItem({ booking }) {
             <span
               className={`text-sm font-semibold ${paymentStyle.text} capitalize`}
             >
-              {booking.paymentStatus || "Paid"}
+              {t("profile.paid")}
             </span>
           </div>
         </div>
@@ -150,14 +149,14 @@ function BookingItem({ booking }) {
         {/* Title and Price per night */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-2 line-clamp-2">
-            {booking.listing.title}
+            {lang === "en" ? booking.listing.title : booking.listing.arTitle}
           </h2>
           <div className="flex items-center text-gray-600">
             {/* <DollarSign className="h-5 w-5 mr-1" /> */}
             <span className="text-lg font-semibold">
-              {formatPrice(booking.listing.pricePerNight)}
+              {formatPrice(booking.listing.pricePerNight, lang)}
             </span>
-            <span className="text-gray-500 ml-1">/ night</span>
+            <span className="text-gray-500 ml-1">/ {t("lists.night")}</span>
           </div>
         </div>
 
@@ -168,9 +167,11 @@ function BookingItem({ booking }) {
               <Calendar className="h-5 w-5 text-green-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-green-800">Check-in</p>
+              <p className="text-sm font-medium text-green-800">
+                {t("profile.Check-in")}
+              </p>
               <p className="text-green-700 font-semibold">
-                {formatDate(booking.checkIn)}
+                {formatDate(booking.checkIn, lang)}
               </p>
             </div>
           </div>
@@ -180,9 +181,11 @@ function BookingItem({ booking }) {
               <CalendarCheck className="h-5 w-5 text-red-600" />
             </div>
             <div>
-              <p className="text-sm font-medium text-red-800">Check-out</p>
+              <p className="text-sm font-medium text-red-800">
+                {t("profile.Check-out")}
+              </p>
               <p className="text-red-700 font-semibold">
-                {formatDate(booking.checkOut)}
+                {formatDate(booking.checkOut, lang)}
               </p>
             </div>
           </div>
@@ -196,15 +199,21 @@ function BookingItem({ booking }) {
                 <DollarSign className="h-6 w-6 text-blue-600" />
               </div>
               <div>
-                <p className="text-blue-800 font-medium">Total Amount</p>
+                <p className="text-blue-800 font-medium">
+                  {t("profile.Total Amount")}
+                </p>
                 <p className="text-3xl font-bold text-blue-900">
-                  {formatPrice(booking.totalPrice)}
+                  {formatPrice(booking.totalPrice, lang)}
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-blue-600 text-sm">Final Price</p>
-              <p className="text-blue-800 font-medium">All inclusive</p>
+              <p className="text-blue-600 text-sm">
+                {t("profile.Final Price")}
+              </p>
+              <p className="text-blue-800 font-medium">
+                {t("profile.All inclusive")}
+              </p>
             </div>
           </div>
         </div>

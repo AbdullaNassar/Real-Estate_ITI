@@ -4,14 +4,17 @@ import { useListsByGovern } from "./useListsByGovern";
 import Spinner from "../../ui/Spinner";
 import Counter from "../../ui/animated/Counter";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const listHeading = [
-  "Popular homes in ",
-  "Stay in ",
-  "Homes in ",
-  "Places to stay in ",
-  "Check out homes in ",
+  { en: "Popular homes in ", ar: "أفضل الشقق المميزة في " },
+  { en: "Stay in ", ar: "استمتع بالإقامة في " },
+  { en: "Homes in ", ar: "شقق متاحة في " },
+  { en: "Places to stay in ", ar: "أماكن رائعة للإقامة في " },
+  { en: "Check out homes in ", ar: "اكتشف الشقق المتوفرة في " },
 ];
+
 export default function ListsContainer() {
+  const { t } = useTranslation();
   let { data: lists, error, isLoading } = useListsByGovern();
   const navigate = useNavigate();
   if (isLoading) return <Spinner />;
@@ -30,13 +33,13 @@ export default function ListsContainer() {
             duration={1}
             className="count-up-text text-gray-800"
           />
-          + Premium Apartments
+          + {t("lists.Premium Apartments")}
         </h2>
         {/* <h2 className="text-4xl font-bold text-stone-800 mb-4">
           Find Your Perfect Stay in Egypt
         </h2> */}
         <p className="text-2xl font-semibold text-gray-600">
-          Find Your Perfect Stay in Egypt
+          {t("lists.Find Your Perfect Stay in Egypt")}
         </p>
         {/* Decorative line */}
         <div className="mt-8 flex items-center justify-center">
@@ -59,18 +62,19 @@ export default function ListsContainer() {
       <div className="mt-4 mb-12 text-center">
         <div className="bg-gray/70 backdrop-blur-xl rounded-3xl p-8 shadow-xl max-w-4xl mx-auto border border-white/20">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">
-            Ready to Find Your Dream Home?
+            {t("lists.Ready to Find Your Dream Home?")}
           </h3>
           <p className="text-gray-600 mb-6">
-            Join thousands of satisfied residents who've found their perfect
-            apartment through our platform.
+            {t(
+              "lists.Join thousands of satisfied residents who've found their perfectapartment through our platform."
+            )}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => navigate("/listings")}
               className="bg-gradient-to-r from-primarry to-primarry-hover text-white font-semibold px-8 py-3 rounded-xl hover:cursor-pointer transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Browse All Apartments
+              {t("lists.Browse All Apartments")}
             </button>
           </div>
         </div>

@@ -43,8 +43,18 @@ export const formatNumber = (number, lang = "en") => {
   }).format(number);
 };
 
-export const formatDate = (dateString) => {
+export const formatDate = (dateString, lang = "en") => {
   const date = new Date(dateString);
+
+  if (lang === "ar") {
+    return date.toLocaleDateString("ar-EG", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
   return date.toLocaleDateString("en-US", {
     weekday: "short",
     year: "numeric",

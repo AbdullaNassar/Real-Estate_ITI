@@ -19,9 +19,13 @@ import { useListBookings } from "../features/booking/useListBookings";
 import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import { formatDate, formatPrice } from "../utils/helper";
+import { useTranslation } from "react-i18next";
 
 export default function ListBookings() {
   const { id } = useParams();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+
   const { data, error, isLoading } = useListBookings(id);
 
   // handel loading and error states
@@ -166,8 +170,6 @@ function ListItem({ list }) {
 }
 
 const NoBookings = ({
-  title = "No Bookings Yet",
-  message = "There are no bookings available at the moment.",
   showCreateButton = false,
   onCreateBooking,
   illustration = "calendar",
@@ -178,6 +180,7 @@ const NoBookings = ({
     users: <Users className="h-16 w-16 text-gray-400" />,
     book: <BookOpen className="h-16 w-16 text-gray-400" />,
   };
+  const { t } = useTranslation();
 
   return (
     <div className="mt-8 flex flex-col items-center justify-center p-12 text-center bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
@@ -187,10 +190,14 @@ const NoBookings = ({
       </div>
 
       {/* Title */}
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+        {t("lists.No Bookings Yet")}
+      </h3>
 
       {/* Message */}
-      <p className="text-gray-600 mb-6 max-w-md">{message}</p>
+      <p className="text-gray-600 mb-6 max-w-md">
+        {t("lists.There are no bookings available at the moment.")}
+      </p>
 
       {/* Optional Create Button */}
       {showCreateButton && (
