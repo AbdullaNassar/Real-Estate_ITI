@@ -3927,18 +3927,18 @@ const swaggerDefinition = {
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "required": ["documents"],
                 "properties": {
                   "documents": {
                     "type": "array",
-                    "items": { "type": "string" },
-                    "example": [
-                      "Maskan is a web app for booking rental properties in Egypt.",
-                      "It allows hosts to list their properties and guests to book them."
-                    ]
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "List of documents to upload (PDF, DOCX, TXT)"
                   }
                 }
               }
@@ -3947,34 +3947,52 @@ const swaggerDefinition = {
         },
         "responses": {
           "200": {
-            "description": { "en": "Documents uploaded and indexed successfully", "ar": "تم رفع وفهرسة المستندات بنجاح" },
+            "description": {
+              "en": "Documents uploaded and indexed successfully",
+              "ar": "تم رفع وفهرسة المستندات بنجاح"
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
-                  "message": { "en": "2 documents uploaded and indexed successfully", "ar": "تم رفع وفهرسة مستندين بنجاح" }
+                  "message": {
+                    "en": "2 documents uploaded and indexed successfully",
+                    "ar": "تم رفع وفهرسة مستندين بنجاح"
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": { "en": "Invalid input", "ar": "إدخال غير صالح" },
+            "description": {
+              "en": "Invalid input",
+              "ar": "إدخال غير صالح"
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "fail",
-                  "message": { "en": "documents must be an array", "ar": "يجب أن تكون المستندات مصفوفة" }
+                  "message": {
+                    "en": "documents must be an array of files",
+                    "ar": "يجب أن تكون المستندات مصفوفة من الملفات"
+                  }
                 }
               }
             }
           },
           "500": {
-            "description": { "en": "Failed to upload documents", "ar": "فشل في رفع المستندات" },
+            "description": {
+              "en": "Failed to upload documents",
+              "ar": "فشل في رفع المستندات"
+            },
             "content": {
               "application/json": {
                 "example": {
                   "status": "error",
-                  "message": { "en": "Failed to upload documents", "ar": "فشل في رفع المستندات" }
+                  "message": {
+                    "en": "Failed to upload documents",
+                    "ar": "فشل في رفع المستندات"
+                  }
                 }
               }
             }
