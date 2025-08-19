@@ -12,6 +12,7 @@ import ratingRouter from "./src/routes/ratingRoutes.js";
 import categoryRouter from "./src/routes/categoryRoutes.js";
 import amenityRouter from "./src/routes/amenityRoutes.js";
 import uploadRouter from "./src/data/upload.js";
+import contactRouter from "./src/routes/contactUsRoutes.js";
 
 import RAGRouter from "./src/routes/RAGChatBootRoutes.js";
 import { swaggerDocs } from "./src/utilities/swagerDoc.js";
@@ -94,6 +95,7 @@ app.use("/api/v1/amenities", amenityRouter);
 app.use("/api/v1/chat-model", RAGRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/", uploadRouter);
+app.use("/api/v1/contact", contactRouter);
 
 //server
 

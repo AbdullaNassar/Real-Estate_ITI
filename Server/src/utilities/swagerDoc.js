@@ -4042,6 +4042,236 @@ const swaggerDefinition = {
           }
         }
       }
+    },
+    // --------------------Contact Us ---------------------
+    "/contact": {
+      "post": {
+        "summary": "Create a new contact message",
+        "tags": ["Contact"],
+        "security": [
+          { "bearerAuth": [] }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "subject", "message"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe",
+                    "description": { "en": "Name of the sender", "ar": "اسم المرسل" }
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john@example.com",
+                    "description": { "en": "Email address of the sender", "ar": "البريد الإلكتروني للمرسل" }
+                  },
+                  "subject": {
+                    "type": "string",
+                    "example": "Problem with booking",
+                    "description": { "en": "Subject of the message", "ar": "موضوع الرسالة" }
+                  },
+                  "message": {
+                    "type": "string",
+                    "example": "I faced an issue while booking an apartment...",
+                    "description": { "en": "Content of the message", "ar": "محتوى الرسالة" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": { "en": "Message created successfully", "ar": "تم إنشاء الرسالة بنجاح" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Message created",
+                    "value": {
+                      "status": "success",
+                      "message": {
+                        "en": "Message created successfully",
+                        "ar": "تم إنشاء الرسالة بنجاح"
+                      },
+                      "data": {
+                        "id": "64c2f0d9f1a2c9e8d2e8b123",
+                        "name": "John Doe",
+                        "email": "john@example.com",
+                        "subject": "Problem with booking",
+                        "message": "I faced an issue while booking an apartment..."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": { "en": "Validation error (missing fields)", "ar": "خطأ في التحقق (حقول ناقصة)" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationError": {
+                    "summary": "Validation error",
+                    "value": {
+                      "status": "fail",
+                      "message": {
+                        "en": "Email and subject are required",
+                        "ar": "البريد الإلكتروني والموضوع مطلوبان"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": { "en": "Unauthorized (user not logged in)", "ar": "غير مصرح (المستخدم غير مسجل الدخول)" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "unauthorized": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": "fail",
+                      "message": {
+                        "en": "Unauthorized access, please login first",
+                        "ar": "دخول غير مصرح، يرجى تسجيل الدخول أولاً"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": { "en": "Internal server error", "ar": "خطأ في الخادم الداخلي" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "serverError": {
+                    "summary": "Server error",
+                    "value": {
+                      "status": "error",
+                      "message": {
+                        "en": "Something went wrong on the server",
+                        "ar": "حدث خطأ في الخادم"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "get": {
+        "summary": "Get all contact messages (Admin only)",
+        "tags": ["Contact"],
+        "security": [
+          { "bearerAuth": [] }
+        ],
+        "responses": {
+          "200": {
+            "description": { "en": "List of messages", "ar": "قائمة الرسائل" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "messagesList": {
+                    "summary": "Messages list",
+                    "value": {
+                      "status": "success",
+                      "message": {
+                        "en": "List of contact messages",
+                        "ar": "قائمة الرسائل"
+                      },
+                      "data": [
+                        {
+                          "id": "64c2f0d9f1a2c9e8d2e8b123",
+                          "name": "John Doe",
+                          "email": "john@example.com",
+                          "subject": "Problem with booking",
+                          "message": "I faced an issue while booking an apartment..."
+                        },
+                        {
+                          "id": "64c2f0d9f1a2c9e8d2e8b124",
+                          "name": "Jane Smith",
+                          "email": "jane@example.com",
+                          "subject": "Payment issue",
+                          "message": "My payment did not go through"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": { "en": "Unauthorized (user not logged in)", "ar": "غير مصرح (المستخدم غير مسجل الدخول)" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "unauthorized": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": "fail",
+                      "message": {
+                        "en": "Unauthorized access, please login first",
+                        "ar": "دخول غير مصرح، يرجى تسجيل الدخول أولاً"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": { "en": "Forbidden (not admin)", "ar": "ممنوع (ليس لديك صلاحية المدير)" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "forbidden": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "status": "fail",
+                      "message": {
+                        "en": "You do not have permission to access this resource",
+                        "ar": "ليس لديك صلاحية للوصول إلى هذا المورد"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": { "en": "Internal server error", "ar": "خطأ في الخادم الداخلي" },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "serverError": {
+                    "summary": "Server error",
+                    "value": {
+                      "status": "error",
+                      "message": {
+                        "en": "Something went wrong on the server",
+                        "ar": "حدث خطأ في الخادم"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
 };
