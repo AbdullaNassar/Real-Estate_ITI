@@ -287,7 +287,6 @@
     "Ready to Find Your Dream Home?": "هل أنت مستعد للعثور على منزل أحلامك؟",
     "Join thousands of satisfied residents who've found their perfectapartment through our platform.": "انضم إلى آلاف السكان الراضين الذين وجدوا شقتهم المثالية من خلال منصتنا.",
     "Browse All Apartments": "تصفح جميع الشقق",
-
     "placeholders": {
       "Enter the property government": "أدخل اسم المحافظة",
       "Enter the property address": "أدخل عنوان العقار",
@@ -296,7 +295,6 @@
       "Enter the maximum number of guests": "أدخل الحد الأقصى لعدد الضيوف",
       "Enter the price per night": "أدخل السعر لليلة"
     },
-
     "errors": {
       "title is required": "العنوان مطلوب",
       "minumum title length is 5 charcaters": "الحد الأدنى لطول العنوان هو 5 أحرف",
@@ -424,9 +422,37 @@
     "Submitting...": "جارٍ الإرسال...",
     "Submit Review": "إرسال التقييم"
   },
-  "errors": {
-    "Something went wrong": "حدث خطأ ما",
-    "Something wrong happened...": "حدث خطأ غير متوقع...",
-    "Try again": "حاول مرة أخرى"
+  "footer": {
+    "tagline": "بيتك المصري، أينما كنت. نربط المسافرين بالإيجارات السكنية الأصيلة في جميع أنحاء مصر.",
+    "quickLinks": "روابط سريعة",
+    "findStays": "ابحث عن إقامة",
+    "becomeHost": "كن مضيفًا",
+    "aboutUs": "معلومات عنا",
+    "contact": "اتصل بنا",
+    "support": "الدعم",
+    "helpCenter": "مركز المساعدة",
+    "safety": "السلامة",
+    "terms": "شروط الخدمة",
+    "privacy": "سياسة الخصوصية",
+    "connect": "تواصل",
+    "copyright": "© 2025 مسكن. جميع الحقوق محفوظة. صنع بحب ❤️ من أجل الضيافة المصرية."
+  },
+  "editProfileModal": {
+    "Edit Profile": "تعديل الملف الشخصي",
+    "Username": "اسم المستخدم",
+    "Email": "البريد الإلكتروني",
+    "Phone Number": "رقم الهاتف",
+    "Date of Birth": "تاريخ الميلاد",
+    "Gender": "الجنس",
+    "Select gender": "اختر الجنس",
+    "Male": "ذكر",
+    "Female": "أنثى",
+    "Cancel": "إلغاء",
+    "Save": "حفظ",
+    "Profile updated successfully": "تم تحديث الملف الشخصي بنجاح",
+    "Failed to update profile": "فشل في تحديث الملف الشخصي",
+    "Enter your username": "أدخل اسم المستخدم الخاص بك",
+    "Enter your email": "أدخل بريدك الإلكتروني",
+    "Enter your phone number": "أدخل رقم هاتفك"
   }
 }

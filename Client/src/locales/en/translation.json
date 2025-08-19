@@ -424,9 +424,37 @@
     "Submitting...": "Submitting...",
     "Submit Review": "Submit Review"
   },
-  "errors": {
-    "Something went wrong": "Something went wrong",
-    "Something Wrong happened...": "Something Wrong happened...",
-    "Try again": "Try again"
+  "footer": {
+    "tagline": "Your Egyptian Home, Wherever You Are. Connecting travelers with authentic home rentals across Egypt.",
+    "quickLinks": "Quick Links",
+    "findStays": "Find Stays",
+    "becomeHost": "Become a Host",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "safety": "Safety",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "connect": "Connect",
+    "copyright": "© 2025 Maskan. All rights reserved. Made with ❤️ for Egyptian hospitality."
+  },
+  "editProfileModal": {
+    "Edit Profile": "Edit Profile",
+    "Username": "Username",
+    "Email": "Email",
+    "Phone Number": "Phone Number",
+    "Date of Birth": "Date of Birth",
+    "Gender": "Gender",
+    "Select gender": "Select gender",
+    "Male": "Male",
+    "Female": "Female",
+    "Cancel": "Cancel",
+    "Save": "Save",
+    "Profile updated successfully": "Profile updated successfully",
+    "Failed to update profile": "Failed to update profile",
+    "Enter your username": "Enter your username",
+    "Enter your email": "Enter your email",
+    "Enter your phone number": "Enter your phone number"
   }
 }
