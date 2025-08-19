@@ -57,7 +57,7 @@
     "about": "About",
     "contact": "Contact",
     "signup": "Signup",
-    "login": "Login",
+    "hlogin": "Login",
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout"
@@ -252,5 +252,60 @@
     "Free": "Free",
     "Processing...": "Processing...",
     "Proceed to Checkout": "Proceed to Checkout"
+  }
+  ,"cta": {
+    "title": "Join Our Community Today",
+    "description": "Whether you're looking for your next adventure or wanting to share your home with fellow travelers, Maskan is your gateway to authentic Egyptian experiences.",
+    "findStay": "Find Your Stay",
+    "becomeHost": "Become a Host"
+  },
+  "testimonials": {
+    "title": "What Our Guests Say",
+    "subtitle": "Real experiences from real travelers",
+    "review1": {
+      "text": "Our stay in Cairo was absolutely magical. The host was incredibly welcoming and the home felt like a true Egyptian experience. Highly recommend Maskan!",
+      "name": "Enzo Hernandiz",
+      "role": "Traveler from Germany"
+    },
+    "review2": {
+      "text": "As a host on Maskan, I've met wonderful people from around the world. The platform makes it easy to share our beautiful culture with guests.",
+      "name": "Layla Hassan",
+      "role": "Host in Alexandria"
+    },
+    "review3": {
+      "text": "The booking process was seamless and the home exceeded our expectations. We felt safe, comfortable, and truly welcomed throughout our stay.",
+      "name": "Mohamed Farid",
+      "role": "Local Traveler"
+    }
+  },
+   "features": {
+    "title": "Why Choose Maskan?",
+    "subtitle": "Built on values that matter to travelers and hosts alike",
+    "list": {
+      "community": {
+        "title": "Community",
+        "description": "Join a welcoming community of travelers and hosts who share your passion for authentic experiences"
+      },
+      "authenticity": {
+        "title": "Authenticity",
+        "description": "Every home tells a story, offering you genuine Egyptian hospitality and local insights"
+      },
+      "trust": {
+        "title": "Trust",
+        "description": "Verified hosts, secure payments, and 24/7 support ensure your peace of mind"
+      },
+      "inclusivity": {
+        "title": "Inclusivity",
+        "description": "Everyone is welcome in our community, regardless of background or travel style"
+      },
+      "sustainability": {
+        "title": "Sustainability",
+        "description": "Supporting local communities and promoting responsible travel for future generations"
+      },
+      "comfort": {
+        "title": "Comfort",
+        "description": "Feel at home with carefully selected properties that prioritize your comfort and convenience"
+      }
+    }
   }
 }
