@@ -14,6 +14,8 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import { useState } from "react";
 import { SidebarModal } from "./Modal";
 import { useTranslation } from "react-i18next";
+import Spinner from "./Spinner";
+import Error from "./Error";
 
 export default function Header() {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
@@ -36,8 +38,8 @@ export default function Header() {
     localStorage.setItem("i18nextLng", newLang);
     localStorage.setItem("userLanguagePreference", newLang);
   };
-  if (isLoading) return <h1>loading...</h1>;
-  if (error) return <h1>error{error.message}</h1>;
+  if (isLoading) return <Spinner />;
+  if (error) return <Error message={error.message} />;
   const isLoginPage = location.pathname === "/login";
   const isSignupPage = location.pathname === "/signup";
   const isVerifyPage = location.pathname === "/verifyOtp";
@@ -155,7 +157,7 @@ export default function Header() {
           >
             {t("header.hlogin")}
           </Link>
-        )}  
+        )}
         {!isAuthPage && user && (
           <>
             {/* <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">

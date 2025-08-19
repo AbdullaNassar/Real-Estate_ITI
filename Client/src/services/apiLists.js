@@ -1,7 +1,8 @@
 import { GrCatalog } from "react-icons/gr";
-import { PAGE_SIZE } from "../utils/constants";
+import { getCurrentLanguage, PAGE_SIZE } from "../utils/constants";
 import { axiosInstance } from "./axiosInstance";
-
+import i18next from "i18next";
+const lang = i18next.language || localStorage.getItem("i18nextLng") || "en";
 export async function createList(newList) {
   try {
     const {
@@ -42,8 +43,10 @@ export async function createList(newList) {
     return res.data;
   } catch (err) {
     console.log(err);
-    const message = err?.response?.data?.error;
-    if (message) throw new Error(message);
+    const message = err?.response?.data?.message[lang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("error add list");
   }
 }
@@ -60,6 +63,10 @@ export async function getAllLists({ page = 1, filter = {} }) {
     return res.data;
   } catch (err) {
     console.log(err);
+    const message = err?.response?.data?.message[lang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("Error while get lists");
   }
 }
@@ -70,6 +77,10 @@ export async function getListById(id) {
     return res.data;
   } catch (err) {
     console.log(err);
+    const message = err?.response?.data?.message[lang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("error while fetch list by id ");
   }
 }
@@ -79,7 +90,8 @@ export async function getListsByGovern() {
     const res = await axiosInstance.get("lists/governorate");
     return res.data;
   } catch (err) {
-    const message = err?.response?.data?.error;
+    console.log(err);
+    const message = err?.response?.data?.message[lang];
     if (message) {
       throw new Error(message);
     }
@@ -93,8 +105,10 @@ export async function searchLists(query) {
     return res.data;
   } catch (err) {
     console.log(err);
-    const message = err.response?.data?.message;
-    if (message) throw new Error(message);
+    const message = err?.response?.data?.message[lang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("Error while searching lists...");
   }
 }
@@ -104,9 +118,11 @@ export async function getHostLists() {
     const res = await axiosInstance.get("/lists/hostLists");
     return res.data;
   } catch (err) {
-    const message = err.response?.data?.message;
-    if (message) throw new Error(message);
     console.log(err);
+    const message = err?.response?.data?.message[lang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("error while get host lists");
   }
 }
@@ -116,8 +132,11 @@ export async function deleteList(id) {
     const res = await axiosInstance.delete(`/lists/${id}`);
     return res.data;
   } catch (err) {
-    const message = err.response?.data?.message;
-    if (message) throw new Error(message);
+    console.log(err);
+    const message = err?.response?.data?.message[lang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("Error while deleting List");
   }
 }
@@ -148,8 +167,12 @@ export async function updateList({ id, data }) {
 
     return response.data;
   } catch (err) {
-    const message = err.response?.data?.message || err.message;
-    if (message) throw new Error(message);
+    console.log(err);
+    const currentLang = getCurrentLanguage();
+    const message = err?.response?.data?.message?.[currentLang];
+    if (message) {
+      throw new Error(message);
+    }
     throw new Error("Error while updating LIst");
   }
 }

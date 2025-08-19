@@ -73,7 +73,7 @@ export default function AddList() {
     if (!file) return;
 
     if (images.length + file.length > 5) {
-      toast.error("You can only upload up to 5 images.");
+      toast.error(t("toast.You can only upload up to 5 images."));
       return;
     }
 
@@ -93,7 +93,7 @@ export default function AddList() {
   const submitForm = (data) => {
     data.photos = images;
     if (!position) {
-      toast.error("Select List Location on Map");
+      toast.error(t("toast.Select List Location on Map"));
       return;
     }
     data.longitude = position.lng;

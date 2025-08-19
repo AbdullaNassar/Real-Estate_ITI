@@ -11,10 +11,11 @@ export async function getReviews(listingId) {
 }
 
 export async function deleteReview(reviewId) {
-  const { data: reviewBeforeDelete } = await axiosInstance.delete(`/ratings/${reviewId}`);
+  const { data: reviewBeforeDelete } = await axiosInstance.delete(
+    `/ratings/${reviewId}`
+  );
   return reviewBeforeDelete;
 }
-
 
 export async function updateReview(reviewId, payload) {
   const { data } = await axiosInstance.patch(`/ratings/${reviewId}`, payload);

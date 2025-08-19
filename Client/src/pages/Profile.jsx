@@ -33,11 +33,11 @@ export default function Profile() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await refetch();
       setShowEditModal(false);
-      toast.success("Profile updated successfully");
+      toast.success(t("toast.Profile updated successfully"));
     } catch (err) {
       console.error("Failed to refetch user data:", err);
       toast.error(
-        "profile updated but failed to refresh please reload the page."
+        t("toast.profile updated but failed to refresh please reload the page.")
       );
       setShowEditModal(false);
     } finally {
@@ -55,7 +55,7 @@ export default function Profile() {
         "Failed to refetch user data after password change:",
         error
       );
-      toast.error("password changed but failed to refresh user data.");
+      toast.error(t("toast.password changed but failed to refresh user data."));
     }
   };
 

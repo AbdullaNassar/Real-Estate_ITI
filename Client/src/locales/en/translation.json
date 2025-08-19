@@ -424,6 +424,11 @@
     "Submitting...": "Submitting...",
     "Submit Review": "Submit Review"
   },
+  "errors": {
+    "Something went wrong": "Something went wrong",
+    "Something Wrong happened...": "Something Wrong happened...",
+    "Try again": "Try again"
+  },
   "footer": {
     "tagline": "Your Egyptian Home, Wherever You Are. Connecting travelers with authentic home rentals across Egypt.",
     "quickLinks": "Quick Links",
@@ -456,5 +461,23 @@
     "Enter your username": "Enter your username",
     "Enter your email": "Enter your email",
     "Enter your phone number": "Enter your phone number"
+  },
+  "toast": {
+    "New List added succssfully": "New List added succssfully",
+    "List deleted succssfully": "List deleted succssfully",
+    "You can only upload up to 5 images.": "You can only upload up to 5 images.",
+    "Select List Location on Map": "Select List Location on Map",
+    "Listing updated successfully": "Listing updated successfully",
+    "you must be logged as a guest to book a list": "you must be logged as a guest to book a list",
+    "Booking failed. Please try again.": "Booking failed. Please try again.",
+    "Profile updated successfully": "Profile updated successfully",
+    "profile updated but failed to refresh please reload the page.": "profile updated but failed to refresh please reload the page.",
+    "password changed but failed to refresh user data.": "password changed but failed to refresh user data."
+  },
+  "payment": {
+    "Thank you!": "Thank you!",
+    "Your payment was successful.": "Your payment was successful.",
+    "Go to Home": "Go to Home",
+    "Payment successful! Your booking is confirmed.": "Payment successful! Your booking is confirmed."
   }
 }

@@ -181,7 +181,7 @@ export default function EditList() {
       { id: list._id, data },
       {
         onSuccess: () => {
-          toast.success("Listing updated successfully");
+          toast.success(t("toast.Listing updated successfully"));
           reset(); // reset your form
         },
         onError: (error) => {

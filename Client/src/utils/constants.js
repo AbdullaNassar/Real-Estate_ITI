@@ -1,6 +1,15 @@
 export const BASE_URL = "http://localhost:8000/api/v1/";
 // export const BASE_URL = "https://maskan.up.railway.app/api/v1/";
 export const PAGE_SIZE = 10;
+import i18next from "i18next";
+export const lang =
+  localStorage.getItem("userLanguagePreference") ||
+  localStorage.getItem("i18nextLng") ||
+  "en";
+
+export const getCurrentLanguage = () => {
+  return i18next.language || localStorage.getItem("i18nextLng") || "en";
+};
 
 export const governmentList = [
   { name: "Cairo", arName: "القاهرة", _id: "Cairo" },

@@ -1,9 +1,13 @@
 import { Facebook, Home, Instagram, Mail, Twitter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink } from "react-router-dom";
+import logo from "/imgs/logo.svg";
+import logoBlack from "/imgs/logoBlack.svg";
+import logoar from "/imgs/logoar.svg";
+import logoardark from "/imgs/logoardark.svg";
 
 export default function Footer() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation();
   return (
     <footer className="bg-stone-800 text-white py-12 mt-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,7 +15,7 @@ export default function Footer() {
           <div>
             <div className=" mb-4 w-42">
               <img
-                src="./imgs/logoBlack.svg"
+                src={i18n.language === "en" ? logoBlack : logoardark}
                 className="w-full h-full"
                 alt=""
               />
@@ -22,14 +26,16 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">{t("footer.quickLinks")}</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("footer.quickLinks")}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/listings"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
-                 {t("footer.findStays")}
+                  {t("footer.findStays")}
                 </Link>
               </li>
               <li>
@@ -37,7 +43,7 @@ export default function Footer() {
                   to="/signup"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
-                 {t("footer.becomeHost")}
+                  {t("footer.becomeHost")}
                 </Link>
               </li>
               <li>
@@ -45,7 +51,7 @@ export default function Footer() {
                   to="/about"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
-                    {t("footer.aboutUs")}
+                  {t("footer.aboutUs")}
                 </Link>
               </li>
               <li>
@@ -53,14 +59,16 @@ export default function Footer() {
                   to="/contact"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
-                 {t("footer.contact")}
+                  {t("footer.contact")}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">{t("footer.support")}</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("footer.support")}
+            </h3>
             <ul className="space-y-2">
               <li>
                 <a
@@ -75,7 +83,7 @@ export default function Footer() {
                   href="#"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
-                 {t("footer.safety")}
+                  {t("footer.safety")}
                 </a>
               </li>
               <li>
@@ -83,7 +91,7 @@ export default function Footer() {
                   to="/terms"
                   className="text-stone-300 hover:text-amber-400 transition-colors"
                 >
-                     {t("footer.terms")}
+                  {t("footer.terms")}
                 </Link>
               </li>
               <li>
@@ -99,7 +107,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-4">{t("footer.connect")}</h3>
+            <h3 className="text-lg font-semibold mb-4">
+              {t("footer.connect")}
+            </h3>
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -130,9 +140,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-stone-700 mt-8 pt-8 text-center">
-          <p className="text-stone-300">
-            {t("footer.copyright")}
-          </p>
+          <p className="text-stone-300">{t("footer.copyright")}</p>
         </div>
       </div>
     </footer>

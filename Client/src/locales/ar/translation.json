@@ -422,6 +422,11 @@
     "Submitting...": "جارٍ الإرسال...",
     "Submit Review": "إرسال التقييم"
   },
+  "errors": {
+    "Something went wrong": "حدث خطأ ما",
+    "Something wrong happened...": "حدث خطأ غير متوقع...",
+    "Try again": "حاول مرة أخرى"
+  },
   "footer": {
     "tagline": "بيتك المصري، أينما كنت. نربط المسافرين بالإيجارات السكنية الأصيلة في جميع أنحاء مصر.",
     "quickLinks": "روابط سريعة",
@@ -454,5 +459,23 @@
     "Enter your username": "أدخل اسم المستخدم الخاص بك",
     "Enter your email": "أدخل بريدك الإلكتروني",
     "Enter your phone number": "أدخل رقم هاتفك"
+  },
+  "toast": {
+    "New List added succssfully": "تمت إضافة العقار بنجاح",
+    "List deleted succssfully": "تم حذف العقار بنجاح",
+    "You can only upload up to 5 images.": "يمكنك رفع 5 صور فقط.",
+    "Select List Location on Map": "اختر موقع العقار على الخريطة",
+    "Listing updated successfully": "تم تحديث العقار بنجاح",
+    "you must be logged as a guest to book a list": "يجب انشاء حساب كضيف لحجز عقار",
+    "Booking failed. Please try again.": "فشل الحجز. يرجى المحاولة مرة أخرى.",
+    "Profile updated successfully": "تم تحديث الملف الشخصي بنجاح",
+    "profile updated but failed to refresh please reload the page.": "تم تحديث الملف الشخصي ولكن فشل التحديث، يرجى إعادة تحميل الصفحة.",
+    "password changed but failed to refresh user data.": "تم تغيير كلمة المرور ولكن فشل تحديث بيانات المستخدم."
+  },
+  "payment": {
+    "Thank you!": "شكرًا لك!",
+    "Your payment was successful.": "تمت عملية الدفع بنجاح.",
+    "Go to Home": "اذهب إلى الصفحة الرئيسية",
+    "Payment successful! Your booking is confirmed.": "تم الدفع بنجاح! تم تأكيد حجزك."
   }
 }

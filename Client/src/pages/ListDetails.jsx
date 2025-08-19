@@ -69,7 +69,7 @@ export default function ListingDetails() {
 
   function handleBook() {
     if (!user || user?.user.role !== "guest") {
-      toast.error("you must be logged as a guest to book a list");
+      toast.error(t("toast.you must be logged as a guest to book a list"));
       // navigate("/login");
       return;
     }
@@ -84,9 +84,9 @@ export default function ListingDetails() {
         },
         onError: (error) => {
           const message =
-            error?.response?.data?.message ||
+            error?.response?.data?.message[lang] ||
             error?.message ||
-            "Booking failed. Please try again.";
+            t("toast.Booking failed. Please try again.");
           toast.error(message);
         },
       }
