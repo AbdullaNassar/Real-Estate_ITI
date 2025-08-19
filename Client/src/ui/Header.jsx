@@ -153,9 +153,9 @@ export default function Header() {
             to="/login"
             className="bg-primarry-500 px-4 py-2 rounded-md bg-primarry text-stone-100  hover:cursor-pointer transition-all hover:bg-primarry-700"
           >
-            {t("header.login")}
+            {t("header.hlogin")}
           </Link>
-        )}
+        )}  
         {!isAuthPage && user && (
           <>
             {/* <div className="size-12 flex items-center justify-center bg-secondary rounded-full overflow-hidden">
