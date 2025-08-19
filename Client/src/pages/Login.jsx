@@ -15,7 +15,7 @@ export default function Login() {
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {t} = useTranslation()
+    const { t, i18n } = useTranslation();
   function handleLogin(value) {
     SetIsLoading(true);
     axiosInstance
@@ -26,9 +26,11 @@ export default function Login() {
         navigate("/");
       })
       .catch((err) => {
-        SetErrMessage(err.response.data.message);
-        console.log(err.response.data.message);
-        toast.error(err.response.data.message);
+        const lang = i18n.language || "en";
+        const msg = err.response?.data?.message?.[lang] || "An error occurred";
+        SetErrMessage(msg);
+        console.log(msg);
+        toast.error(msg);
       })
       .finally(() => {
         SetIsLoading(false);
@@ -84,7 +86,7 @@ export default function Login() {
           className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-gray-150 shadow-2xl rounded-2xl p-8 sm:px-10 sm:py-10"
         >
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800">
-           {t("login.title")}
+            {t("login.title")}
           </h2>
           <p className="mt-2 mb-6  text-gray-600 text-center">
             {t("login.subtitle")}{" "}
@@ -95,7 +97,7 @@ export default function Login() {
               htmlFor="email"
               className="block mb-1 text-base sm:text-lg font-medium text-gray-700"
             >
-               {t("login.email")}
+              {t("login.email")}
             </label>
             <input
               name="email"
@@ -104,7 +106,7 @@ export default function Login() {
               value={loginForm.values.email}
               type="email"
               id="email"
-              placeholder= {t("login.emailPlaceholder")}
+              placeholder={t("login.emailPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 text-sm sm-text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -129,12 +131,12 @@ export default function Login() {
               value={loginForm.values.password}
               type={showPassword ? "text" : "password"}
               id="password"
-              placeholder= {t("login.passwordPlaceholder")}
+              placeholder={t("login.passwordPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 "
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
+              className="absolute end-3 top-[45px] text-gray-500 cursor-pointer"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
@@ -152,7 +154,7 @@ export default function Login() {
               onClick={handleForgotPassword}
               className="text-sm sm:text-base hover:cursor-pointer text-gray-900 hover:underline"
             >
-            {t("login.forgotPassword")}
+              {t("login.forgotPassword")}
             </button>
           </div>
           <div className="flex justify-center w-full border-none">
@@ -164,7 +166,7 @@ export default function Login() {
               {isLoading ? (
                 <FaSpinner className="mx-auto animate-spin" />
               ) : (
-               t("login.loginButton")
+                t("login.loginButton")
               )}
             </button>
           </div>

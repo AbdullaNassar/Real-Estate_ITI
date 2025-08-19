@@ -157,7 +157,7 @@ export default function Signup() {
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
+              className="absolute end-3 top-[45px] text-gray-500 cursor-pointer"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
@@ -186,7 +186,7 @@ export default function Signup() {
             />
             <span
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
+              className="absolute end-3 top-[45px] text-gray-500 cursor-pointer"
             >
               {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
             </span>

@@ -1,18 +1,20 @@
 import { Star, Users } from "lucide-react";
 import React from "react";
 import Animation from "../../ui/animated/Animation";
+import { useTranslation } from "react-i18next";
 
 export default function Testimonials() {
+  const {t}=useTranslation()
   return (
     <Animation>
       <section className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">
-              What Our Guests Say
+              {t("testimonials.title")}
             </h2>
             <p className="text-xl text-gray-600">
-              Real experiences from real travelers
+             {t("testimonials.subtitle")}
             </p>
           </div>
 
@@ -27,9 +29,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-800 mb-6 leading-relaxed">
-                "Our stay in Cairo was absolutely magical. The host was
-                incredibly welcoming and the home felt like a true Egyptian
-                experience. Highly recommend Maskan!"
+               {t("testimonials.review1.text")}
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
@@ -41,9 +41,9 @@ export default function Testimonials() {
                 </div>
                 <div className="ml-4">
                   <h4 className="font-semibold text-gray-800">
-                    Enzo Hernandiz
+                    {t("testimonials.review1.name")}
                   </h4>
-                  <p className="text-gray-500 text-sm">Traveler from Germany</p>
+                  <p className="text-gray-500 text-sm">{t("testimonials.review1.role")}</p>
                 </div>
               </div>
             </div>
@@ -58,9 +58,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                "As a host on Maskan, I've met wonderful people from around the
-                world. The platform makes it easy to share our beautiful culture
-                with guests."
+                 {t("testimonials.review2.text")}"
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
@@ -71,8 +69,8 @@ export default function Testimonials() {
                   />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">Layla Hassan</h4>
-                  <p className="text-gray-500 text-sm">Host in Alexandria</p>
+                  <h4 className="font-semibold text-gray-800">  {t("testimonials.review1.name")}</h4>
+                  <p className="text-gray-500 text-sm">  {t("testimonials.review1.role")}</p>
                 </div>
               </div>
             </div>
@@ -87,9 +85,7 @@ export default function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                "The booking process was seamless and the home exceeded our
-                expectations. We felt safe, comfortable, and truly welcomed
-                throughout our stay."
+                  {t("testimonials.review3.text")}
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-primarry rounded-full flex items-center justify-center">
@@ -100,8 +96,8 @@ export default function Testimonials() {
                   />
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold text-gray-800">Mohamed Farid</h4>
-                  <p className="text-gray-500 text-sm">Local Traveler</p>
+                  <h4 className="font-semibold text-gray-800">  {t("testimonials.review1.name")}</h4>
+                  <p className="text-gray-500 text-sm">  {t("testimonials.review1.role")}</p>
                 </div>
               </div>
             </div>

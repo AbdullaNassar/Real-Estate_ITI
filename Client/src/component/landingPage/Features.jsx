@@ -1,18 +1,20 @@
 import { Globe, Heart, Home, Leaf, Shield, Users } from "lucide-react";
 import React from "react";
 import Animation from "../../ui/animated/Animation";
+import { useTranslation } from "react-i18next";
 
 export default function Features() {
+ const {t} =  useTranslation()
   return (
     <Animation>
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">
-              Why Choose Maskan?
+              {t("features.title")}
             </h2>
             <p className="text-xl text-gray-600">
-              Built on values that matter to travelers and hosts alike
+             {t("features.subtitle")}
             </p>
           </div>
 
@@ -22,11 +24,10 @@ export default function Features() {
                 <Users className="w-8 h-8 text-amber-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Community
+                {t("features.list.community.title")}
               </h3>
               <p className="text-gray-600">
-                Join a welcoming community of travelers and hosts who share your
-                passion for authentic experiences
+                 {t("features.list.community.description")}
               </p>
             </div>
 
@@ -35,11 +36,10 @@ export default function Features() {
                 <Heart className="w-8 h-8 text-amber-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Authenticity
+                     {t("features.list.authenticity.title")}
               </h3>
               <p className="text-gray-600">
-                Every home tells a story, offering you genuine Egyptian
-                hospitality and local insights
+                      {t("features.list.authenticity.description")}
               </p>
             </div>
 
@@ -48,11 +48,10 @@ export default function Features() {
                 <Shield className="w-8 h-8 text-amber-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Trust
+               {t("features.list.trust.title")}
               </h3>
               <p className="text-gray-600">
-                Verified hosts, secure payments, and 24/7 support ensure your
-                peace of mind
+                 {t("features.list.trust.description")}
               </p>
             </div>
 
@@ -61,11 +60,10 @@ export default function Features() {
                 <Globe className="w-8 h-8 text-amber-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Inclusivity
+                {t("features.list.inclusivity.title")}
               </h3>
               <p className="text-gray-600">
-                Everyone is welcome in our community, regardless of background
-                or travel style
+                 {t("features.list.inclusivity.description")}
               </p>
             </div>
 
@@ -74,11 +72,10 @@ export default function Features() {
                 <Leaf className="w-8 h-8 text-amber-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Sustainability
+                      {t("features.list.sustainability.title")}
               </h3>
               <p className="text-gray-600">
-                Supporting local communities and promoting responsible travel
-                for future generations
+                {t("features.list.sustainability.description")}
               </p>
             </div>
 
@@ -87,11 +84,10 @@ export default function Features() {
                 <Home className="w-8 h-8 text-amber-700" />
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                Comfort
+                {t("features.list.comfort.title")}
               </h3>
               <p className="text-gray-600">
-                Feel at home with carefully selected properties that prioritize
-                your comfort and convenience
+               {t("features.list.comfort.description")}
               </p>
             </div>
           </div>
