@@ -10,13 +10,13 @@ import { useTranslation } from "react-i18next";
 
 
 export default function ChangePasswordModal({ onClose, onSuccess }) {
+  const {t} = useTranslation()
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const queryClient = useQueryClient();
-
   function handleUpdatePassword(value) {
     SetIsLoading(true);
 
@@ -73,7 +73,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
     validationSchema,
   });
 
-  const {t} = useTranslation()
+  
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:px-6 lg:px-8 bg-gray-50/30 backdrop-blur-xs">
@@ -82,7 +82,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
         className="w-full max-w-md bg-gray-50 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[90vh]"
       >
         <h2 className="text-2xl sm:text-3xl font-bold text-center text-gray-800 mb-6">
-          {t("ChangePasswordModal.title")}
+          {t("changePasswordModal.title")}
         </h2>
 
         {/* current password */}
@@ -91,7 +91,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             htmlFor="currentPassword"
             className="block mb-1 text-lg font-medium text-gray-700"
           >
-            {t("ChangePasswordModal.currentPassword")}
+            {t("changePasswordModal.currentPassword")}
           </label>
           <input
             name="currentPassword"
@@ -100,12 +100,12 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.currentPassword}
             type={showCurrentPassword ? "text" : "password"}
             id="currentPassword"
-            placeholder="Enter your current password"
+            placeholder={t("changePasswordModal.currentPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span
             onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-            className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
+            className="absolute end-3 top-[45px] text-gray-500 cursor-pointer"
           >
             {showCurrentPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
@@ -120,7 +120,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             htmlFor="newPassword"
             className="block mb-1 text-lg font-medium text-gray-700"
           >
-            {t("ChangePasswordModal.newPassword")}
+            {t("changePasswordModal.newPassword")}
           </label>
           <input
             name="newPassword"
@@ -129,12 +129,12 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.newPassword}
             type={showNewPassword ? "text" : "password"}
             id="newPassword"
-            placeholder= {t("ChangePasswordModal.newPasswordPlaceholder")}
+            placeholder= {t("changePasswordModal.newPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span
             onClick={() => setShowNewPassword(!showNewPassword)}
-            className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
+            className="absolute end-3 top-[45px] text-gray-500 cursor-pointer"
           >
             {showNewPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
@@ -149,7 +149,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             htmlFor="confirmPassword"
             className="block mb-1 text-lg font-medium text-gray-700"
           >
-            {t("ChangePasswordModal.confirmPassword")}
+            {t("changePasswordModal.confirmPassword")}
           </label>
           <input
             name="confirmPassword"
@@ -158,12 +158,12 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.confirmPassword}
             type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
-            placeholder={t("ChangePasswordModal.currentPasswordPlaceholder")}
+            placeholder={t("changePasswordModal.currentPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-[45px] text-gray-500 cursor-pointer"
+            className="absolute end-3 top-[45px] text-gray-500 cursor-pointer"
           >
             {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
@@ -180,7 +180,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             disabled={isLoading}
             className="bg-transparent border-gray-700 border hover:bg-gray-500 hover:cursor-pointer transition hover:text-gray-50 text-gray-800 px-4 py-2 rounded-md"
           >
-            {t("ChangePasswordModal.cancel")}
+            {t("changePasswordModal.cancel")}
           </button>
           <button
             type="submit"
@@ -190,7 +190,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             {isLoading ? (
               <span className="animate-spin h-4 w-4 mr-2 border-2 border-t-transparent rounded-full" />
             ) : (
-              t("ChangePasswordModal.save")
+              t("changePasswordModal.save")
             )}
           </button>
         </div>

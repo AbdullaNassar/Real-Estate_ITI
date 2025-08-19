@@ -4,13 +4,14 @@ import toast from "react-hot-toast";
 
 import { axiosInstance } from "../../services/axiosInstance";
 import { useUser } from "../auth/useUser";
+import { useTranslation } from "react-i18next";
 
 export default function EditProfileModal({ onClose, onSuccess }) {
+   const {t} = useTranslation()
   const { user } = useUser();
   const curUser = user?.user;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [preview, setPreview] = useState(null);
-
   const handleProfileUpdate = async (values) => {
     setIsSubmitting(true);
     try {
@@ -67,7 +68,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
         className="w-full max-w-lg bg-gray-50 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[90vh]"
       >
         <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
-          Edit Profile
+         {t( "editProfileModal.Edit Profile")}
         </h2>
 
         <div className="flex justify-center mb-4">
@@ -90,7 +91,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
         {/* Username */}
         <div className="mb-4">
           <label htmlFor="userName" className="block mb-1 text-sm font-medium">
-            Username
+           {t("editProfileModal.Username")}
           </label>
           <input
             id="userName"
@@ -99,7 +100,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             onChange={formik.handleChange}
             value={formik.values.userName}
             disabled={isSubmitting}
-            placeholder="Enter your username"
+            placeholder={t("editProfileModal.Enter your username")}
             className="w-full border rounded-md px-4 py-2 focus:ring-2 focus:outline-none"
           />
         </div>
@@ -107,7 +108,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
         {/* Email */}
         <div className="mb-4">
           <label htmlFor="email" className="block mb-1 text-sm font-medium">
-            Email
+            {t("editProfileModal.Email")}
           </label>
           <input
             id="email"
@@ -116,7 +117,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             onChange={formik.handleChange}
             value={formik.values.email}
             disabled={isSubmitting}
-            placeholder="Enter your email"
+            placeholder={t("editProfileModal.Enter your email")}
             className="w-full border rounded-md px-4 py-2 focus:ring-2 focus:outline-none"
           />
         </div>
@@ -127,7 +128,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             htmlFor="phoneNumber"
             className="block mb-1 text-sm font-medium"
           >
-            Phone Number
+            {t("editProfileModal.Phone Number")}
           </label>
           <input
             id="phoneNumber"
@@ -136,7 +137,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             onChange={formik.handleChange}
             value={formik.values.phoneNumber}
             disabled={isSubmitting}
-            placeholder="Enter your phone number"
+            placeholder={t("editProfileModal.Enter your phone number")}
             className="w-full border rounded-md px-4 py-2 focus:ring-2 focus:outline-none"
           />
         </div>
@@ -147,7 +148,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             htmlFor="dateOfBirth"
             className="block mb-1 text-sm font-medium"
           >
-            Date of Birth
+            {t("editProfileModal.Date of Birth")}
           </label>
           <input
             id="dateOfBirth"
@@ -164,7 +165,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
         {/* Gender */}
         <div className="mb-6">
           <label htmlFor="gender" className="block mb-1 text-sm font-medium">
-            Gender
+            {t("editProfileModal.Gender")}
           </label>
           <select
             id="gender"
@@ -174,9 +175,9 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             disabled={isSubmitting}
             className="w-full border rounded-md px-4 py-2 focus:ring-2 focus:outline-none"
           >
-            <option value="">Select gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="">{t("editProfileModal.Select gender")}</option>
+            <option value="male">{t("editProfileModal.Male")}</option>
+            <option value="female">{t("editProfileModal.Female")}</option>
           </select>
         </div>
 
@@ -188,7 +189,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             disabled={isSubmitting}
             className="bg-transparent border-gray-700 border hover:bg-gray-500 hover:cursor-pointer transition hover:text-gray-50 text-gray-800 px-4 py-2 rounded-md"
           >
-            Cancel
+            {t("editProfileModal.Cancel")}
           </button>
           <button
             type="submit"
@@ -198,7 +199,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
             {isSubmitting ? (
               <span className="animate-spin h-4 w-4 mr-2 border-2 border-t-transparent rounded-full" />
             ) : (
-              "Save"
+              t("editProfileModal.Save")
             )}
           </button>
         </div>

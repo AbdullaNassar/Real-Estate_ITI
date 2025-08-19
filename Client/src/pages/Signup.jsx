@@ -16,7 +16,7 @@ export default function Signup() {
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   function handleRegister(value) {
     SetIsLoading(true);
@@ -25,14 +25,18 @@ export default function Signup() {
     axiosInstance
       .post("/users/signup", payload)
       .then((res) => {
-        console.log("signup success", res);
-        toast.success("Signup successful");
+        const lang = i18n.language || "en";
+        const msg = res?.data?.message?.[lang] || "signup success";
+        console.log(msg, res);
+        toast.success(msg);
         navigate("/verifyOtp", { state: { email: payload.email } });
       })
       .catch((err) => {
-        SetErrMessage(err.response.data.message);
-        console.log(err.response.data.message);
-        toast.error(err.response.data.message);
+        const lang = i18n.language || "en";
+        const msg = err.response?.data?.message?.[lang] || "An error occurred";
+        SetErrMessage(msg);
+        console.log(msg);
+        toast.error(msg);
       })
       .finally(() => {
         SetIsLoading(false);
@@ -120,7 +124,7 @@ export default function Signup() {
               htmlFor="email"
               className="block mb-1 text-lg font-medium text-gray-700"
             >
-             {t("signup.email")}
+              {t("signup.email")}
             </label>
             <input
               name="email"
@@ -129,7 +133,7 @@ export default function Signup() {
               value={registerForm.values.email}
               type="email"
               id="email"
-              placeholder= {t("signup.emailPlaceholder")}
+              placeholder={t("signup.emailPlaceholder")}
               className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -264,12 +268,12 @@ export default function Signup() {
           </div>
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-            {t("signup.alreadyAccount")}
+              {t("signup.alreadyAccount")}
               <button
                 onClick={() => navigate("/login")}
                 className="text-gray-600 hover:cursor-pointer hover:underline font-medium"
               >
-               {t("signup.loginButton")}
+                {t("signup.loginButton")}
               </button>
             </p>
           </div>

@@ -92,7 +92,7 @@ export default function Profile() {
 
         {/*button*/}
         <div className="w-full sm:w-auto flex flex-col gap-2">
-          {curUser.role == "host" && (
+          {curUser?.role == "host" && (
             <button
               onClick={() => navigate("/addList")}
               className="sm:w-auto px-6 py-2 border rounded bg-primarry text-stone-100 hover:bg-primarry-hover transition cursor-pointer"
