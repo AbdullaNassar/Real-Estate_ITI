@@ -424,7 +424,9 @@
     "Close": "Close",
     "Updating...": "Updating...",
     "Submitting...": "Submitting...",
-    "Submit Review": "Submit Review"
+    "Submit Review": "Submit Review",
+    "Leave your comment":"Leave your comment",
+    "":""
   },
   "errors": {
     "Something went wrong": "Something went wrong",

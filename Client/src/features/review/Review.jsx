@@ -14,7 +14,7 @@ export default function Review({
   reviewToEdit,
 }) {
   const queryClient = useQueryClient();
-  const { t } = useTranslation();
+  const { t , i18n } = useTranslation();
   const isEditing = Boolean(reviewToEdit?._id);
 
   const { mutate: updateReview, isPending: isUpdating } =
@@ -34,10 +34,9 @@ export default function Review({
       onClose();
     },
     onError: (err) => {
-      toast.error(
-        err?.response?.data?.message ||
-          t("review.Error while submitting review")
-      );
+      const lang = i18n.language || "en"
+      const msg = err.response?.data?.message?.[lang] || t("review.Error while submitting review");
+      toast.error(msg);
     },
   });
 
@@ -101,7 +100,7 @@ export default function Review({
               value={formik.values.comment}
               onChange={formik.handleChange}
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
-              placeholder="Leave your comment"
+              placeholder={t("review.Leave your comment")}
             ></textarea>
           </div>
 
