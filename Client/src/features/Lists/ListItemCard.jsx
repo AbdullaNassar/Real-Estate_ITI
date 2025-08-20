@@ -24,10 +24,11 @@ export default function ListItemCard({ list }) {
 
   if (loadingFavs) return <Spinner />;
   if (errorFavs) return <Error message={errorFavs.message} />;
-  favs = favs.favorites;
+  favs = favs?.favorites || [];
 
   //function to check if the list in current user Favourites
   function isFavourites(id) {
+    if (!favs) return false;
     for (let i = 0; i < favs.length; i++) {
       if (favs[i]._id === id) return true;
     }

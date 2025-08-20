@@ -37,6 +37,7 @@ export async function getFavsList() {
     return res.data;
   } catch (err) {
     console.log(err);
+    if (err.response?.status === 401) return [];
     const currentLang = getCurrentLanguage();
     const message = err?.response?.data?.message?.[currentLang];
     if (message) {
@@ -51,9 +52,13 @@ export async function toggleFavList(id) {
     const res = await axiosInstance.post(`/users/toggle/${id}`);
     return res.data;
   } catch (err) {
-    if (err.response?.status === 401) throw new Error("Please Login First!");
     console.log(err);
     const currentLang = getCurrentLanguage();
+    if (err.response?.status === 401) {
+      const msg =
+        currentLang === "en" ? "Please Login First!" : "من فضلك سجل دخول اولا";
+      throw new Error(msg);
+    }
     const message = err?.response?.data?.message?.[currentLang];
     if (message) {
       throw new Error(message);

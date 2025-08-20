@@ -66,9 +66,10 @@ export default function ListingDetails() {
       />
     );
 
-  favs = favs.favorites;
+  favs = favs?.favorites || [];
   //function to check if the list in current user Favourites
   function isFavourites(id) {
+    if (!favs) return false;
     for (let i = 0; i < favs.length; i++) {
       if (favs[i]._id === id) return true;
     }
@@ -280,7 +281,7 @@ export default function ListingDetails() {
                       {canModify && (
                         <>
                           <button
-                            className=" cursor-pointer hover:text-red-700 transition"       
+                            className=" cursor-pointer hover:text-red-700 transition"
                             title="Delete review"
                             disabled={isDeleting}
                             onClick={() => removeReview(review._id)}
@@ -296,8 +297,7 @@ export default function ListingDetails() {
                               setReviewToEdit(review);
                             }}
                           >
-                            <FaFilePen  size={24}/>
-                            
+                            <FaFilePen size={24} />
                           </button>
                         </>
                       )}

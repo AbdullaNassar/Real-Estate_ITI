@@ -57,7 +57,7 @@ function FavItem({ list }) {
 
   if (loadingFavs) return <Spinner />;
   if (errorFavs) return <Error message={errorFavs.message} />;
-  favs = favs.favorites;
+  favs = favs?.favorites || [];
 
   //function to check if the list in current user Favourites
   function isFavourites(id) {
