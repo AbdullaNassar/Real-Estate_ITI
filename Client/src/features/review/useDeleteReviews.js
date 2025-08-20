@@ -1,22 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteReview } from "../../services/apiReview";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export function useDeleteReview() {
   const queryClient = useQueryClient();
+  const { i18n } = useTranslation();
+  const lang = i18n.language || "en";
 
   return useMutation({
     mutationFn: deleteReview,
-  onSuccess: () => {
-    toast.success("Review deleted successfully");
-    queryClient.invalidateQueries(["reviews"]); 
+    onSuccess: (res) => {
+      const msg = res?.message?.[lang] || "Deleted successfully";
+      toast.success(msg);
+      queryClient.invalidateQueries(["reviews"]);
     },
-    onError: (error) => {
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Failed to delete review";
-      toast.error(message);
+    onError: (err) => {
+      const msg = err?.message?.[lang] || "failed to delete review";
+      toast.error(msg);
     },
   });
 }

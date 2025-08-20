@@ -423,7 +423,8 @@
     "Close": "إغلاق",
     "Updating...": "جارٍ التحديث...",
     "Submitting...": "جارٍ الإرسال...",
-    "Submit Review": "إرسال التقييم"
+    "Submit Review": "إرسال التقييم",
+    "Leave your comment":"اترك تعليقك"
   },
   "errors": {
     "Something went wrong": "حدث خطأ ما",

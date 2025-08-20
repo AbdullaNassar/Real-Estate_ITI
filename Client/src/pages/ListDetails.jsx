@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { MdSystemUpdateAlt } from "react-icons/md";
+import { FaFilePen } from "react-icons/fa6";
 
 import MyMap from "../component/Map";
 import { RiStarSFill } from "react-icons/ri";
@@ -279,7 +280,7 @@ export default function ListingDetails() {
                       {canModify && (
                         <>
                           <button
-                            className="text-red-500 cursor-pointer hover:text-red-700 transition"
+                            className=" cursor-pointer hover:text-red-700 transition"       
                             title="Delete review"
                             disabled={isDeleting}
                             onClick={() => removeReview(review._id)}
@@ -288,14 +289,15 @@ export default function ListingDetails() {
                           </button>
 
                           <button
-                            className="text-blue-500 cursor-pointer hover:text-blue-700 transition"
+                            className="text-[#e5e5e5;] cursor-pointer hover:text-blue-700 transition"
                             title="Update review"
                             onClick={() => {
                               setShowReview(true);
                               setReviewToEdit(review);
                             }}
                           >
-                            <MdSystemUpdateAlt size={24} />
+                            <FaFilePen  size={24}/>
+                            
                           </button>
                         </>
                       )}
