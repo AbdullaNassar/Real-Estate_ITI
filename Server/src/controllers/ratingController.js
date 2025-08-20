@@ -194,6 +194,10 @@ export const editExistingRating = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     status: "Success",
+    message: { 
+      en: "Rating Updated successfully", 
+      ar: "تم تعديل التقييم بنجاح"
+  },
     updatedRating,
   });
 });

@@ -89,5 +89,11 @@ export async function askQuestion(question) {
         { headers }
     );
 
-    return response.data.choices[0].text.trim();
+    let text = response.data.choices[0].text.trim();
+
+    text = text.replace(/\\(.?)\\*/g, "\n$1\n");
+
+    text = text.split("\n").map(line => line.trim()).join("\n");
+
+    return text;
 }
