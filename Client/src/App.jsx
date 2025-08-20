@@ -1,34 +1,43 @@
 import "./App.css";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import AppLayout from "./ui/AppLayout";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import NotFound from "./pages/NotFound";
-import HomePage from "./pages/HomePage";
-import ListingDetails from "./pages/ListDetails";
-import Profile from "./pages/Profile";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Terms from "./pages/Terms";
-import Privacy from "./pages/Privacy";
-import VerifyOtp from "./pages/VerifyOtp";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import "./i18n";
-import EditProfileModal from "./features/profile/EditProfileModal";
-
 import { ScrollToTop } from "./component/ScrollToTop";
-import AddList from "./pages/AddList";
-import Lists from "./pages/Lists";
-import Settings from "./pages/Settings";
-import PaymentSuccess from "./pages/paymentSuccess";
-import ListBookings from "./pages/ListBookings";
-import EditList from "./pages/EditList";
 import useLanguageStyles from "./hooks/useLanguageStyles";
+import Spinner from "./ui/Spinner";
+
+// code splitting pages
+const AppLayout = lazy(() => import("./ui/AppLayout"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const ListingDetails = lazy(() => import("./pages/ListDetails"));
+const Profile = lazy(() => import("./pages/Profile"));
+const About = lazy(() => import("./pages/About"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const VerifyOtp = lazy(() => import("./pages/VerifyOtp"));
+const Lists = lazy(() => import("./pages/Lists"));
+const Settings = lazy(() => import("./pages/Settings"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const ListBookings = lazy(() => import("./pages/ListBookings"));
+const EditList = lazy(() => import("./pages/EditList"));
+const AddList = lazy(() => import("./pages/AddList"));
+const EditProfileModal = lazy(() =>
+  import("./features/profile/EditProfileModal")
+);
+
 const queryClient = new QueryClient();
+// 205.56 kB │ gzip:  37.87 kB
+// dist/assets/index-CXMAPird.js   1,837.90 kB │ gzip: 556.99 kB
+
 function App() {
   useLanguageStyles();
   return (
@@ -40,30 +49,32 @@ function App() {
             buttonPosition="bottom-left"
           />
           <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route element={<AppLayout />}>
-                <Route index element={<Navigate replace to="home" />} />
-                <Route path="/home" element={<HomePage />} />
-                <Route path="/ListDetails/:id" element={<ListingDetails />} />
-                <Route path="/editList/:id" element={<EditList />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/addList" element={<AddList />} />
-                <Route path="/listings" element={<Lists />} />
-                <Route path="/bookings/:id" element={<ListBookings />} />
-                <Route path="/payment-success" element={<PaymentSuccess />} />
-                <Route path="/settings" element={<Settings />} />
-              </Route>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/verifyOtp" element={<VerifyOtp />} />
-              <Route path="*" element={<NotFound />} />
-              <Route path="/editProfile" element={<EditProfileModal />} />
-            </Routes>
+            <Suspense fallback={<Spinner />}>
+              <ScrollToTop />
+              <Routes>
+                <Route element={<AppLayout />}>
+                  <Route index element={<Navigate replace to="home" />} />
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/ListDetails/:id" element={<ListingDetails />} />
+                  <Route path="/editList/:id" element={<EditList />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/addList" element={<AddList />} />
+                  <Route path="/listings" element={<Lists />} />
+                  <Route path="/bookings/:id" element={<ListBookings />} />
+                  <Route path="/payment-success" element={<PaymentSuccess />} />
+                  <Route path="/settings" element={<Settings />} />
+                </Route>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/verifyOtp" element={<VerifyOtp />} />
+                <Route path="*" element={<NotFound />} />
+                <Route path="/editProfile" element={<EditProfileModal />} />
+              </Routes>
+            </Suspense>
           </BrowserRouter>
           <Toaster
             position="top-center"
