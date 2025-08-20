@@ -287,7 +287,7 @@
     "Ready to Find Your Dream Home?": "Ready to Find Your Dream Home?",
     "Join thousands of satisfied residents who've found their perfectapartment through our platform.": "Join thousands of satisfied residents who've found their perfectapartment through our platform.",
     "Browse All Apartments": "Browse All Apartments",
-
+    "Poublar home": "Popular home",
     "placeholders": {
       "Enter the property government": "Enter the property government",
       "Enter the property address": "Enter the property address",
@@ -404,7 +404,9 @@
     "Check-out": "Check-out",
     "Total Amount": "Total Amount",
     "Final Price": "Final Price",
-    "All inclusive": "All inclusive"
+    "All inclusive": "All inclusive",
+    "Favourites": "Favourites",
+    "empty favs": "You don’t have any favorites yet"
   },
   "deleteModal": {
     "Are you sure you want to delete this {title} permanently? Thisaction cannot be undone.": " Are you sure you want to delete this permanently? This action cannot be undone.",
@@ -472,7 +474,9 @@
     "Booking failed. Please try again.": "Booking failed. Please try again.",
     "Profile updated successfully": "Profile updated successfully",
     "profile updated but failed to refresh please reload the page.": "profile updated but failed to refresh please reload the page.",
-    "password changed but failed to refresh user data.": "password changed but failed to refresh user data."
+    "password changed but failed to refresh user data.": "password changed but failed to refresh user data.",
+    "Removed from favorites successfully": "Removed from favorites successfully",
+    "Added to favorites successfully": "Added to favorites successfully"
   },
   "payment": {
     "Thank you!": "Thank you!",

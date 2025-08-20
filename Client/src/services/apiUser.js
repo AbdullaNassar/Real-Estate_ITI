@@ -30,3 +30,34 @@ export async function logout() {
   const res = await axiosInstance.post("/users/logout"); // or /auth/logout
   return res.data;
 }
+
+export async function getFavsList() {
+  try {
+    const res = await axiosInstance.get("/users/favorites");
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    const currentLang = getCurrentLanguage();
+    const message = err?.response?.data?.message?.[currentLang];
+    if (message) {
+      throw new Error(message);
+    }
+    throw new Error("Error while get Favs Lists");
+  }
+}
+
+export async function toggleFavList(id) {
+  try {
+    const res = await axiosInstance.post(`/users/toggle/${id}`);
+    return res.data;
+  } catch (err) {
+    if (err.response?.status === 401) throw new Error("Please Login First!");
+    console.log(err);
+    const currentLang = getCurrentLanguage();
+    const message = err?.response?.data?.message?.[currentLang];
+    if (message) {
+      throw new Error(message);
+    }
+    throw new Error("Error while get Fav List");
+  }
+}

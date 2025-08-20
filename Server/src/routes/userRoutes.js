@@ -55,12 +55,12 @@ router
 
 router.route("/change-password").patch(isUserLoggedIn, changePassword);
 
-router 
-  .route('/toggle/:listingId')
-  .post(isUserLoggedIn,userPermission('guest'),toggleFavorite)
+router
+  .route("/toggle/:listingId")
+  .post(isUserLoggedIn, userPermission("guest", "host"), toggleFavorite);
 
 router
-  .route('/favorites')
-  .get(isUserLoggedIn,userPermission('admin','guest'),getUserFavorites);
-  
+  .route("/favorites")
+  .get(isUserLoggedIn, userPermission("guest", "host"), getUserFavorites);
+
 export default router;

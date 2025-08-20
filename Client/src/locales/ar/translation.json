@@ -286,7 +286,8 @@
     "rooms": "غرفه",
     "Ready to Find Your Dream Home?": "هل أنت مستعد للعثور على منزل أحلامك؟",
     "Join thousands of satisfied residents who've found their perfectapartment through our platform.": "انضم إلى آلاف السكان الراضين الذين وجدوا شقتهم المثالية من خلال منصتنا.",
-    "Browse All Apartments": "تصفح جميع الشقق",
+    "Browse All Apartments": "تصفح جميع العقارات",
+    "Popular home": "الأكثر شعبية",
     "placeholders": {
       "Enter the property government": "أدخل اسم المحافظة",
       "Enter the property address": "أدخل عنوان العقار",
@@ -402,7 +403,9 @@
     "Check-out": "موعد المغادرة",
     "Total Amount": "المبلغ الإجمالي",
     "Final Price": "السعر النهائي",
-    "All inclusive": "شامل كل شيء"
+    "All inclusive": "شامل كل شيء",
+    "Favourites": "المفضلة",
+    "empty favs": "لا توجد أي مفضلات حتي الان"
   },
   "deleteModal": {
     "Are you sure you want to delete this {title} permanently? Thisaction cannot be undone.": "هل أنت متأكد أنك تريد الحذف نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.",
@@ -470,7 +473,9 @@
     "Booking failed. Please try again.": "فشل الحجز. يرجى المحاولة مرة أخرى.",
     "Profile updated successfully": "تم تحديث الملف الشخصي بنجاح",
     "profile updated but failed to refresh please reload the page.": "تم تحديث الملف الشخصي ولكن فشل التحديث، يرجى إعادة تحميل الصفحة.",
-    "password changed but failed to refresh user data.": "تم تغيير كلمة المرور ولكن فشل تحديث بيانات المستخدم."
+    "password changed but failed to refresh user data.": "تم تغيير كلمة المرور ولكن فشل تحديث بيانات المستخدم.",
+    "Removed from favorites successfully": "تمت الإزالة من المفضلة بنجاح",
+    "Added to favorites successfully": "تمت الإضافة إلى المفضلة بنجاح"
   },
   "payment": {
     "Thank you!": "شكرًا لك!",

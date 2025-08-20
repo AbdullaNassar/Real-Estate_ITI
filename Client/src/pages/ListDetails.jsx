@@ -19,6 +19,10 @@ import { MdDelete } from "react-icons/md";
 import { useDeleteReview } from "../features/review/useDeleteReviews";
 import { formatNumber, formatPrice } from "../utils/helper";
 import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
+import { useToggleFavs } from "../features/favs/useToggleFavs";
+import { useFavsList } from "../features/favs/useFavsList";
+import Error from "../ui/Error";
 
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(null);
@@ -31,8 +35,11 @@ export default function ListingDetails() {
   const { id } = useParams();
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+  const queryClient = useQueryClient();
 
   // hooks
+  const { mutate: toggleFavs } = useToggleFavs();
+  let { data: favs, isLoading: loadingFavs, error: errorFavs } = useFavsList();
   const {
     fetchCheckoutSession,
     session,
@@ -50,9 +57,36 @@ export default function ListingDetails() {
   // end of hooks
 
   // handle loading and error states
-  if (isLoading || isLoadingUser) return <Spinner />;
-  if (error || errorUser) return <h2>{error?.message}error???</h2>;
+  if (isLoading || isLoadingUser || loadingFavs) return <Spinner />;
+  if (error || errorUser || errorFavs)
+    return (
+      <Error
+        message={error?.message || errorUser?.message || errorFavs?.message}
+      />
+    );
 
+  favs = favs.favorites;
+  //function to check if the list in current user Favourites
+  function isFavourites(id) {
+    for (let i = 0; i < favs.length; i++) {
+      if (favs[i]._id === id) return true;
+    }
+    return false;
+  }
+
+  function handleFavClick(id) {
+    const remove = isFavourites(id);
+    toggleFavs(id, {
+      onSuccess: () => {
+        {
+          remove
+            ? toast.success(t("toast.Removed from favorites successfully"))
+            : toast.success(t("toast.Added to favorites successfully"));
+        }
+        queryClient.invalidateQueries({ queryKey: ["favs"] });
+      },
+    });
+  }
   // preprocess data
   const bookedDates = list?.data?.bookedDates?.map((item) => {
     return { start: item.checkInDate, end: item.checkOutDate };
@@ -131,11 +165,36 @@ export default function ListingDetails() {
       {/* heading */}
       <div>
         <div className="flex items-center gap-4">
-          <h2 className="font-semibold text-3xl mb-3">
-            {lang === "en" ? data.title : data.arTitle}
-          </h2>
-          <div className="badge badge-accent">
-            {lang === "en" ? data.categoryId?.name : data.categoryId?.arName}
+          <div className="flex justify-between w-full">
+            <div className="flex items-center gap-2">
+              <h2 className="font-semibold text-3xl mb-3">
+                {lang === "en" ? data.title : data.arTitle}
+              </h2>
+              <div className="badge badge-accent">
+                {lang === "en"
+                  ? data.categoryId?.name
+                  : data.categoryId?.arName}
+              </div>
+            </div>
+            <button
+              onClick={() => handleFavClick(data._id)}
+              className=" hover:cursor-pointer text-gray-100  text-3xl"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill={isFavourites(data._id) ? "#C69963" : "gray"}
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="white"
+                className="size-12"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+            </button>
           </div>
         </div>
         <p>{lang === "en" ? data.descrption : data.arDescrption}</p>
