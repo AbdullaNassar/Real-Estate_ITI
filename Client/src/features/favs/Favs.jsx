@@ -18,7 +18,7 @@ export default function Favs() {
   if (errorFavs) return <Error message={errorFavs.message} />;
 
   favs = favs.favorites;
-  if (!favs) return <EmptyFavs />;
+  if (!favs.length) return <EmptyFavs />;
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 w-full mt-4">
       {favs?.map((item) => {

@@ -167,7 +167,7 @@ export default function ListingDetails() {
       {/* heading */}
       <div>
         <div className="flex items-center gap-4">
-          <div className="flex justify-between w-full">
+          <div className="flex flex-col-reverse sm:flex-row justify-between w-full">
             <div className="flex items-center gap-2">
               <h2 className="font-semibold text-3xl mb-3">
                 {lang === "en" ? data.title : data.arTitle}
@@ -180,7 +180,7 @@ export default function ListingDetails() {
             </div>
             <button
               onClick={() => handleFavClick(data._id)}
-              className=" hover:cursor-pointer text-gray-100  text-3xl"
+              className=" hover:cursor-pointer hover:scale-110 text-gray-100  text-3xl"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +188,7 @@ export default function ListingDetails() {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="white"
-                className="size-12"
+                className="size-12 hover:fill-primarry-hover"
               >
                 <path
                   strokeLinecap="round"
