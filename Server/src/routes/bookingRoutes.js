@@ -2,6 +2,7 @@ import express from "express";
 import {
   createBooking,
   deleteBooking,
+  getAllBookings,
   getAllGuestBooking,
   getAllHostListingBooked,
   getBookingById,
@@ -16,6 +17,10 @@ import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
 const router = express.Router();
 
 router.use(isUserLoggedIn);
+
+router
+  .route("/all")
+  .get(userPermission("admin"),getAllBookings);
 
 router.post("/checkout-session/:listId", prepareCheckOut, getCheckout);
 
@@ -40,5 +45,7 @@ router
   .get(userPermission("admin", "guest"), getBookingById)
   .patch(userPermission("admin", "guest"), updateBooking)
   .delete(userPermission("admin", "guest"), deleteBooking);
+
+
 
 export default router;

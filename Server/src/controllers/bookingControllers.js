@@ -798,3 +798,16 @@ export const getBookingsList = asyncHandler(async (req, res, next) => {
     bookings,
   });
 });
+
+export const getAllBookings = asyncHandler(async (req, res, next) => {
+
+  const bookings = await bookingModel
+    .find()
+    .populate("guest listing");
+
+  res.status(200).json({
+    status: "success",
+    results: bookings.length,
+    bookings,
+  });
+});

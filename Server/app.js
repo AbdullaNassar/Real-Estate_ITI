@@ -55,7 +55,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-const allowedOrigins = ["http://localhost:5173", "https://maskn.netlify.app"];
+const allowedOrigins = ["http://localhost:5173", "https://maskn.netlify.app","http://localhost:4200"];
 
 app.use(
   cors({
