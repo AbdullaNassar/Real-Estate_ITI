@@ -134,6 +134,11 @@ export default function ListingDetails() {
     setStartDate(start);
     setEndDate(end);
   }
+
+  function handleClickHostProfile(id) {
+    if (id === user?.user?.id) navigate("/profile");
+    else navigate(`/PublicProfile/${id}`);
+  }
   return (
     <div className="flex flex-col gap-8 ">
       <div className="carousel rounded-box space-x-3.5 bg-gray-50 p-3">
@@ -334,7 +339,11 @@ export default function ListingDetails() {
       )}
       {/* Host */}
 
-      <div>
+      <div
+        role="button"
+        className="hover:cursor-pointer"
+        onClick={() => handleClickHostProfile(data?.host?._id)}
+      >
         <h2 className="font-semibold text-3xl mb-3">{t("lists.host")}</h2>
         <div className="sm:flex items-center gap-8">
           <div className="flex gap-4  items-center">
@@ -354,6 +363,12 @@ export default function ListingDetails() {
                   lang
                 )}
               </h3>
+              <button
+                onClick={() => handleClickHostProfile(data.host?._id)}
+                className=" hover:cursor-pointer"
+              >
+                {t("lists.View Host Profile")}
+              </button>
             </div>
           </div>
           {/* 

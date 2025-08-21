@@ -12,6 +12,7 @@ import {
   getUserInfo,
   toggleFavorite,
   getUserFavorites,
+  getPublicUserInfo,
 } from "../controllers/userControllers.js";
 import { login, logout, signUp } from "../controllers/authControllers.js";
 import { isUserLoggedIn } from "../middlewares/authentication.middleware.js";
@@ -42,7 +43,7 @@ router
   .delete(isUserLoggedIn, userPermission("admin"), deleteAllUsers);
 
 router.route("/me").get(isUserLoggedIn, getUserInfo);
-
+router.route("/public/:id").get(getPublicUserInfo);
 router
   .route("/")
   .patch(

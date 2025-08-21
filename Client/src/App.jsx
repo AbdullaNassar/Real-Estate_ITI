@@ -30,6 +30,8 @@ const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const ListBookings = lazy(() => import("./pages/ListBookings"));
 const EditList = lazy(() => import("./pages/EditList"));
 const AddList = lazy(() => import("./pages/AddList"));
+const PublicProfile = lazy(() => import("./pages/PublicProfile"));
+
 const EditProfileModal = lazy(() =>
   import("./features/profile/EditProfileModal")
 );
@@ -67,6 +69,10 @@ function App() {
                   <Route path="/bookings/:id" element={<ListBookings />} />
                   <Route path="/payment-success" element={<PaymentSuccess />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route
+                    path="/PublicProfile/:id"
+                    element={<PublicProfile />}
+                  />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

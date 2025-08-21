@@ -66,3 +66,18 @@ export async function toggleFavList(id) {
     throw new Error("Error while get Fav List");
   }
 }
+
+export async function getPublicUserInfo(id) {
+  try {
+    const res = await axiosInstance.get(`/users/public/${id}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+    const currentLang = getCurrentLanguage();
+    const message = err?.response?.data?.message?.[currentLang];
+    if (message) {
+      throw new Error(message);
+    }
+    throw new Error("Unexpected error occurred");
+  }
+}

@@ -25,9 +25,9 @@ export const createList = asyncHandler(async (req, res) => {
   // Validate required fields
   if (
     !title ||
-    !arTitle||
+    !arTitle ||
     !descrption ||
-    !arDescrption||
+    !arDescrption ||
     !pricePerNight ||
     !longitude ||
     !latitude ||
@@ -37,10 +37,10 @@ export const createList = asyncHandler(async (req, res) => {
     !governorate
   ) {
     throw new AppError(
-      { 
-        en: "All required fields must be provided", 
-        ar: "يجب تقديم جميع الحقول المطلوبة" 
-      }, 
+      {
+        en: "All required fields must be provided",
+        ar: "يجب تقديم جميع الحقول المطلوبة",
+      },
       400
     );
   }
@@ -48,10 +48,10 @@ export const createList = asyncHandler(async (req, res) => {
   // Validate photo count
   if (photos.length !== 5) {
     throw new AppError(
-      { 
-        en: `Listing must have exactly 5 images, you uploaded ${photos.length}`, 
-        ar: `يجب أن تحتوي القائمة على 5 صور بالضبط، قمت بتحميل ${photos.length}` 
-      }, 
+      {
+        en: `Listing must have exactly 5 images, you uploaded ${photos.length}`,
+        ar: `يجب أن تحتوي القائمة على 5 صور بالضبط، قمت بتحميل ${photos.length}`,
+      },
       400
     );
   }
@@ -81,9 +81,9 @@ export const createList = asyncHandler(async (req, res) => {
 
   res.status(201).json({
     status: "success",
-    message: { 
-      en: "Listing created successfully", 
-      ar: "تم إنشاء القائمة بنجاح" 
+    message: {
+      en: "Listing created successfully",
+      ar: "تم إنشاء القائمة بنجاح",
     },
     data: list,
   });
@@ -124,6 +124,8 @@ export const readLists = asyncHandler(async (req, res) => {
       { title: { $regex: searchRegex } },
       { description: { $regex: searchRegex } },
       { governorate: { $regex: searchRegex } },
+      { arTitle: { $regex: searchRegex } },
+      { arDescrption: { $regex: searchRegex } },
     ];
   }
 
@@ -134,10 +136,10 @@ export const readLists = asyncHandler(async (req, res) => {
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       throw new AppError(
-        { 
-          en: "Invalid date format for startDate or endDate", 
-          ar: "تنسيق غير صالح لتاريخ البداية أو النهاية" 
-        }, 
+        {
+          en: "Invalid date format for startDate or endDate",
+          ar: "تنسيق غير صالح لتاريخ البداية أو النهاية",
+        },
         400
       );
     }
@@ -178,10 +180,10 @@ export const getListById = asyncHandler(async (req, res) => {
 
   if (!id) {
     throw new AppError(
-      { 
-        en: "Listing ID is required", 
-        ar: "معرّف القائمة مطلوب" 
-      }, 
+      {
+        en: "Listing ID is required",
+        ar: "معرّف القائمة مطلوب",
+      },
       400
     );
   }
@@ -192,10 +194,10 @@ export const getListById = asyncHandler(async (req, res) => {
 
   if (!list) {
     throw new AppError(
-      { 
-        en: "Listing not found", 
-        ar: "لم يتم العثور على القائمة" 
-      }, 
+      {
+        en: "Listing not found",
+        ar: "لم يتم العثور على القائمة",
+      },
       404
     );
   }
@@ -264,10 +266,7 @@ export const updateList = asyncHandler(async (req, res, next) => {
 
   if (!req.body || Object.keys(req.body).length === 0) {
     return next(
-      new AppError(
-        { en: "Request body is empty", ar: "جسم الطلب فارغ" },
-        400
-      )
+      new AppError({ en: "Request body is empty", ar: "جسم الطلب فارغ" }, 400)
     );
   }
 
@@ -349,10 +348,10 @@ export const deleteList = asyncHandler(async (req, res, next) => {
   if (!id) {
     return next(
       new AppError(
-        { 
-          en: "Listing ID is required", 
-          ar: "معرّف القائمة مطلوب" 
-        }, 
+        {
+          en: "Listing ID is required",
+          ar: "معرّف القائمة مطلوب",
+        },
         400
       )
     );
@@ -365,10 +364,10 @@ export const deleteList = asyncHandler(async (req, res, next) => {
   if (!list) {
     return next(
       new AppError(
-        { 
-          en: "List not found", 
-          ar: "لم يتم العثور على القائمة" 
-        }, 
+        {
+          en: "List not found",
+          ar: "لم يتم العثور على القائمة",
+        },
         404
       )
     );
@@ -377,22 +376,22 @@ export const deleteList = asyncHandler(async (req, res, next) => {
   if (list.host.toString() !== host.toString()) {
     return next(
       new AppError(
-        { 
-          en: "You are not authorized to delete this list", 
-          ar: "غير مصرح لك بحذف هذه القائمة" 
-        }, 
+        {
+          en: "You are not authorized to delete this list",
+          ar: "غير مصرح لك بحذف هذه القائمة",
+        },
         403
       )
     );
   }
 
-  await listModel.findOneAndDelete({_id:id});
+  await listModel.findOneAndDelete({ _id: id });
 
   res.status(200).json({
     status: "success",
-    message: { 
-      en: "List deleted successfully", 
-      ar: "تم حذف القائمة بنجاح" 
+    message: {
+      en: "List deleted successfully",
+      ar: "تم حذف القائمة بنجاح",
     },
   });
 });
@@ -403,10 +402,10 @@ export const searchLists = asyncHandler(async (req, res, next) => {
   if (!keyword || keyword.length < 3) {
     return next(
       new AppError(
-        { 
-          en: "You must enter at least 3 characters", 
-          ar: "يجب إدخال 3 أحرف على الأقل" 
-        }, 
+        {
+          en: "You must enter at least 3 characters",
+          ar: "يجب إدخال 3 أحرف على الأقل",
+        },
         400
       )
     );
@@ -448,10 +447,10 @@ export const approvedListing = asyncHandler(async (req, res, next) => {
   if (!id) {
     return next(
       new AppError(
-        { 
-          en: "Listing ID is required", 
-          ar: "معرّف القائمة مطلوب" 
-        }, 
+        {
+          en: "Listing ID is required",
+          ar: "معرّف القائمة مطلوب",
+        },
         400
       )
     );
@@ -466,10 +465,10 @@ export const approvedListing = asyncHandler(async (req, res, next) => {
   if (!listing) {
     return next(
       new AppError(
-        { 
-          en: "Listing not found", 
-          ar: "لم يتم العثور على القائمة" 
-        }, 
+        {
+          en: "Listing not found",
+          ar: "لم يتم العثور على القائمة",
+        },
         404
       )
     );
@@ -477,9 +476,9 @@ export const approvedListing = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: { 
-      en: "Listing approved successfully", 
-      ar: "تمت الموافقة على القائمة بنجاح" 
+    message: {
+      en: "Listing approved successfully",
+      ar: "تمت الموافقة على القائمة بنجاح",
     },
     data: listing,
   });

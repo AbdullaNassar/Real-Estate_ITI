@@ -288,6 +288,8 @@
     "Join thousands of satisfied residents who've found their perfectapartment through our platform.": "انضم إلى آلاف السكان الراضين الذين وجدوا شقتهم المثالية من خلال منصتنا.",
     "Browse All Apartments": "تصفح جميع العقارات",
     "Popular home": "الأكثر شعبية",
+    "View Host Profile": "عرض ملف المضيف",
+
     "placeholders": {
       "Enter the property government": "أدخل اسم المحافظة",
       "Enter the property address": "أدخل عنوان العقار",
@@ -405,7 +407,13 @@
     "Final Price": "السعر النهائي",
     "All inclusive": "شامل كل شيء",
     "Favourites": "المفضلة",
-    "empty favs": "لا توجد أي مفضلات حتي الان"
+    "empty favs": "لا توجد أي مفضلات حتي الان",
+    "Verified Host": "مضيف موثّق",
+    "Apartment": "شقة",
+    "Available": "متاحة",
+    "Available Apartments": "الشقق المتاحة",
+    "out of": "من ",
+    "bookings": "الحجوزات"
   },
   "deleteModal": {
     "Are you sure you want to delete this {title} permanently? Thisaction cannot be undone.": "هل أنت متأكد أنك تريد الحذف نهائيًا؟ لا يمكن التراجع عن هذا الإجراء.",
@@ -424,7 +432,7 @@
     "Updating...": "جارٍ التحديث...",
     "Submitting...": "جارٍ الإرسال...",
     "Submit Review": "إرسال التقييم",
-    "Leave your comment":"اترك تعليقك"
+    "Leave your comment": "اترك تعليقك"
   },
   "errors": {
     "Something went wrong": "حدث خطأ ما",

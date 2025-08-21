@@ -288,6 +288,7 @@
     "Join thousands of satisfied residents who've found their perfectapartment through our platform.": "Join thousands of satisfied residents who've found their perfectapartment through our platform.",
     "Browse All Apartments": "Browse All Apartments",
     "Poublar home": "Popular home",
+    "View Host Profile": "View Host Profile",
     "placeholders": {
       "Enter the property government": "Enter the property government",
       "Enter the property address": "Enter the property address",
@@ -406,7 +407,13 @@
     "Final Price": "Final Price",
     "All inclusive": "All inclusive",
     "Favourites": "Favourites",
-    "empty favs": "You don’t have any favorites yet"
+    "empty favs": "You don’t have any favorites yet",
+    "Verified Host": "Verified Host",
+    "Apartment": "Apartment",
+    "Available": "Available",
+    "Available Apartments": "Available Apartments",
+    "out of": "out of ",
+    "bookings": "bookings"
   },
   "deleteModal": {
     "Are you sure you want to delete this {title} permanently? Thisaction cannot be undone.": " Are you sure you want to delete this permanently? This action cannot be undone.",
@@ -425,8 +432,8 @@
     "Updating...": "Updating...",
     "Submitting...": "Submitting...",
     "Submit Review": "Submit Review",
-    "Leave your comment":"Leave your comment",
-    "":""
+    "Leave your comment": "Leave your comment",
+    "": ""
   },
   "errors": {
     "Something went wrong": "Something went wrong",
