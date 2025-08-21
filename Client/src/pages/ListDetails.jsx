@@ -24,6 +24,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToggleFavs } from "../features/favs/useToggleFavs";
 import { useFavsList } from "../features/favs/useFavsList";
 import Error from "../ui/Error";
+import SEO from "../component/SEO";
 
 export default function ListingDetails() {
   const [startDate, setStartDate] = useState(null);
@@ -141,6 +142,10 @@ export default function ListingDetails() {
   }
   return (
     <div className="flex flex-col gap-8 ">
+      <SEO
+        title={`${data.title}  | Maskn`}
+        description={`Book ${data.title} in ${data.city}, Egypt. Enjoy a comfortable stay with Maskn.`}
+      />
       <div className="carousel rounded-box space-x-3.5 bg-gray-50 p-3">
         {data.photos.map((item) => {
           return (

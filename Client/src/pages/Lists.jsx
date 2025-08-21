@@ -15,6 +15,7 @@ import Error from "../ui/Error";
 import { IoSearch } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { formatNumber } from "../utils/helper";
+import SEO from "../component/SEO";
 
 export default function Lists() {
   const [searchParam, setSearchParams] = useSearchParams();
@@ -165,6 +166,10 @@ export default function Lists() {
 
   return (
     <>
+      <SEO
+        title="Listings | Maskn"
+        description="Browse property listings on Maskn and reach renters across Egypt."
+      />
       <div className="md:flex gap-6 my-6 space-y-4 justify-self-center md:justify-self-auto">
         <div className="items-center  w-72 shadow pl-4 pt-2 ">
           <div className="flex gap-1 items-center mb-4 text-2xl">

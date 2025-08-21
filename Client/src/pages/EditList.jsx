@@ -18,6 +18,7 @@ import { useList } from "../features/Lists/useList";
 import Error from "../ui/Error";
 import { useUpdateList } from "../features/Lists/useUpdateList";
 import { useTranslation } from "react-i18next";
+import SEO from "../component/SEO";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -194,6 +195,10 @@ export default function EditList() {
 
   return (
     <div className="my-4">
+      <SEO
+        title={`Edit ${list.title} | Maskn`}
+        description={`Update details for ${list.title}, in Egypt on Maskn.`}
+      />
       <h1 className="text-3xl font-semibold">
         {t("profile.Edit")}: {lang === "en" ? list.title : list.arTitle}
       </h1>

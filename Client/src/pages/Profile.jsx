@@ -12,6 +12,7 @@ import Error from "../ui/Error";
 import { useTranslation } from "react-i18next";
 import { formatNumber } from "../utils/helper";
 import Favs from "../features/favs/Favs";
+import SEO from "../component/SEO";
 
 export default function Profile() {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -62,6 +63,10 @@ export default function Profile() {
 
   return (
     <div className="mx-auto px-4 sm:px-6 md:px-8 py-4 overflow-x-hidden">
+      <SEO
+        title="My Profile | Maskn"
+        description="View and manage your Maskn profile, bookings, and property listings across Egypt."
+      />
       {/* avatar part */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 w-full">
         <div className="flex flex-col sm:flex-row items-center gap-6 flex-wrap w-full min-w-0">

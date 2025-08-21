@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import Header from "../ui/Header";
 import { axiosInstance } from "../services/axiosInstance";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
+import SEO from "../component/SEO";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
@@ -85,6 +87,10 @@ export default function Signup() {
 
   return (
     <div className="bg-gray-100">
+      <SEO
+        title="Sign Up | Maskn "
+        description="Join Maskn today and start hosting or booking apartments across Egypt."
+      />
       <Header />
       <div className="flex justify-center items-center min-h-screen p-4 sm:px-6 lg:px-8 bg-gray-50">
         <form

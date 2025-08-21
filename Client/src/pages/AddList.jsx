@@ -16,6 +16,7 @@ import Spinner from "../ui/Spinner";
 import { governmentList } from "../utils/constants";
 import { useUser } from "../features/auth/useUser";
 import { useTranslation } from "react-i18next";
+import SEO from "../component/SEO";
 
 // Fix marker icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -127,6 +128,10 @@ export default function AddList() {
 
   return (
     <div className="my-4">
+      <SEO
+        title="Add New Property | Maskn"
+        description="List your apartment, villa, or house on Maskn and start earning by renting it across Egypt."
+      />
       <h1 className="text-3xl font-semibold">{t("lists.Add New Listing")}</h1>
       <form
         className="space-y-6 mt-8  flex flex-col"

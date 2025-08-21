@@ -6,6 +6,7 @@ import Error from "../ui/Error";
 import { User, Mail, Shield, Star, Calendar, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatNumber } from "../utils/helper";
+import SEO from "../component/SEO";
 export default function PublicProfile() {
   const { data, error, isLoading } = useUserPublic();
   const navigate = useNavigate();
@@ -14,48 +15,6 @@ export default function PublicProfile() {
 
   if (isLoading) return <Spinner />;
   if (error) return <Error message={error.message} />;
-
-  const userData = {
-    userName: "Sarah Johnson",
-    email: "sarah.johnson@email.com",
-    isVerified: true,
-    role: "Host",
-    profilePic:
-      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-  };
-
-  const apartments = [
-    {
-      id: 1,
-      title: "Modern Downtown Loft",
-      description:
-        "Beautiful modern loft in the heart of downtown with stunning city views, high ceilings, and premium amenities.",
-      numberOfBookings: 45,
-      averageRating: 4.8,
-      image:
-        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=250&fit=crop",
-    },
-    {
-      id: 2,
-      title: "Cozy Riverside Apartment",
-      description:
-        "Peaceful 2-bedroom apartment overlooking the river with a private balcony and walking distance to local cafes.",
-      numberOfBookings: 32,
-      averageRating: 4.6,
-      image:
-        "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=250&fit=crop",
-    },
-    {
-      id: 3,
-      title: "Luxury Penthouse Suite",
-      description:
-        "Spacious penthouse with panoramic views, modern kitchen, and rooftop terrace perfect for entertaining.",
-      numberOfBookings: 28,
-      averageRating: 4.9,
-      image:
-        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=250&fit=crop",
-    },
-  ];
 
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
@@ -89,6 +48,10 @@ export default function PublicProfile() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <SEO
+        title={`${data?.user?.userName}'s Listings | Maskn`}
+        description={`View ${data?.user?.userName}'s profile and explore their available properties for rent across Egypt.`}
+      />
       {/* User Profile Header */}
       <div className="bg-gray-100 rounded-xl shadow-lg p-8 mb-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
@@ -139,7 +102,7 @@ export default function PublicProfile() {
                 <span className="text-lg font-semibold text-blue-900">
                   {formatNumber(data?.lists?.length, lang)}{" "}
                   {t("profile.Apartment")}
-                  {apartments.length !== 1 && lang === "en" ? "s" : ""}{" "}
+                  {data?.lists.length !== 1 && lang === "en" ? "s" : ""}{" "}
                   {t("profile.Available")}
                 </span>
               </div>

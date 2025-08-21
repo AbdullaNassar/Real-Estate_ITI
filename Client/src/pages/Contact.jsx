@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import emailjs from "emailjs-com";
 import { useTranslation } from "react-i18next";
+import SEO from "../component/SEO";
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -14,7 +15,9 @@ export default function Contact() {
     },
     validationSchema: Yup.object({
       name: Yup.string().required(t("contact.nameRequired")),
-      email: Yup.string().email(t("Contact.emailInvalid")).required(t("contact.emailRequired")),
+      email: Yup.string()
+        .email(t("Contact.emailInvalid"))
+        .required(t("contact.emailRequired")),
       message: Yup.string().required(t("contact.messageRequired")),
     }),
     onSubmit: (values, { resetForm }) => {
@@ -46,6 +49,10 @@ export default function Contact() {
       onSubmit={formik.handleSubmit}
       className="max-w-md w-full mx-auto mt-14 mb-8 p-6 bg-gray-50 rounded-2xl shadow-2xl hover:shadow-2xl transition-shadow duration-300"
     >
+      <SEO
+        title="Contact Maskn | Rent Apartments & Homes in Egypt"
+        description="Need help? Contact Maskn for assistance with your bookings and listings."
+      />
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         {t("contact.title")}
       </h2>
@@ -71,7 +78,7 @@ export default function Contact() {
       {/* Email */}
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2 text-sm">
-         {t("contact.emailLabel")}
+          {t("contact.emailLabel")}
         </label>
         <input
           name="email"

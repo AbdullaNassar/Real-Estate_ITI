@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import SEO from "../component/SEO";
 
 export default function PaymentSuccess() {
   const { t } = useTranslation();
@@ -12,6 +13,10 @@ export default function PaymentSuccess() {
 
   return (
     <div className="text-center mt-20 space-y-4">
+      <SEO
+        title="Payment Successful | Maskn"
+        description="Your booking has been confirmed. Thank you for choosing Maskn for your stay in Egypt."
+      />
       <h1 className="text-3xl font-bold text-green-600">
         {t("payment.Thank you!")}
       </h1>

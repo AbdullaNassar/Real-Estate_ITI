@@ -20,6 +20,7 @@ import Spinner from "../ui/Spinner";
 import Error from "../ui/Error";
 import { formatDate, formatPrice } from "../utils/helper";
 import { useTranslation } from "react-i18next";
+import SEO from "../component/SEO";
 
 export default function ListBookings() {
   const { id } = useParams();
@@ -37,6 +38,10 @@ export default function ListBookings() {
 
   return (
     <div className="mt-8 space-y-12">
+      <SEO
+        title={`Bookings for ${data?.bookings?.[0].listing?.title} | Maskn`}
+        description={`View and manage all bookings for ${data?.bookings?.[0].listing?.title}, Egypt on Maskn.`}
+      />
       <h2 className="text-xl font-semibold">
         Bookings details for {data?.bookings?.[0].listing?.title}
       </h2>
@@ -184,6 +189,10 @@ const NoBookings = ({
 
   return (
     <div className="mt-8 flex flex-col items-center justify-center p-12 text-center bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+      <SEO
+        title={`Bookings | Maskn`}
+        description={`View and manage all bookings, Egypt on Maskn.`}
+      />
       {/* Icon/Illustration */}
       <div className="bg-gray-50 rounded-full p-6 mb-6">
         {illustrations[illustration]}

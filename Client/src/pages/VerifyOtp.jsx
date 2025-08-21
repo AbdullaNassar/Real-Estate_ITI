@@ -6,6 +6,7 @@ import OtpInput from "../ui/OtpInput";
 import Header from "../ui/Header";
 import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../services/axiosInstance";
+import SEO from "../component/SEO";
 
 export default function VerifyOtp() {
   const [otp, setOtp] = useState("");
@@ -47,7 +48,9 @@ export default function VerifyOtp() {
         })
         .catch((err) => {
           const lang = i18n.language || "en";
-          const msg = err.response?.data?.message?.[lang] || t("verifyOtp.errors.verifyFailed");
+          const msg =
+            err.response?.data?.message?.[lang] ||
+            t("verifyOtp.errors.verifyFailed");
           toast.error(msg);
         });
     }
@@ -66,6 +69,10 @@ export default function VerifyOtp() {
 
   return (
     <>
+      <SEO
+        title="Verify Your Account | Maskn"
+        description="Enter the OTP sent to your email to verify your Maskn account and start booking homes in Egypt."
+      />
       <Header />
       <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
         <div className="w-full max-w-md bg-gray-200 shadow-md rounded-xl p-6 sm:p-8">

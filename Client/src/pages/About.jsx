@@ -1,12 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import SEO from "../component/SEO";
 
 export default function About() {
   const { t } = useTranslation();
 
   return (
     <div className=" text-gray-800 px-4 sm:px-8 lg:px-20 py-10">
+      <SEO
+        title="About Maskn | Your Partner in Renting Homes Across Egypt"
+        description="Learn more about Maskn and how we help you find the best homes for rent in Egypt."
+      />
       <div className="max-w-4xl mx-auto">
         {/* Title */}
         <h1 className="text-2xl sm:text-3xl font-bold text-[#C69963] mb-2">

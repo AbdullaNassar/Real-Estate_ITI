@@ -9,13 +9,15 @@ import toast from "react-hot-toast";
 import Header from "../ui/Header";
 import { axiosInstance } from "../services/axiosInstance";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet";
+import SEO from "../component/SEO";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errMessage, SetErrMessage] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
   const navigate = useNavigate();
-    const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   function handleLogin(value) {
     SetIsLoading(true);
     axiosInstance
@@ -79,6 +81,10 @@ export default function Login() {
 
   return (
     <div className="bg-gray-100">
+      <SEO
+        title="Login | Maskn"
+        description="Access your Maskn account to manage bookings, listings, and more."
+      />
       <Header />
       <div className=" min-h-[85vh] flex justify-center items-center  p-4 bg-gray-100">
         <form
