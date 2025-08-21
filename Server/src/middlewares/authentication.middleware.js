@@ -34,23 +34,6 @@ export const isUserLoggedIn =asyncHandler( async (req, res, next) => {
     );
   }
 
-  if (user.passwordChangedAt) {
-
-    const passwordChangedTimestamp = parseInt(user.passwordChangedAt.getTime() / 1000, 10);
-    if (payLoad.iat < passwordChangedTimestamp) {
-
-        return next(
-          new AppError(
-            {
-              en: "User recently changed password! Please log in again.",
-              ar: "قام المستخدم بتغيير كلمة المرور مؤخرًا! يرجى تسجيل الدخول مرة أخرى."
-            },
-            401
-          )
-        );
-      }
-  }
-
   req.user = user;
   next();
 });
