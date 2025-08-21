@@ -1,9 +1,6 @@
 ## 🏘 Maskn
 
-**Maskn** is a real estate web application for renting homes across Egypt. It enables guests to browse apartments, make bookings, and provides hosts with the ability to list and manage their properties on the platform.
-<br/>🔗 [Live-Demo](https://maskn.netlify.app/home)
-
----
+**Maskn** is a real estate web application for renting homes across Egypt. It enables guests to browse apartments, make bookings, and provides hosts with the ability to list and manage their properties on the platform. 🔗 [Live-Demo](https://maskn.netlify.app/home)
 
 ## Features
 
@@ -19,8 +16,6 @@
 - Light/Dark Mode: Toggle between light and dark themes for better user experience.
 - RAG Chatbot: AI-powered chatbot for user assistance.
 - Fully responsive design, Clean, modern, and user-friendly interface
-
----
 
 ## Tech Stack
 
@@ -48,13 +43,9 @@
 - **JWT**
 - **Nodemailer**
 
----
-
 ## API Documentation
 
 Explore the API endpoints and their usage via our Swagger Documentation. [link](https://maskan.up.railway.app/api-docs/)
-
----
 
 ## Setup Instructions
 
@@ -91,8 +82,6 @@ cd ..
 **3. Set Up Environment Variables**
 Create a .env file in the server directory and add the required variables (e.g., MongoDB URI, Stripe keys, Cloudinary credentials).
 
----
-
 **4. Run the Development Servers**
 
 **Start the back-end server:**
@@ -109,8 +98,6 @@ cd client
 npm run dev
 ```
 
----
-
 ## 👥 Our Team
 
 | Name                | Links                                                                                                                  |
@@ -119,7 +106,3 @@ npm run dev
 | **Sherif Shoukry**  | [GitHub](https://github.com/sherifshoukryalqwatly) / [LinkedIn](https://www.linkedin.com/in/sherif-shukrii-08085022a/) |
 | **Ahmed Hisham**    | [GitHub](https://github.com/Ahmedkoraish) / [LinkedIn](https://www.linkedin.com/in/ahmed-hesham-hosny)                 |
 | **Mahmoud Fathy**   | [GitHub](https://github.com/MahmoudFathyTawfeek)                                                                       |
-
-```
-
-```
