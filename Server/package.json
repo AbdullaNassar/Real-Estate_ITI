@@ -19,10 +19,7 @@
     "crypto-js": "^4.2.0",
     "dotenv": "^17.0.0",
     "express": "^5.1.0",
-    "express-mongo-sanitize": "^2.2.0",
-    "express-rate-limit": "^8.0.1",
     "express-session": "^1.18.2",
-    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.10.0",
     "mongoose": "^8.16.1",
@@ -35,8 +32,7 @@
     "stripe": "^18.4.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "uuid": "^11.1.0",
-    "xss-clean": "^0.1.4"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

@@ -4,10 +4,6 @@ import morgan from "morgan";
 import cors from "cors";
 import mongoose from "mongoose";
 import session from "express-session";
-import helmet from "helmet";
-import { rateLimit } from "express-rate-limit";
-import mongoSanitize from "express-mongo-sanitize";
-import xss from "xss-clean";
 
 import userRouter from "./src/routes/userRoutes.js";
 import listRouter from "./src/routes/listRoutes.js";
@@ -28,23 +24,6 @@ import { errorHandler } from "./src/middlewares/errorHandler.middleware.js";
 
 dotenv.config({ path: "./config.env" });
 const app = express();
-
-const limiter = rateLimit({
-  limit: 100,
-  windowMs: 60 * 60 * 1000, // 1 hour,
-  message: "Too many requests from this IP, please try again in an hour",
-});
-//general middlewares
-app.use(express.json()); //body parser, reading data from the body into req.body
-app.use(cookieParser());
-app.use(morgan("dev"));
-app.use(helmet()); // security HTTP headers
-app.use("/api", limiter); // limit request from same API
-
-// Data sanitization against NoSQL query injection
-app.use(mongoSanitize());
-// Data sanitization against XSS
-app.use(xss());
 
 // connect to database
 const DB_LOCAL = process.env.DB_LOCAL;
@@ -71,11 +50,12 @@ app.post(
   stripeWebhookHandler
 );
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://maskn.netlify.app",
-  "http://localhost:4200",
-];
+//general middlewares
+app.use(express.json());
+app.use(cookieParser());
+app.use(morgan("dev"));
+
+const allowedOrigins = ["http://localhost:5173", "https://maskn.netlify.app","http://localhost:4200"];
 
 app.use(
   cors({
