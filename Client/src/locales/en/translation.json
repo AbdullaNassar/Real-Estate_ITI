@@ -9,6 +9,7 @@
     "title": "Contact Us",
     "nameLabel": "Enter Your Name",
     "emailLabel": "Enter Your Email",
+    "msgPlaceholder": "Tell us how we can help you...",
     "messageLabel": "Message",
     "submit": "Send Message",
     "nameRequired": "Name is required",
@@ -16,7 +17,8 @@
     "emailInvalid": "Invalid email",
     "messageRequired": "Message is required",
     "toastSuccess": "Email sent successfully!",
-    "toastError": "Failed to send email"
+    "toastError": "Failed to send email",
+    "description": "We'd love to hear from you. Send us a message and we'll respond assoon as possible."
   },
   "hero": {
     "title": "Find your perfect rental in Egypt",

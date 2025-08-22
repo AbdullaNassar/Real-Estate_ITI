@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { axiosInstance } from "../../services/axiosInstance";
 import { useUser } from "../auth/useUser";
 import { useTranslation } from "react-i18next";
 
 export default function EditProfileModal({ onClose, onSuccess }) {
-   const {t} = useTranslation()
+  const { t } = useTranslation();
   const { user } = useUser();
   const curUser = user?.user;
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +68,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
         className="w-full max-w-lg bg-gray-50 shadow-2xl rounded-2xl p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[90vh]"
       >
         <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">
-         {t( "editProfileModal.Edit Profile")}
+          {t("editProfileModal.Edit Profile")}
         </h2>
 
         <div className="flex justify-center mb-4">
@@ -91,7 +91,7 @@ export default function EditProfileModal({ onClose, onSuccess }) {
         {/* Username */}
         <div className="mb-4">
           <label htmlFor="userName" className="block mb-1 text-sm font-medium">
-           {t("editProfileModal.Username")}
+            {t("editProfileModal.Username")}
           </label>
           <input
             id="userName"

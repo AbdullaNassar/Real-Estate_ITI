@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import FormInputRow from "../ui/FormInputRow";
 import FromTextareaRow from "../ui/FromTextareaRow";

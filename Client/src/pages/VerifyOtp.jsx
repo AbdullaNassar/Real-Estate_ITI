@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import OtpInput from "../ui/OtpInput";

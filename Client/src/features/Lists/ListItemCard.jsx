@@ -11,7 +11,7 @@ import { useToggleFavs } from "../favs/useToggleFavs";
 import { useFavsList } from "../favs/useFavsList";
 import Spinner from "../../ui/Spinner";
 import Error from "../../ui/Error";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 export default function ListItemCard({ list }) {
   const navigate = useNavigate();

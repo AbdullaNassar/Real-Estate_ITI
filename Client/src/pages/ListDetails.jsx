@@ -3,7 +3,7 @@ import { PiSwimmingPoolLight } from "react-icons/pi";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useNavigate, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { MdSystemUpdateAlt } from "react-icons/md";
 import { FaFilePen } from "react-icons/fa6";
 

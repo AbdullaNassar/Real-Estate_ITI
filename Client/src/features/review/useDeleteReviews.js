@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteReview } from "../../services/apiReview";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 export function useDeleteReview() {

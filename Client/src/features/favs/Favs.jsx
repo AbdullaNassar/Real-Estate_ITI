@@ -5,7 +5,7 @@ import Error from "../../ui/Error";
 import { useTranslation } from "react-i18next";
 import Lists from "../../pages/Lists";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useToggleFavs } from "./useToggleFavs";
 import { useQueryClient } from "@tanstack/react-query";
 

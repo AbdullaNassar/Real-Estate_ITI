@@ -3,7 +3,8 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
+import { Toaster } from "sonner";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import "./i18n";
@@ -82,7 +83,8 @@ function App() {
               </Routes>
             </Suspense>
           </BrowserRouter>
-          <Toaster
+          <Toaster richColors position="top-center" />
+          {/* <Toaster
             position="top-center"
             gutter={12}
             containerStyle={{ margin: "8px" }}
@@ -99,7 +101,7 @@ function App() {
                 padding: "16px 24px",
               },
             }}
-          />
+          /> */}
         </QueryClientProvider>
       </Provider>
     </>

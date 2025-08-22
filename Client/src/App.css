@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;700&display=swap");
-
 body {
   margin: 0;
   font-family: var(--main-font);
@@ -8,7 +7,7 @@ body {
 html {
   direction: var(--dir);
 }
-
+@import "aos/dist/aos.css";
 @import "tailwindcss";
 /* src/index.css or src/App.css */
 @plugin "daisyui";
@@ -27,6 +26,31 @@ input[type="number"]::-webkit-inner-spin-button {
 } */
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
+}
+
+/* Global Custom Scrollbar for Airbnb Clone */
+::-webkit-scrollbar {
+  width: 8px; /* Width of vertical scrollbar */
+  height: 8px; /* Height of horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f9fafb; /* Light gray track (Tailwind gray-50) */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c69963; /* Your main color */
+  border-radius: 9999px; /* Rounded scrollbar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c69963; /* Darker shade on hover */
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c69963 #f9fafb;
 }
 
 @theme {

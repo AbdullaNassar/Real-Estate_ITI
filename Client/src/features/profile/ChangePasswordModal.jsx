@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import * as YUP from "yup";
 
 import { axiosInstance } from "../../services/axiosInstance";

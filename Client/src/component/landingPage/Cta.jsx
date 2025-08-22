@@ -2,13 +2,19 @@ import React from "react";
 import Animation from "../../ui/animated/Animation";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAOS } from "../../hooks/useAOS";
 
 export default function Cta() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  useAOS();
   return (
     <Animation>
-      <section className="py-20 bg-gradient-to-r from-primarry to-primarry-hover">
+      <section
+        data-aos="fade-down"
+        s
+        className="py-20 bg-gradient-to-r from-primarry to-primarry-hover"
+      >
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-50 mb-6">
             {t("cta.title")}

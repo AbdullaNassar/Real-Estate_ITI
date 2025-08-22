@@ -2,12 +2,14 @@ import { Star, Users } from "lucide-react";
 import React from "react";
 import Animation from "../../ui/animated/Animation";
 import { useTranslation } from "react-i18next";
+import { useAOS } from "../../hooks/useAOS";
 
 export default function Testimonials() {
   const { t } = useTranslation();
+  useAOS();
   return (
     <Animation>
-      <section className="py-20 bg-gray-100">
+      <section data-aos="fade-down" className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-800 mb-4">

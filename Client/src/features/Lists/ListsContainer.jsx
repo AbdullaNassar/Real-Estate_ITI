@@ -5,6 +5,8 @@ import Spinner from "../../ui/Spinner";
 import Counter from "../../ui/animated/Counter";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { useAOS } from "../../hooks/useAOS";
 const listHeading = [
   { en: "Popular homes in ", ar: "أفضل الشقق المميزة في " },
   { en: "Stay in ", ar: "استمتع بالإقامة في " },
@@ -17,12 +19,15 @@ export default function ListsContainer() {
   const { t } = useTranslation();
   let { data: lists, error, isLoading } = useListsByGovern();
   const navigate = useNavigate();
+  useAOS();
+
   if (isLoading) return <Spinner />;
   if (error) return <h2>{error.message} Error....</h2>;
 
   let data = lists.data.slice(0, 3);
+
   return (
-    <div className="mt-16 flex flex-col gap-4">
+    <div data-aos="fade-down" className="mt-16 flex flex-col gap-4">
       <div className="text-center mb-16">
         <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
           <Counter

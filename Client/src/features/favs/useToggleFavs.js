@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { toggleFavList } from "../../services/apiUser";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export function useToggleFavs() {
   return useMutation({

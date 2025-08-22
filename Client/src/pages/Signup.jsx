@@ -4,7 +4,7 @@ import axios from "axios";
 import * as YUP from "yup";
 import { useNavigate } from "react-router-dom";
 import { FaSpinner, FaEye, FaEyeSlash } from "react-icons/fa";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import Header from "../ui/Header";
 import { axiosInstance } from "../services/axiosInstance";

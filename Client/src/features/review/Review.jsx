@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { axiosInstance } from "../../services/axiosInstance";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ export default function Review({
   reviewToEdit,
 }) {
   const queryClient = useQueryClient();
-  const { t , i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isEditing = Boolean(reviewToEdit?._id);
 
   const { mutate: updateReview, isPending: isUpdating } =
@@ -34,8 +34,10 @@ export default function Review({
       onClose();
     },
     onError: (err) => {
-      const lang = i18n.language || "en"
-      const msg = err.response?.data?.message?.[lang] || t("review.Error while submitting review");
+      const lang = i18n.language || "en";
+      const msg =
+        err.response?.data?.message?.[lang] ||
+        t("review.Error while submitting review");
       toast.error(msg);
     },
   });

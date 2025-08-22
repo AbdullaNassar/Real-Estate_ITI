@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import hero from "/imgs/hero.jpg";
 import TextType from "../../ui/TextType";
 import AnimatedContent from "../../ui/AnimatedContent";
 import FadeContent from "../../ui/FadeContent";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 export default function Hero() {

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteList as apiDeleteList } from "../../services/apiLists";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
 export function useDeleteList() {
