@@ -1,5 +1,5 @@
-// export const BASE_URL = "http://localhost:8000/api/v1/";
-export const BASE_URL = "https://maskan.up.railway.app/api/v1/";
+export const BASE_URL = "http://localhost:8000/api/v1/";
+// export const BASE_URL = "https://maskan.up.  railway.app/api/v1/";
 export const PAGE_SIZE = 10;
 import i18next from "i18next";
 export const lang =

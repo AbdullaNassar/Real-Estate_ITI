@@ -4,7 +4,6 @@ import AppError from "../utilities/appError.js";
 import { v2 as cloudinary } from "cloudinary";
 import { extractPublicId } from "../utilities/cloudinaryHelper.js";
 
-
 const listSchema = new Schema(
   {
     host: {
@@ -148,7 +147,11 @@ const listSchema = new Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
 listSchema.virtual("averageRating").get(function () {
@@ -201,7 +204,6 @@ listSchema.pre("findOneAndDelete", async function (next) {
         const publicId = extractPublicId(url);
 
         if (publicId) await cloudinary.uploader.destroy(publicId);
-        
       }
     }
 
@@ -210,8 +212,6 @@ listSchema.pre("findOneAndDelete", async function (next) {
     next(err);
   }
 });
-
-
 
 const listModel = mongoose.model("List", listSchema);
 export default listModel;

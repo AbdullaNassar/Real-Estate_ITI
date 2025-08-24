@@ -212,13 +212,24 @@ export const getListingsByGovernorate = asyncHandler(async (req, res, next) => {
   const listings = await listModel.aggregate([
     { $match: { isApproved: true } },
     {
+      $addFields: {
+        averageRating: {
+          $cond: [
+            { $gt: [{ $size: "$reviews" }, 0] },
+            { $divide: [{ $sum: "$reviews.rating" }, { $size: "$reviews" }] },
+            0,
+          ],
+        },
+      },
+    },
+    {
       $group: {
         _id: "$governorate",
         count: { $sum: 1 },
         listings: { $push: "$$ROOT" },
       },
     },
-    { $sort: { _id: 1 } }, // Sort alphabetically by governorate
+    { $sort: { _id: 1 } },
   ]);
 
   res.status(200).json({

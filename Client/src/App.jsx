@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import "leaflet/dist/leaflet.css";
 // import { Toaster } from "react-hot-toast";
 import { Toaster } from "sonner";
 import { store } from "./store";

@@ -25,7 +25,7 @@ export default function Hero() {
       <div className="absolute inset-0 flex items-center justify-center z-10 flex-col gap-6 md:p-8  p-4 lg:p-36">
         <TextType
           text={[t("hero.title")]}
-          typingSpeed={75}
+          typingSpeed={120}
           pauseDuration={1500}
           showCursor={true}
           cursorCharacter="|"

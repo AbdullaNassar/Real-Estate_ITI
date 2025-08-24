@@ -30,7 +30,9 @@ export default function ListItem({ list }) {
         </h3>
         <h3 className="flex gap-4 mt-4">
           <span className="flex items-center gap-1">
-            {list.averageRating ? list.averageRating : 3.6}{" "}
+            {list.averageRating
+              ? formatNumber(list.averageRating, language)
+              : t("lists.Unreviewed")}{" "}
             <span className="text-primarry">
               <RiStarSFill />
             </span>

@@ -114,7 +114,12 @@ export default function ListItemCard({ list }) {
         <div className="text-gray-500 flex justify-around items-center mb-3">
           <span className="flex gap-1 items-center">
             <RiStarSFill className="text-xl text-primarry" />
-            <span>3.6 </span>
+            <span>
+              {" "}
+              {list.averageRating
+                ? formatNumber(list.averageRating, lang)
+                : t("lists.Unreviewed")}{" "}
+            </span>
           </span>
           <span className="flex gap-1 items-center">
             <IoPricetagOutline className="text-xl text-primarry" />
