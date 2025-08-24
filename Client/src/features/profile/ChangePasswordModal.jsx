@@ -7,9 +7,12 @@ import * as YUP from "yup";
 
 import { axiosInstance } from "../../services/axiosInstance";
 import { useTranslation } from "react-i18next";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function ChangePasswordModal({ onClose, onSuccess }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const navigate = useNavigate();
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -18,22 +21,23 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
   const queryClient = useQueryClient();
   function handleUpdatePassword(value) {
     SetIsLoading(true);
-
-    console.log("changepaswword => changepassword", value);
     axiosInstance
       .patch("/users/change-password", value)
       .then((res) => {
-        console.log("change password success", res);
-        toast.success(t("changePassword.success"));
+        const msg = res?.data?.message?.[lang] || t("changePassword.success");
+        toast.success(msg);
         queryClient.invalidateQueries({ queryKey: ["user"] });
 
         if (onSuccess) onSuccess();
         onClose();
+        navigate("/login");
       })
       .catch((err) => {
-        SetErrMessage(err?.response?.data?.message);
-        console.log(err?.response?.data?.message);
-        toast.error(err?.response?.data?.message || t("changePassword.error"));
+        // SetErrMessage(err?.response?.data?.message);
+        const msg =
+          err?.response?.data?.message?.[lang] || t("changePassword.error");
+        console.log("changePasswordModal => err response msg :", msg);
+        toast.error(msg);
       })
       .finally(() => {
         SetIsLoading(false);
@@ -124,7 +128,6 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.newPassword}
             type={showNewPassword ? "text" : "password"}
             id="newPassword"
-            placeholder={t("ChangePasswordModal.newPasswordPlaceholder")}
             placeholder={t("changePasswordModal.newPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -154,7 +157,7 @@ export default function ChangePasswordModal({ onClose, onSuccess }) {
             value={formik.values.confirmPassword}
             type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
-            placeholder={t("changePasswordModal.currentPasswordPlaceholder")}
+            placeholder={t("changePasswordModal.confirmPasswordPlaceholder")}
             className="w-full border rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <span

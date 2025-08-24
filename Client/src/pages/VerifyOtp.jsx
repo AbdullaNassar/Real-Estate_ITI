@@ -58,7 +58,7 @@ export default function VerifyOtp() {
 
   const handleResendOtp = () => {
     axiosInstance
-      .post("/users/resend-otp", { email })
+      .post("/users/request-password-reset", { email })
       .then(() => {
         toast.success(t("verifyOtp.success.resent"));
       })
