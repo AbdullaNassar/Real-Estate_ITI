@@ -141,7 +141,7 @@ const listSchema = new Schema(
         },
       },
     ],
-    reviews: [ratingSchema],
+    reviews: [{type:mongoose.Schema.Types.ObjectId,ref:"Rating"}],
     isApproved: {
       type: Boolean,
       default: false,
